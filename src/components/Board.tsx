@@ -14,12 +14,13 @@ import { PcDiagram, type SlotState } from './PcDiagram';
 
 type Selection = { cpu: number | null; gpu: number | null; ram: number | null };
 
-// Picker options: the part lists, weakest -> strongest.
-const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}` }));
+// Picker options. `index` is the performance tier (used for feedback); the pickers list CPUs/GPUs by release year.
+const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}`, year: c.year }));
 const gpuOptions: PickerOption[] = catalog.gpus.map((g, i) => ({
   index: i,
   label: g.name,
   detail: `${g.brand} · ${g.vramGB} GB · ${g.year}`,
+  year: g.year,
 }));
 const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB` }));
 

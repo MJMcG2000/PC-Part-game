@@ -4,6 +4,8 @@ export interface PickerOption {
   index: number; // position in the weakest -> strongest list
   label: string;
   detail?: string;
+  /** Release year: when present, options are listed newest first, then A-Z. */
+  year?: number;
   /** Already used in a previous guess (still selectable). */
   crossed?: boolean;
 }
@@ -17,7 +19,7 @@ interface Props {
   disabled?: boolean;
 }
 
-/** Searchable select following the WAI-ARIA combobox pattern. Lists strongest first. */
+/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first (or largest first when there's no year). */
 export function PartPicker({ label, icon, options, value, onChange, disabled }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -28,7 +30,15 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const selected = options.find((o) => o.index === value) ?? null;
-  const ordered = useMemo(() => [...options].sort((a, b) => b.index - a.index), [options]);
+  const ordered = useMemo(
+    () =>
+      [...options].sort((a, b) =>
+        a.year !== undefined && b.year !== undefined
+          ? b.year - a.year || a.label.localeCompare(b.label, undefined, { numeric: true })
+          : b.index - a.index,
+      ),
+    [options],
+  );
   const filtered = useMemo(() => {
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
     if (!terms.length) return ordered;
@@ -128,7 +138,7 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
         </span>
       </div>
       {open && (
-        <ul className="picker-list" id={listId} role="listbox" ref={listRef} aria-label={`${label} options, strongest first`}>
+        <ul className="picker-list" id={listId} role="listbox" ref={listRef} aria-label={`${label} options, newest first`}>
           {filtered.length === 0 && <li className="picker-empty">No matches</li>}
           {filtered.map((o, i) => (
             <li
