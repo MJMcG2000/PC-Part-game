@@ -1358,3 +1358,36 @@ p.logo {
   font-size: 0.76rem;
   color: var(--text-dim);
 }
+.bd-caption {
+  margin: 4px 0 -2px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ---------- Benchmark vs. estimate labels ---------- */
+.bd-row {
+  grid-template-columns: 112px 1fr 44px;
+}
+.bd-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.src-tag {
+  font-size: 0.66rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.src-tag.is-est {
+  color: var(--text-dim);
+  opacity: 0.8;
+}
+.src-tag.is-bench {
+  color: #8fb4ff;
+}
+.readout-src {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}

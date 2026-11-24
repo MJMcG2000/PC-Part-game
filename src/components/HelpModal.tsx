@@ -39,9 +39,9 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         <h3>Hints</h3>
         <ul>
           <li>Under the PC you'll see your latest build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
-          <li>Pick a brand first: Ryzen or Intel for the CPU, NVIDIA or AMD for the GPU. Each list is sorted by launch date, newest first. RAM type (DDR4 or DDR5) follows your CPU. Parts you've already tried are crossed out.</li>
+          <li>Pick a brand first: Ryzen or Intel for the CPU, NVIDIA or AMD for the GPU. Either brand can be right: each brand has its own minimum part, and tiles compare your part with the minimum of the same brand. Each list is sorted by launch date, newest first. RAM type (DDR4 or DDR5) follows the CPU. Parts you've already tried are crossed out.</li>
           <li>The PC diagram shows your latest guess for each part with its tile color, and locks a part in green once you find it.</li>
-          <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends.</li>
+          <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends. Real benchmark results are used where available; everything else is an estimate (labeled in the results).</li>
         </ul>
         <p className="muted">Stuck? Tap 🏳 Give up to see the answer (counts as a loss).</p>
         <h3>Modes</h3>

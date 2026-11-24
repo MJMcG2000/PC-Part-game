@@ -1,6 +1,6 @@
 import { catalog as defaultCatalog } from './data';
-import { evaluateGuess, type Tile } from './feedback';
-import type { Puzzle } from './puzzle';
+import { evaluateBuild, type Tile } from './feedback';
+import { acceptedAnswers, type Puzzle } from './puzzle';
 import type { StoredGuess } from './storage';
 import type { BuildIdx, Catalog } from './types';
 
@@ -17,5 +17,6 @@ export function guessIndices(guesses: StoredGuess[]): BuildIdx[] {
 }
 
 export function tileRowsFor(puzzle: Puzzle, guesses: StoredGuess[]): Tile[][] {
-  return guessIndices(guesses).map((g) => evaluateGuess(g, puzzle.answer));
+  const accepted = acceptedAnswers(puzzle);
+  return guessIndices(guesses).map((g) => evaluateBuild(g, accepted, defaultCatalog));
 }

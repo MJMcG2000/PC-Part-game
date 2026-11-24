@@ -13,6 +13,8 @@ export interface Game {
   steamAppId?: number;
   /** English Wikipedia article for cover art when there is no Steam version. */
   wikiTitle?: string;
+  /** Measured results attached from benchmarks.json (see lib/benchmarks.ts). */
+  benchmarks?: import('./benchmarks').GameBenchmarks;
   name: string;
   releaseYear: number;
   genre: string;

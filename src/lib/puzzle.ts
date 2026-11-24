@@ -3,7 +3,7 @@ import { catalog as defaultCatalog } from './data';
 import { addDays, daysBetween, puzzleNumber } from './date';
 import { hashString, mulberry32, randInt } from './rng';
 import { matchesPlatform, repeatKey, type PlatformFilter } from './platforms';
-import { solve } from './solver';
+import { solve, solveByBrand, type BrandAnswers } from './solver';
 import type { BuildIdx, Catalog, Game } from './types';
 
 export interface Puzzle {
@@ -162,4 +162,20 @@ export function puzzleFromSaved(
   const v = checkPuzzle(game, targetFps, catalog, resolution);
   if (!v.valid) return null;
   return { dateKey: 'endless', number: 0, game, targetFps, resolution, answer: v.answer, rerolls: 0 };
+}
+
+const acceptedCache = new WeakMap<Puzzle, BrandAnswers>();
+
+/**
+ * Every correct answer for a puzzle: the minimum CPU and GPU of each brand
+ * (either brand counts) plus the RAM answer. The overall minimum in
+ * `puzzle.answer` is always one of these.
+ */
+export function acceptedAnswers(puzzle: Puzzle, catalog: Catalog = defaultCatalog): BrandAnswers {
+  let a = acceptedCache.get(puzzle);
+  if (!a) {
+    a = solveByBrand(puzzle.game, puzzle.targetFps, catalog, puzzle.resolution);
+    acceptedCache.set(puzzle, a);
+  }
+  return a;
 }

@@ -3,6 +3,7 @@ import type { Game } from '../lib/types';
 import { PRESET, type Resolution } from '../lib/config';
 import { BASIS_LABEL, platformInfo } from '../lib/platforms';
 import { findCover } from '../lib/coverArt';
+import { benchmarkCount } from '../lib/benchmarks';
 
 const imageSources = (id?: number) =>
   id
@@ -85,6 +86,11 @@ export function GameCard({ game, targetFps, resolution, label }: Props) {
             </a>
           </p>
           {platform.basis !== 'native' && <p className="game-basis">{BASIS_LABEL[platform.basis]}</p>}
+          {benchmarkCount(game) > 0 && (
+            <p className="game-basis">
+              📊 Uses {benchmarkCount(game)} benchmark result{benchmarkCount(game) === 1 ? '' : 's'}
+            </p>
+          )}
         </div>
       </section>
 

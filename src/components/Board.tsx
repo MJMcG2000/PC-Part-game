@@ -1,10 +1,10 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { catalog } from '../lib/data';
 import { MAX_GUESSES, WIN_TOLERANCE } from '../lib/config';
-import { evaluateGuess, isWin } from '../lib/feedback';
+import { evaluateBuild, isWin } from '../lib/feedback';
 import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
-import type { Puzzle } from '../lib/puzzle';
+import { acceptedAnswers, type Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
 import { PART_KEYS, formatLaunch, launchKey, type BuildIdx, type PartKey } from '../lib/types';
 import { GameCard } from './GameCard';
@@ -86,10 +86,14 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const ramType = selection.cpu !== null ? catalog.cpus[selection.cpu].memory : null;
   const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB${ramType ? ` ${ramType}` : ''}` }));
   const ramNote = ramType
-    ? `${ramType}: the RAM type your ${catalog.cpus[selection.cpu!].name} uses.`
+    ? `${ramType}: the RAM type the ${catalog.cpus[selection.cpu!].name} uses.`
     : 'RAM type (DDR4 or DDR5) follows the CPU you pick.';
   const guesses = useMemo(() => guessIndices(stored), [stored]);
-  const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
+  // Either brand's minimum CPU/GPU counts as correct.
+  const accepted = acceptedAnswers(puzzle);
+  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog)), [guesses, accepted]);
+  const cpuAlts = Object.values(accepted.cpu).filter((i): i is number => i !== null).map((i) => catalog.cpus[i]);
+  const gpuAlts = Object.values(accepted.gpu).filter((i): i is number => i !== null).map((i) => catalog.gpus[i]);
   const finished = status !== 'playing';
 
   // Estimated FPS of the latest guess (the hint that used to live in the guess grid).
@@ -116,7 +120,9 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       if (status === 'lost' && state.tile?.color !== 'green') {
         // Reveal the answer in the diagram only once the game is lost
         // (a ±5% win keeps showing the player's own build).
-        state = { name: partName(k, puzzle.answer), tile: { part: k, color: 'green', direction: null } };
+        const name =
+          k === 'cpu' ? cpuAlts.map((c) => c.name).join(' / ') : k === 'gpu' ? gpuAlts.map((g) => g.name).join(' / ') : partName(k, puzzle.answer);
+        state = { name, tile: { part: k, color: 'green', direction: null } };
       }
       return [k, state];
     }),
@@ -130,7 +136,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     const guess: BuildIdx = { cpu, gpu, ram };
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
-      isWin(evaluateGuess(guess, puzzle.answer)) ||
+      isWin(evaluateBuild(guess, accepted, catalog)) ||
         (!hard &&
           isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game, puzzle.resolution).fps, puzzle.targetFps)),
     );
@@ -158,6 +164,9 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
             }
           >
             Last build: <strong className="mono">{displayFps(lastFps.fps)} FPS</strong>
+            <span className="readout-src">
+              {(lastFps.limitedBy === 'cpu' ? lastFps.cpuSource : lastFps.gpuSource) ? ' · benchmark' : ' · estimate'}
+            </span>
             {lastFps.vramPenalty && <span className="vram-flag" title="GPU has less VRAM than this game needs (×0.6)">VRAM</span>}
           </span>
         )}
@@ -175,6 +184,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           targetFps={puzzle.targetFps}
           cpu={catalog.cpus[puzzle.answer.cpu]}
           gpu={catalog.gpus[puzzle.answer.gpu]}
+          cpuAlts={cpuAlts}
+          gpuAlts={gpuAlts}
           ramGB={catalog.ram[puzzle.answer.ram].sizeGB}
           onShare={onShare}
           shareLabel="Share result 📋"
