@@ -61,7 +61,7 @@ scripts/validate-puzzles.ts
 ### Daily puzzle
 - Puzzle number = days since `LAUNCH_DATE` + 1 (`2026-12-01` is #1). Earlier dates show as "Preview".
 - A PRNG is seeded with a hash of the local date string `YYYY-MM-DD`. It picks a game, then a target from `[30, 60, 90, 120, 144, 165, 240]`.
-- If the candidate is invalid (target unreachable, or any part's answer is the weakest or strongest option) or the game appeared in the previous 30 days, the same seeded stream is drawn again.
+- If the candidate is invalid (target unreachable, or the CPU or GPU answer is the weakest or strongest option; any RAM size from 8 to 64 GB can be the answer) or the game appeared in the previous 30 days, the same seeded stream is drawn again.
 - To apply the no-repeat rule consistently, the sequence is replayed day by day from `SEQUENCE_START` and memoized. It's fast (well under a second for years of puzzles).
 
 ### Console games
@@ -69,7 +69,7 @@ scripts/validate-puzzles.ts
 - **PS2/Xbox, PS3/360, Switch, Wii:** via emulation, upscaled to 1080p with frame rate unlocked. Emulation is CPU-heavy, so these puzzles lean on the CPU (PS3/360 especially). Running the original PC ports of these old games would hit hundreds of FPS on any part, which would make every puzzle trivial.
 - **PS4/One, PS5/Series:** via the game's PC port, or an estimated hypothetical port for exclusives such as Bloodborne or Astro Bot.
 
-Console top-15 games that are already in `games.json` (Elden Ring, God of War, Red Dead Redemption 2, and others) are tagged there with `"alsoOn": ["ps5-xsx"]` instead of being duplicated. The Daily puzzle draws from all games, PC and console. The no-repeat rule treats the same title on two platforms (e.g. GTA V on PC and on PS3/360) as one game. Console games show Steam art only when the same game is on Steam (`steamAppId`); otherwise they get a platform-styled placeholder and an "About" link.
+Console top-15 games that are already in `games.json` (Elden Ring, God of War, Red Dead Redemption 2, and others) are tagged there with `"alsoOn": ["ps5-xsx"]` instead of being duplicated. The Daily puzzle draws from all games, PC and console. The no-repeat rule treats the same title on two platforms (e.g. GTA V on PC and on PS3/360) as one game. Console games use Steam art when the same game is on Steam (`steamAppId`). Otherwise the player's browser loads the cover art from English Wikipedia: first the article named by `wikiTitle`, then a Wikipedia search, then a platform-styled placeholder. Lookups are cached in `localStorage`.
 
 ### FPS model
 ```
@@ -93,7 +93,7 @@ All data files are `{ "_comment": ..., "items": [...] }`. Parts are sorted by sc
  "cpuLoad": 0.62, "gpuLoad": 0.8, "vramGB": 7, "ramMinGB": 12, "ramRecGB": 16}
 ```
 - `steamAppId` is the number in the store URL (`store.steampowered.com/app/<id>/`). The header image is loaded from Steam's CDN (content delivery network) by that ID, with a placeholder if it fails.
-- `ramRecGB` must be above 8 and at most 32. Otherwise the RAM answer is always the weakest/strongest option and the game can never be picked. The validate script flags such "dead" games.
+- `ramRecGB` can be anything up to 64 GB (the largest RAM option). The answer is the smallest RAM option at or above it, so 8 means an 8 GB answer and anything above 32 means 64 GB. The validate script flags "dead" games that can never produce a valid puzzle.
 - Keep `games.json` between 60 and 100 games. `validate-puzzles` also checks every platform has at least 10 playable games for Endless.
 
 **Add a CPU/GPU** to `cpus.json` / `gpus.json`. Keep scores unique so the tier order is unambiguous.

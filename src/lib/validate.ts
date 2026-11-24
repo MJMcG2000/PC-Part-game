@@ -68,6 +68,7 @@ export function analyzeSequence(start: string, days: number, catalog: Catalog): 
   if (gameCounts.size < minGames) problems.push(`Only ${gameCounts.size} distinct games used (want >= ${minGames})`);
   if (answerCounts.cpu.size < 8) problems.push(`Only ${answerCounts.cpu.size} distinct CPU answers`);
   if (answerCounts.gpu.size < 8) problems.push(`Only ${answerCounts.gpu.size} distinct GPU answers`);
+  if (answerCounts.ram.size < 3) problems.push(`Only ${answerCounts.ram.size} distinct RAM answers`);
 
   const deadGames = catalog.games
     .filter((g) => !FPS_TARGETS.some((t) => checkPuzzle(g, t, catalog).valid))

@@ -11,6 +11,8 @@ export interface Game {
   alsoOn?: PlatformId[];
   /** Present when the same game is on Steam (art + store link). */
   steamAppId?: number;
+  /** English Wikipedia article for cover art when there is no Steam version. */
+  wikiTitle?: string;
   name: string;
   releaseYear: number;
   genre: string;

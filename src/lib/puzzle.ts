@@ -19,11 +19,12 @@ export interface Puzzle {
 
 export type Validity =
   | { valid: true; answer: BuildIdx }
-  | { valid: false; reason: 'unreachable' | 'cpu-extreme' | 'gpu-extreme' | 'ram-extreme' };
+  | { valid: false; reason: 'unreachable' | 'cpu-extreme' | 'gpu-extreme' };
 
 /**
- * A puzzle is valid when the target is reachable and no part's answer is the
- * weakest or the strongest option in its list (those are too easy to guess).
+ * A puzzle is valid when the target is reachable and the CPU and GPU answers
+ * are not the weakest or strongest option in their lists (too easy to guess).
+ * RAM has only four options, so any of them (8-64 GB) can be the answer.
  */
 export function checkPuzzle(game: Game, target: number, catalog: Catalog = defaultCatalog): Validity {
   const answer = solve(game, target, catalog);
@@ -31,7 +32,6 @@ export function checkPuzzle(game: Game, target: number, catalog: Catalog = defau
   const extreme = (i: number, len: number) => i === 0 || i === len - 1;
   if (extreme(answer.cpu, catalog.cpus.length)) return { valid: false, reason: 'cpu-extreme' };
   if (extreme(answer.gpu, catalog.gpus.length)) return { valid: false, reason: 'gpu-extreme' };
-  if (extreme(answer.ram, catalog.ram.length)) return { valid: false, reason: 'ram-extreme' };
   return { valid: true, answer };
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Game } from '../lib/types';
 import { PRESET, RESOLUTION } from '../lib/config';
 import { BASIS_LABEL, platformInfo } from '../lib/platforms';
+import { findCover } from '../lib/coverArt';
 
 const imageSources = (id?: number) =>
   id
@@ -19,9 +20,25 @@ interface Props {
 
 export function GameCard({ game, targetFps, label }: Props) {
   const [srcIdx, setSrcIdx] = useState(0);
-  useEffect(() => setSrcIdx(0), [game.id]);
+  const [cover, setCover] = useState<string | null>(null);
+  useEffect(() => {
+    setSrcIdx(0);
+    setCover(null);
+  }, [game.id]);
   const sources = imageSources(game.steamAppId);
-  const failed = srcIdx >= sources.length;
+  const steamFailed = srcIdx >= sources.length;
+
+  // No Steam art (or it failed): look up cover art on Wikipedia.
+  useEffect(() => {
+    if (!steamFailed) return;
+    let live = true;
+    findCover(game.wikiTitle ?? game.name, game.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()).then((src) => {
+      if (live) setCover(src);
+    });
+    return () => {
+      live = false;
+    };
+  }, [steamFailed, game.id, game.wikiTitle, game.name]);
   const platform = platformInfo(game.platform);
   const link = game.steamAppId
     ? { href: `https://store.steampowered.com/app/${game.steamAppId}/`, text: 'Steam page ↗' }
@@ -34,7 +51,12 @@ export function GameCard({ game, targetFps, label }: Props) {
     <>
       <section className="game-card" aria-label="Game">
         <div className={`game-art platform-${game.platform}`}>
-          {failed ? (
+          {steamFailed && cover ? (
+            <div className="game-art-cover">
+              <img className="cover-bg" src={cover} alt="" aria-hidden="true" />
+              <img className="cover-fg" src={cover} alt={`${game.name} cover art`} onError={() => setCover(null)} />
+            </div>
+          ) : steamFailed ? (
             <div className="game-art-fallback" role="img" aria-label={`${game.name} (no image)`}>
               <span className="fallback-platform">{platform.label}</span>
               <span className="fallback-name">{game.name}</span>

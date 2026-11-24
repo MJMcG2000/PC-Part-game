@@ -52,3 +52,15 @@ describe('share text', () => {
     expect(buildShareText({ number: 7, targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });
 });
+
+import { pickThumbnail } from './coverArt';
+describe('cover art', () => {
+  it('picks the best-ranked page with a thumbnail', () => {
+    expect(
+      pickThumbnail({
+        query: { pages: { '2': { index: 2, thumbnail: { source: 'b.jpg' } }, '1': { index: 1 }, '3': { index: 3, thumbnail: { source: 'c.jpg' } } } },
+      }),
+    ).toBe('b.jpg');
+    expect(pickThumbnail({})).toBeNull();
+  });
+});

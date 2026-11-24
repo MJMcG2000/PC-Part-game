@@ -52,8 +52,12 @@ describe('validity and reroll rules', () => {
       valid: false,
       reason: 'gpu-extreme', // GPU 40 * 3 = 120 is weakest
     });
-    expect(checkPuzzle(testGame({ ramRecGB: 8 }), 90, cat)).toMatchObject({ valid: false, reason: 'ram-extreme' });
-    expect(checkPuzzle(testGame({ ramRecGB: 64 }), 90, cat)).toMatchObject({ valid: false, reason: 'ram-extreme' });
+  });
+
+  it('allows 8 GB and 64 GB RAM answers, but not RAM beyond the largest option', () => {
+    expect(checkPuzzle(testGame({ ramRecGB: 8 }), 90, cat)).toMatchObject({ valid: true, answer: { ram: 0 } });
+    expect(checkPuzzle(testGame({ ramRecGB: 64 }), 90, cat)).toMatchObject({ valid: true, answer: { ram: 3 } });
+    expect(checkPuzzle(testGame({ ramRecGB: 128 }), 90, cat)).toEqual({ valid: false, reason: 'unreachable' });
   });
 
   it('accepts an interior answer', () => {
@@ -62,8 +66,8 @@ describe('validity and reroll rules', () => {
   });
 
   it('rerolls deterministically until it finds a valid puzzle', () => {
-    // One valid game hidden among many that are never valid (RAM answer = weakest).
-    const bad = Array.from({ length: 20 }, (_, i) => testGame({ steamAppId: 100 + i, ramRecGB: 8 }));
+    // One valid game hidden among many that are never valid (RAM need is unreachable).
+    const bad = Array.from({ length: 20 }, (_, i) => testGame({ steamAppId: 100 + i, ramRecGB: 128 }));
     const good = testGame({ steamAppId: 7 });
     const c = tinyCatalog([...bad, good]);
     const p = generatePuzzle('2027-01-01', new Set(), c);
@@ -81,7 +85,7 @@ describe('validity and reroll rules', () => {
   });
 
   it('throws when no valid puzzle exists at all', () => {
-    expect(() => generatePuzzle('2027-01-01', new Set(), tinyCatalog([testGame({ ramRecGB: 8 })]))).toThrow();
+    expect(() => generatePuzzle('2027-01-01', new Set(), tinyCatalog([testGame({ ramRecGB: 128 })]))).toThrow();
   });
 
   it(`does not repeat a game within ${NO_REPEAT_DAYS} days`, () => {
