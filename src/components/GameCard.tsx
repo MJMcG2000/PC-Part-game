@@ -20,6 +20,7 @@ export function GameCard({ game, targetFps, label }: Props) {
   const failed = srcIdx >= sources.length;
 
   return (
+    <>
     <section className="game-card" aria-label="Today's game">
       <div className="game-art">
         {failed ? (
@@ -35,19 +36,9 @@ export function GameCard({ game, targetFps, label }: Props) {
             onError={() => setSrcIdx((i) => i + 1)}
           />
         )}
-        <div className="target-badge" aria-label={`Target: ${targetFps} frames per second`}>
-          <span className="target-label">TARGET</span>
-          <span className="target-value mono">{targetFps}</span>
-          <span className="target-unit">FPS</span>
-        </div>
       </div>
       <div className="game-meta">
-        <div className="game-meta-top">
-          <span className="puzzle-label">{label}</span>
-          <span className="chip">
-            {RESOLUTION} · {PRESET}
-          </span>
-        </div>
+        <span className="puzzle-label">{label}</span>
         <h2 className="game-title">{game.name}</h2>
         <p className="game-sub">
           {game.genre} · {game.releaseYear} ·{' '}
@@ -57,5 +48,19 @@ export function GameCard({ game, targetFps, label }: Props) {
         </p>
       </div>
     </section>
+
+    <section className="target-banner" aria-label={`Target: ${targetFps} FPS at ${RESOLUTION}, ${PRESET} settings`}>
+      <span className="tb-label">TARGET</span>
+      <span className="tb-fps">
+        <span className="tb-value mono">{targetFps}</span>
+        <span className="tb-unit">FPS</span>
+      </span>
+      <span className="tb-at" aria-hidden="true">@</span>
+      <span className="tb-res">
+        <span className="tb-res-main mono">{RESOLUTION}</span>
+        <span className="tb-res-sub">{PRESET} settings</span>
+      </span>
+    </section>
+    </>
   );
 }
