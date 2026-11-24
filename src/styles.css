@@ -1130,3 +1130,118 @@ input:focus-visible {
   color: #fff;
   align-self: center;
 }
+
+/* ---------- Footer links ---------- */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+.footer-links a {
+  color: var(--text-dim);
+  padding: 4px 2px;
+}
+.footer-links a:hover {
+  color: var(--text);
+}
+
+/* ---------- Ad slot ----------
+   Fixed height so the layout never jumps; large margins keep it away from
+   game buttons above and footer links below (AdSense accidental-click policy). */
+.ad-slot {
+  margin: 48px 0 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+.ad-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: center;
+}
+.ad-unit {
+  display: block;
+  width: 100%;
+  height: 250px;
+  background: var(--panel);
+  border-radius: 8px;
+}
+.ad-slot + .footer {
+  margin-top: 40px;
+}
+
+/* ---------- Static content pages (about.html, privacy.html) ---------- */
+.logo a {
+  text-decoration: none;
+}
+p.logo {
+  text-align: center;
+}
+.play-link {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #8a6dff, #6a4cf0);
+  border: 1px solid #9b84ff;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.page {
+  padding: 20px 0 8px;
+  line-height: 1.65;
+  font-size: 1rem;
+}
+.page h1 {
+  font-size: 1.7rem;
+  line-height: 1.2;
+  margin: 8px 0 4px;
+}
+.page h2 {
+  font-size: 1.15rem;
+  margin: 28px 0 6px;
+}
+.page p,
+.page li {
+  color: #d3d9e4;
+}
+.page ul {
+  padding-left: 20px;
+}
+.page li {
+  margin-bottom: 6px;
+}
+.page .lede {
+  color: var(--text-dim);
+  margin-top: 0;
+}
+.page code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--panel-2);
+}
+.page-cta {
+  margin: 32px 0 8px;
+  text-align: center;
+}
+.page-cta a {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #8a6dff, #6a4cf0);
+  border: 1px solid #9b84ff;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}

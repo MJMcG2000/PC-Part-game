@@ -27,15 +27,50 @@ npm run preview           # serve dist/ locally
 
 ## Deploy
 
-The build uses relative asset paths (`base: './'` in `vite.config.ts`), so the same `dist/` works at a domain root or under a sub-path.
+The build is a static multi-page site (`index.html` game, plus `about.html` and `privacy.html`) with relative asset paths (`base: './'`), so the same `dist/` works at a domain root or under a sub-path.
 
-**GitHub Pages:** in the repository go to *Settings → Pages → Source* and choose **GitHub Actions**. Pushing to `main` runs `.github/workflows/deploy.yml`, which tests, validates puzzles, builds and publishes `dist/`.
+### Cloudflare Pages (primary)
 
-**Vercel:** import the repository. The defaults are detected (framework Vite, build `npm run build`, output `dist`). Nothing else to configure.
+1. In the Cloudflare dashboard go to **Workers & Pages → Create → Pages → Connect to Git** and pick this repository.
+2. Build settings:
+   - **Framework preset:** None (or Vite)
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Node version:** 20 or newer. The repo has an `.nvmrc` (22), which Cloudflare picks up; you can also set the environment variable `NODE_VERSION=22`.
+3. **Environment variables** (Settings → Variables and secrets, for Production): `VITE_ADSENSE_CLIENT` and `VITE_ADSENSE_SLOT` once you have them (see AdSense below). They're baked in at build time, so **redeploy** after changing them.
+4. **Custom domain:** in the Pages project go to **Custom domains → Set up a custom domain**, enter your domain (e.g. `rigdle.com`), and follow the prompts. If the domain's DNS is on Cloudflare the record is added for you; otherwise add the CNAME record Cloudflare shows at your DNS provider. Add `www` too if you want it, and redirect one to the other.
+5. Every push to `main` then builds and deploys automatically, and pull requests get preview URLs.
+
+### GitHub Pages (secondary)
+
+In the repository go to *Settings → Pages → Source* and choose **GitHub Actions**. Pushing to `main` runs `.github/workflows/deploy.yml`, which tests, validates puzzles, builds and publishes `dist/` to `https://<user>.github.io/<repo>/`. That build has no AdSense variables, so it never shows ads. Once Cloudflare Pages is live, you can disable this workflow (Actions → Deploy to GitHub Pages → ⋯ → Disable workflow) so there's only one public copy of the site.
+
+## Launch checklist (custom domain + AdSense)
+
+Replace these placeholders before applying to AdSense:
+
+- [ ] `public/robots.txt`, `public/sitemap.xml`, and the Open Graph / Twitter tags in `index.html`: replace `https://YOURDOMAIN.com` with your domain.
+- [ ] Add `public/og-image.png` (1200×630) for link previews; `index.html` already points to it.
+- [ ] `about.html` and `privacy.html`: replace `[YOUR NAME]` and `[CONTACT EMAIL]`.
+- [ ] `public/ads.txt`: replace `pub-0000000000000000` with **your** publisher ID. It's the number from your `ca-pub-…` ID, written as `pub-…` (no `ca-`). The rest of the line stays the same. It must be served at `https://yourdomain.com/ads.txt`.
+- [ ] Set `VITE_ADSENSE_CLIENT` (and, after creating an ad unit, `VITE_ADSENSE_SLOT`) in Cloudflare Pages and redeploy.
+- [ ] Submit `https://yourdomain.com/sitemap.xml` in Google Search Console.
+
+### AdSense
+
+- **One config spot:** `VITE_ADSENSE_CLIENT` holds your publisher ID (`ca-pub-` + 16 digits); see `.env.example`. For local testing, copy it to `.env` (git-ignored).
+- **Inactive by default:** while the variable is unset or malformed, no AdSense script is added to the page and `<AdSlot>` renders nothing. With a valid ID, the loader script is injected into `index.html` at build time (the game page only, not About/Privacy). An invalid value is ignored with a build warning.
+- **The ad unit:** create a display ad unit in AdSense (Ads → By ad unit) and put its numeric ID in `VITE_ADSENSE_SLOT`. `src/components/AdSlot.tsx` renders it once, labeled "Advertisement", in a fixed 250px-high box (so the layout doesn't jump), below the game and above the footer. Keep ads out of the board, the part pickers and the modals, and away from buttons, per AdSense's accidental-click policy.
+- **Consent (EEA, UK, Switzerland):** don't build a custom cookie banner. In AdSense, go to **Privacy & messaging → European regulations**, create a message for your site, and publish it. Google then shows its own certified consent message to visitors from the European Economic Area, the UK and Switzerland before serving personalized ads.
 
 ## Project layout
 
 ```
+index.html         the game (React app)
+about.html         crawlable About page
+privacy.html       crawlable Privacy policy
+public/            favicon, ads.txt, robots.txt, sitemap.xml (copied as-is)
+.env.example       AdSense configuration template
 src/
   data/            games.json (100 PC/Steam games), console-games.json (console top-15s),
                    cpus.json, gpus.json, ram.json  (all editable)
@@ -52,7 +87,8 @@ src/
     share.ts       share text
     storage.ts     localStorage state + stats
     validate.ts    sequence analysis used by the script and tests
-  components/      React UI
+  lib/adsense.ts   AdSense ID validation + loader tag (shared with vite.config.ts)
+  components/      React UI (AdSlot.tsx = the single ad unit)
 scripts/validate-puzzles.ts
 ```
 
