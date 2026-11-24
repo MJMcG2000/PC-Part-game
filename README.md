@@ -81,7 +81,7 @@ buildFps = min(cpuFps, gpuFps) × ramMult
 Answer = weakest CPU with `cpuFps ≥ target`, weakest GPU with `gpuFps ≥ target` (penalty applied), smallest RAM `≥ ramRecGB`. Resolution and preset are constants in `config.ts` with scale tables, so you can switch to e.g. 1440p Ultra.
 
 ### Feedback
-Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. Each guess also shows its estimated FPS (red/green vs. target) and a **VRAM** tag if the GPU took the penalty. Colorblind mode swaps green/yellow for orange/blue, including in share text.
+Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 

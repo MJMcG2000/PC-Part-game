@@ -315,28 +315,6 @@ input:focus-visible {
 }
 
 /* ---------- Guess grid ---------- */
-.grid-head,
-.grid-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 0.62fr 64px;
-  gap: 6px;
-}
-.grid-head {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-  padding: 0 2px 6px;
-  text-align: center;
-}
-.grid-rows {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
 .tile {
   position: relative;
   min-height: 52px;
@@ -351,19 +329,6 @@ input:focus-visible {
   font-size: 0.72rem;
   font-weight: 700;
   line-height: 1.15;
-}
-.grid-row:not(.is-empty) .tile {
-  animation: flip-in 0.42s ease both;
-}
-.tile-name {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.tile-arrow {
-  font-size: 1.1rem;
-  flex: none;
 }
 .tile-green {
   background: var(--tile-green);
@@ -390,26 +355,6 @@ input:focus-visible {
   vertical-align: middle;
   font-size: 1rem;
 }
-.fps-chip {
-  min-height: 52px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 1rem;
-}
-.fps-chip.is-hit {
-  color: var(--hit);
-  border-color: color-mix(in srgb, var(--hit) 50%, transparent);
-}
-.fps-chip.is-miss {
-  color: var(--miss);
-  border-color: color-mix(in srgb, var(--miss) 45%, transparent);
-}
 .vram-flag {
   font-size: 0.55rem;
   letter-spacing: 0.1em;
@@ -419,23 +364,6 @@ input:focus-visible {
   background: #f59e0b;
   color: #0b0d12;
 }
-.grid-row.is-empty .tile,
-.grid-row.is-empty .fps-chip {
-  border-style: dashed;
-  background: transparent;
-}
-
-@keyframes flip-in {
-  from {
-    transform: rotateX(90deg);
-    opacity: 0;
-  }
-  to {
-    transform: rotateX(0);
-    opacity: 1;
-  }
-}
-
 /* ---------- Builder / pickers ---------- */
 .builder {
   display: grid;
@@ -781,21 +709,6 @@ input:focus-visible {
 }
 
 /* ---------- Responsive ---------- */
-@media (min-width: 480px) {
-  .tile {
-    font-size: 0.8rem;
-  }
-}
-@media (max-width: 360px) {
-  .grid-head,
-  .grid-row {
-    grid-template-columns: 1fr 1fr 0.6fr 52px;
-  }
-  .tile {
-    font-size: 0.66rem;
-    padding: 5px 6px;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1002,9 +915,6 @@ input:focus-visible {
   background: linear-gradient(180deg, #121620, #0c0f15);
   border-top: 2px solid var(--line-strong);
   color: var(--text-dim);
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
 }
 /* Part slots, placed where the parts sit on an ATX board. */
 .pc-slot {
@@ -1109,4 +1019,36 @@ input:focus-visible {
   margin: 0 auto;
   object-fit: contain;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* Parts already guessed: crossed out in the picker. */
+.picker-opt.is-crossed .opt-label,
+.picker-opt.is-crossed .opt-detail {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  opacity: 0.5;
+}
+
+/* Guess counter + latest build FPS under the PC diagram. */
+.pc-readout {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: -6px 0 0;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+.pc-readout strong {
+  color: var(--text);
+}
+.pc-readout .is-hit strong {
+  color: var(--hit);
+}
+.pc-readout .is-miss strong {
+  color: var(--miss);
+}
+.pc-readout .vram-flag {
+  margin-left: 6px;
+  vertical-align: middle;
 }

@@ -4,6 +4,8 @@ export interface PickerOption {
   index: number; // position in the weakest -> strongest list
   label: string;
   detail?: string;
+  /** Already used in a previous guess (still selectable). */
+  crossed?: boolean;
 }
 
 interface Props {
@@ -135,13 +137,14 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
               data-i={i}
               role="option"
               aria-selected={o.index === value}
-              className={`picker-opt${i === active ? ' is-active' : ''}`}
+              className={`picker-opt${i === active ? ' is-active' : ''}${o.crossed ? ' is-crossed' : ''}`}
               onPointerDown={(e) => e.preventDefault()}
               onClick={() => choose(o)}
               onMouseMove={() => setActive(i)}
             >
               <span className="opt-label">{o.label}</span>
               {o.detail && <span className="opt-detail">{o.detail}</span>}
+              {o.crossed && <span className="sr-only"> (already guessed)</span>}
             </li>
           ))}
         </ul>

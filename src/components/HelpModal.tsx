@@ -26,9 +26,9 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         </ul>
         <h3>Hints</h3>
         <ul>
-          <li>Each guess shows the build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
-          <li>Parts are listed strongest first.</li>
-          <li>The PC diagram shows your latest guess for each part, and locks a part in green once you find it.</li>
+          <li>Under the PC you'll see your latest build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
+          <li>Parts are listed strongest first. Parts you've already tried are crossed out.</li>
+          <li>The PC diagram shows your latest guess for each part with its tile color, and locks a part in green once you find it.</li>
           <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends.</li>
         </ul>
         <h3>Modes</h3>
