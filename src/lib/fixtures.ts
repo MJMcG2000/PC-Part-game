@@ -3,8 +3,10 @@ import type { Game } from './types';
 
 /** Small hand-checkable catalog for tests. */
 export const testGame = (over: Partial<Game> = {}): Game => ({
+  id: `test-${over.steamAppId ?? 1}`,
+  platform: 'pc',
   steamAppId: 1,
-  name: 'Test Game',
+  name: `Test Game ${over.steamAppId ?? 1}`,
   releaseYear: 2024,
   genre: 'Test',
   cpuLoad: 1,

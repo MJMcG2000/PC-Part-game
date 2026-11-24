@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { effectiveStreak, emptyStats, recordResult } from './storage';
+import { effectiveStreak, emptyEndlessStats, emptyStats, recordEndless, recordResult } from './storage';
 
 describe('stats', () => {
   it('tracks wins, streaks and distribution', () => {
@@ -21,5 +21,17 @@ describe('stats', () => {
     const s = recordResult(emptyStats(), '2027-01-01', true, 2);
     expect(effectiveStreak(s, '2027-01-02')).toBe(1);
     expect(effectiveStreak(s, '2027-01-03')).toBe(0);
+  });
+});
+
+describe('endless stats', () => {
+  it('counts consecutive wins as the streak', () => {
+    let s = emptyEndlessStats();
+    s = recordEndless(s, true, 2);
+    s = recordEndless(s, true, 5);
+    expect(s).toMatchObject({ played: 2, wins: 2, streak: 2, best: 2 });
+    s = recordEndless(s, false, 6);
+    expect(s).toMatchObject({ played: 3, wins: 2, streak: 0, best: 2 });
+    expect(s.distribution).toEqual([0, 1, 0, 0, 1, 0]);
   });
 });

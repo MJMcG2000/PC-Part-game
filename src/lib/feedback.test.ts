@@ -43,6 +43,11 @@ describe('share text', () => {
       'Rigdle #42 3/6 🎯144 FPS\n🟨⬛🟩\n🟩🟨🟩\n🟩🟩🟩',
     );
   });
+  it('supports an Endless label', () => {
+    expect(buildShareText({ number: 0, label: 'Endless', targetFps: 90, rows: rows.slice(2), won: true })).toBe(
+      'Rigdle Endless 1/6 🎯90 FPS\n🟩🟩🟩',
+    );
+  });
   it('uses X/6 on a loss', () => {
     expect(buildShareText({ number: 7, targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });

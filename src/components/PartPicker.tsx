@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 export interface PickerOption {
-  index: number; // tier index (weakest = 0)
+  index: number; // position in the weakest -> strongest list
   label: string;
   detail?: string;
 }
@@ -140,7 +140,6 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
               onClick={() => choose(o)}
               onMouseMove={() => setActive(i)}
             >
-              <span className="opt-tier mono">T{o.index + 1}</span>
               <span className="opt-label">{o.label}</span>
               {o.detail && <span className="opt-detail">{o.detail}</span>}
             </li>

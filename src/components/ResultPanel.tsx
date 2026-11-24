@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Cpu, Game, Gpu } from '../lib/types';
 import { buildFps, displayFps } from '../lib/fps';
 import { MAX_GUESSES, VRAM_PENALTY } from '../lib/config';
@@ -12,9 +13,10 @@ interface Props {
   ramGB: number;
   onShare: () => void;
   shareLabel: string;
+  children?: ReactNode;
 }
 
-export function ResultPanel({ won, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel }: Props) {
+export function ResultPanel({ won, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel, children }: Props) {
   const b = buildFps(cpu, gpu, ramGB, game);
   const max = Math.max(b.cpuFps, b.gpuFps, targetFps) * 1.08;
   const pct = (v: number) => `${Math.min(100, (v / max) * 100)}%`;
@@ -65,9 +67,12 @@ export function ResultPanel({ won, guessCount, game, targetFps, cpu, gpu, ramGB,
         </p>
       </div>
 
-      <button className="btn btn-primary share-btn" onClick={onShare}>
-        {shareLabel}
-      </button>
+      <div className="result-actions">
+        {children}
+        <button className={`btn ${children ? '' : 'btn-primary '}share-btn`} onClick={onShare}>
+          {shareLabel}
+        </button>
+      </div>
     </section>
   );
 }

@@ -5,6 +5,9 @@ import { addDays } from './date';
 import { testGame, tinyCatalog } from './fixtures';
 import { NO_REPEAT_DAYS } from './config';
 import { analyzeSequence } from './validate';
+import { generateEndless, puzzleFromSaved } from './puzzle';
+import { matchesPlatform, repeatKey } from './platforms';
+import { PLATFORMS } from './platforms';
 
 describe('seed determinism', () => {
   it('the same date always gives the same puzzle', () => {
@@ -29,7 +32,7 @@ describe('seed determinism', () => {
 
   it('different dates usually give different puzzles', () => {
     const keys = Array.from({ length: 14 }, (_, i) => addDays('2027-01-01', i));
-    const ids = new Set(keys.map((k) => getPuzzle(k).game.steamAppId));
+    const ids = new Set(keys.map((k) => getPuzzle(k).game.id));
     expect(ids.size).toBe(14);
   });
 });
@@ -73,7 +76,7 @@ describe('validity and reroll rules', () => {
     const games = [testGame({ steamAppId: 1 }), testGame({ steamAppId: 2 })];
     const c = tinyCatalog(games);
     for (let i = 0; i < 20; i++) {
-      expect(generatePuzzle(addDays('2027-01-01', i), new Set([1]), c).game.steamAppId).toBe(2);
+      expect(generatePuzzle(addDays('2027-01-01', i), new Set(['test game 1']), c).game.steamAppId).toBe(2);
     }
   });
 
@@ -91,5 +94,46 @@ describe('validity and reroll rules', () => {
       const p = getPuzzle(addDays('2026-12-01', i));
       expect(checkPuzzle(p.game, p.targetFps).valid).toBe(true);
     }
+  });
+});
+
+describe('platforms and endless mode', () => {
+  it('has unique game ids and 15 games per console generation', () => {
+    expect(new Set(catalog.games.map((g) => g.id)).size).toBe(catalog.games.length);
+    for (const p of PLATFORMS.filter((x) => x.id !== 'pc')) {
+      expect(catalog.games.filter((g) => matchesPlatform(g, p.id)).length, p.label).toBe(15);
+    }
+  });
+
+  it('treats the same title on different platforms as one game for repeats', () => {
+    const a = catalog.games.find((g) => g.name === 'Grand Theft Auto V')!;
+    const b = catalog.games.find((g) => g.name === 'Grand Theft Auto V (PS3/360)')!;
+    expect(repeatKey(a)).toBe(repeatKey(b));
+  });
+
+  it('endless puzzles respect the platform filter and are valid', () => {
+    for (const p of PLATFORMS) {
+      for (let i = 0; i < 25; i++) {
+        const z = generateEndless(`s${i}`, p.id, []);
+        expect(matchesPlatform(z.game, p.id)).toBe(true);
+        expect(checkPuzzle(z.game, z.targetFps).valid).toBe(true);
+      }
+    }
+  });
+
+  it('endless avoids recently played games', () => {
+    const recent: string[] = [];
+    for (let i = 0; i < 7; i++) {
+      const z = generateEndless(`r${i}`, 'wii', recent);
+      expect(recent).not.toContain(repeatKey(z.game));
+      recent.push(repeatKey(z.game));
+    }
+  });
+
+  it('restores a saved endless puzzle with the same answer', () => {
+    const z = generateEndless('restore', 'all', []);
+    const r = puzzleFromSaved(z.game.id, z.targetFps)!;
+    expect(r.answer).toEqual(z.answer);
+    expect(puzzleFromSaved('nope', 60)).toBeNull();
   });
 });

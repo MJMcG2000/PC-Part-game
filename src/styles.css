@@ -501,9 +501,7 @@ input:focus-visible {
 }
 .picker-opt {
   display: grid;
-  grid-template-columns: 34px 1fr;
-  grid-template-areas: 'tier label' 'tier detail';
-  column-gap: 8px;
+  grid-template-areas: 'label' 'detail';
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
@@ -514,12 +512,6 @@ input:focus-visible {
 .picker-opt[aria-selected='true'] .opt-label::after {
   content: ' ✓';
   color: var(--accent);
-}
-.opt-tier {
-  grid-area: tier;
-  align-self: center;
-  font-size: 0.72rem;
-  color: var(--text-dim);
 }
 .opt-label {
   grid-area: label;
@@ -811,4 +803,284 @@ input:focus-visible {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ---------- Mode tabs + Endless ---------- */
+.mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 12px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.mode-tab {
+  height: 38px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.mode-tab.is-on {
+  background: var(--panel-2);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.platform-filter {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.platform-filter::-webkit-scrollbar {
+  display: none;
+}
+.filter-chip {
+  flex: none;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.filter-chip.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.endless-stats {
+  margin: -6px 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.endless-stats strong {
+  color: var(--text);
+  font-family: var(--mono);
+}
+.result-actions {
+  display: grid;
+  gap: 8px;
+}
+.next-btn {
+  height: 50px;
+}
+
+/* ---------- Platform chip / console art ---------- */
+.game-meta-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+.platform-chip {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  white-space: nowrap;
+}
+.game-basis {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+.game-art-fallback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.fallback-platform {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.fallback-name {
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+.platform-ps2-xbox .game-art-fallback { background: radial-gradient(circle at 25% 25%, rgba(59, 91, 219, 0.5), transparent 55%), radial-gradient(circle at 80% 80%, rgba(16, 124, 16, 0.4), transparent 55%), #0e1220; }
+.platform-ps3-x360 .game-art-fallback { background: radial-gradient(circle at 25% 25%, rgba(120, 130, 150, 0.45), transparent 55%), radial-gradient(circle at 80% 80%, rgba(82, 176, 67, 0.4), transparent 55%), #10131a; }
+.platform-ps4-xone .game-art-fallback { background: radial-gradient(circle at 25% 25%, rgba(0, 67, 156, 0.55), transparent 55%), radial-gradient(circle at 80% 80%, rgba(16, 124, 16, 0.4), transparent 55%), #0b1120; }
+.platform-ps5-xsx .game-art-fallback { background: radial-gradient(circle at 25% 25%, rgba(230, 235, 245, 0.25), transparent 55%), radial-gradient(circle at 80% 80%, rgba(16, 124, 16, 0.45), transparent 55%), #0f1218; }
+.platform-switch .game-art-fallback { background: radial-gradient(circle at 20% 50%, rgba(0, 171, 210, 0.5), transparent 50%), radial-gradient(circle at 80% 50%, rgba(255, 69, 84, 0.5), transparent 50%), #121218; }
+.platform-wii .game-art-fallback { background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.22), transparent 55%), radial-gradient(circle at 80% 80%, rgba(52, 190, 237, 0.35), transparent 55%), #121519; }
+
+/* ---------- PC tower diagram ---------- */
+.pc {
+  display: flex;
+  justify-content: center;
+}
+.pc-case {
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 5 / 6;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #161b26, #0d1017);
+  border: 2px solid var(--line-strong);
+  box-shadow: inset 0 0 0 6px #0b0e14, 0 0 30px -12px rgba(124, 92, 255, 0.6);
+  overflow: hidden;
+}
+/* Motherboard: rear (I/O) on the left, front fans on the right. */
+.pc-board {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 72%;
+  height: 70%;
+  border-radius: 6px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 12px 12px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 12px 12px,
+    #1a1f2c;
+  border: 1px solid #2c3446;
+}
+.pc-io {
+  position: absolute;
+  left: 3%;
+  top: 4%;
+  width: 9%;
+  height: 26%;
+  border-radius: 3px;
+  background: #2a3142;
+}
+.pc-pcie {
+  position: absolute;
+  left: 4%;
+  width: 78%;
+  height: 3%;
+  border-radius: 2px;
+  background: #2a3142;
+}
+.pc-pcie-2 { top: 80%; }
+.pc-pcie-3 { top: 90%; }
+.pc-fan {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid #2f3748;
+  background: repeating-conic-gradient(from 10deg, #1d2330 0 20deg, #141923 20deg 60deg);
+}
+.pc-fan::after {
+  content: '';
+  position: absolute;
+  inset: 38%;
+  border-radius: 50%;
+  background: #2f3748;
+}
+.pc-fan-front {
+  right: 4%;
+  width: 15%;
+  box-shadow: 0 0 12px -2px rgba(34, 211, 238, 0.45);
+}
+.pc-fan-f1 { top: 8%; }
+.pc-fan-f2 { top: 30%; }
+.pc-fan-f3 { top: 52%; }
+.pc-psu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #121620, #0c0f15);
+  border-top: 2px solid var(--line-strong);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+}
+/* Part slots, placed where the parts sit on an ATX board. */
+.pc-slot {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 2px dashed var(--line-strong);
+  background: rgba(11, 13, 18, 0.75);
+  color: var(--text);
+  overflow: hidden;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.pc-slot-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  opacity: 0.8;
+}
+.pc-slot-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.15;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.pc-slot-arrow {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  font-size: 0.9rem;
+}
+/* CPU socket: upper-middle of the board. */
+.pc-cpu {
+  left: 24%;
+  top: 14%;
+  width: 28%;
+  height: 25%;
+}
+/* RAM: vertical DIMM slots to the right of the CPU. */
+.pc-ram {
+  left: 56%;
+  top: 9%;
+  width: 17%;
+  height: 34%;
+  background-image: repeating-linear-gradient(90deg, transparent 0 22%, rgba(255, 255, 255, 0.08) 22% 26%);
+}
+/* GPU: horizontal card in the top PCIe slot, below the CPU. */
+.pc-gpu {
+  left: 6%;
+  top: 49%;
+  width: 72%;
+  height: 15%;
+}
+.pc-slot.slot-green {
+  border: 2px solid var(--tile-green);
+  background-color: var(--tile-green);
+  color: var(--tile-on-bright);
+  box-shadow: 0 0 16px -4px var(--tile-green);
+}
+.pc-slot.slot-yellow {
+  border: 2px solid var(--tile-yellow);
+  background-color: var(--tile-yellow);
+  color: var(--tile-on-bright);
+}
+.pc-slot.slot-gray {
+  border: 2px solid var(--line-strong);
+  background-color: var(--tile-gray);
+  color: var(--tile-on-gray);
+}
+.pc-slot.slot-empty .pc-slot-name {
+  font-size: 1.1rem;
+  color: var(--text-dim);
 }

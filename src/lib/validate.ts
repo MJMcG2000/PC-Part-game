@@ -2,6 +2,7 @@ import { FPS_TARGETS, NO_REPEAT_DAYS } from './config';
 import { addDays } from './date';
 import { checkPuzzle, getPuzzle, type Puzzle } from './puzzle';
 import type { Catalog } from './types';
+import { PLATFORMS, matchesPlatform, repeatKey } from './platforms';
 
 export interface SequenceReport {
   puzzles: Puzzle[];
@@ -11,6 +12,9 @@ export interface SequenceReport {
   answerCounts: { cpu: Map<string, number>; gpu: Map<string, number>; ram: Map<number, number> };
   /** Games that can never produce a valid puzzle with the current data. */
   deadGames: string[];
+  /** Per platform: games that can produce at least one valid puzzle. */
+  playableByPlatform: Map<string, number>;
+  platformCounts: Map<string, number>;
 }
 
 const bump = <K>(m: Map<K, number>, k: K) => m.set(k, (m.get(k) ?? 0) + 1);
@@ -21,6 +25,7 @@ export function analyzeSequence(start: string, days: number, catalog: Catalog): 
   const problems: string[] = [];
   const gameCounts = new Map<string, number>();
   const targetCounts = new Map<number, number>();
+  const platformCounts = new Map<string, number>();
   const answerCounts = { cpu: new Map<string, number>(), gpu: new Map<string, number>(), ram: new Map<number, number>() };
 
   for (let i = 0; i < days; i++) {
@@ -35,11 +40,12 @@ export function analyzeSequence(start: string, days: number, catalog: Catalog): 
 
     // Determinism: regenerating with a fresh catalog object must match.
     const fresh = getPuzzle(key, { ...catalog });
-    if (fresh.game.steamAppId !== p.game.steamAppId || fresh.targetFps !== p.targetFps)
+    if (fresh.game.id !== p.game.id || fresh.targetFps !== p.targetFps)
       problems.push(`${key}: non-deterministic result`);
 
-    bump(gameCounts, p.game.name);
+    bump(gameCounts, `${p.game.name} [${PLATFORMS.find((x) => x.id === p.game.platform)!.short}]`);
     bump(targetCounts, p.targetFps);
+    bump(platformCounts, PLATFORMS.find((x) => x.id === p.game.platform)!.label);
     bump(answerCounts.cpu, catalog.cpus[p.answer.cpu].name);
     bump(answerCounts.gpu, catalog.gpus[p.answer.gpu].name);
     bump(answerCounts.ram, catalog.ram[p.answer.ram].sizeGB);
@@ -48,7 +54,7 @@ export function analyzeSequence(start: string, days: number, catalog: Catalog): 
   // No repeats within the window.
   for (let i = 0; i < puzzles.length; i++) {
     for (let j = Math.max(0, i - NO_REPEAT_DAYS); j < i; j++) {
-      if (puzzles[i].game.steamAppId === puzzles[j].game.steamAppId)
+      if (repeatKey(puzzles[i].game) === repeatKey(puzzles[j].game))
         problems.push(`${puzzles[i].dateKey}: ${puzzles[i].game.name} repeats from ${puzzles[j].dateKey}`);
     }
   }
@@ -67,5 +73,13 @@ export function analyzeSequence(start: string, days: number, catalog: Catalog): 
     .filter((g) => !FPS_TARGETS.some((t) => checkPuzzle(g, t, catalog).valid))
     .map((g) => g.name);
 
-  return { puzzles, problems, gameCounts, targetCounts, answerCounts, deadGames };
+  const playable = (g: Catalog['games'][number]) => FPS_TARGETS.some((t) => checkPuzzle(g, t, catalog).valid);
+  const playableByPlatform = new Map<string, number>();
+  for (const pl of PLATFORMS) {
+    const n = catalog.games.filter((g) => matchesPlatform(g, pl.id) && playable(g)).length;
+    playableByPlatform.set(pl.label, n);
+    if (n < 10) problems.push(`${pl.label}: only ${n} playable games for Endless mode`);
+  }
+
+  return { puzzles, problems, gameCounts, targetCounts, answerCounts, deadGames, playableByPlatform, platformCounts };
 }
