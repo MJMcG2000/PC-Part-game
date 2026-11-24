@@ -169,6 +169,16 @@ export default function App() {
     if (status !== 'playing') setEndlessStats((s) => recordEndless(s, won, guesses.length));
   };
 
+  // Skip to a fresh Endless rig. Free before the first guess; after that it counts as a loss.
+  const refreshEndless = () => {
+    const started = endless.guesses.length > 0 && endless.status === 'playing';
+    if (started) {
+      if (!window.confirm('Skip this rig? Since you already guessed, it counts as a loss and resets your streak.')) return;
+      setEndlessStats((s) => recordEndless(s, false, endless.guesses.length));
+    }
+    setEndless((s) => nextEndless(s, s.filter));
+  };
+
   const changeFilter = (filter: PlatformFilter) => {
     if (filter === endless.filter) return;
     if (endless.guesses.length === 0 || endless.status !== 'playing') {
@@ -270,10 +280,17 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <p className="endless-stats">
-              Solved <strong>{endlessStats.wins}</strong> · Streak <strong>{endlessStats.streak}</strong> · Best{' '}
-              <strong>{endlessStats.best}</strong>
-            </p>
+            <div className="endless-bar">
+              <p className="endless-stats">
+                Solved <strong>{endlessStats.wins}</strong> · Streak <strong>{endlessStats.streak}</strong> · Best{' '}
+                <strong>{endlessStats.best}</strong>
+              </p>
+              {endless.status === 'playing' && (
+                <button className="btn refresh-btn" onClick={refreshEndless} aria-label="Skip to a new rig">
+                  ↻ New rig
+                </button>
+              )}
+            </div>
             <Board
               key={`endless-${endless.gameId}-${endless.targetFps}-${endless.recent.length}`}
               puzzle={endlessPuzzle}

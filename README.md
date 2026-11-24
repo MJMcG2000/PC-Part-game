@@ -4,7 +4,7 @@ A daily "-dle" puzzle about building a gaming PC (personal computer). Each day y
 
 Two modes:
 - **Daily:** one rig per day, the same for everyone, resets at local midnight.
-- **Endless:** keep building rigs back to back, optionally filtered by platform (PC, PS2/Xbox, PS3/360, PS4/One, PS5/Series, Switch, Wii). Endless has its own stats and streak.
+- **Endless:** keep building rigs back to back, optionally filtered by platform (PC, PS2/Xbox, PS3/360, PS4/One, PS5/Series, Switch, Wii). Endless has its own stats and streak. **↻ New rig** skips the current puzzle: free before the first guess, counted as a loss after it.
 
 A PC tower diagram (side view, glass panel) shows your latest guess for each part in the slot where it sits on the motherboard, and locks a part in green once you find it.
 
