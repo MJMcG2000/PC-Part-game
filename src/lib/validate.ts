@@ -1,0 +1,71 @@
+import { FPS_TARGETS, NO_REPEAT_DAYS } from './config';
+import { addDays } from './date';
+import { checkPuzzle, getPuzzle, type Puzzle } from './puzzle';
+import type { Catalog } from './types';
+
+export interface SequenceReport {
+  puzzles: Puzzle[];
+  problems: string[];
+  gameCounts: Map<string, number>;
+  targetCounts: Map<number, number>;
+  answerCounts: { cpu: Map<string, number>; gpu: Map<string, number>; ram: Map<number, number> };
+  /** Games that can never produce a valid puzzle with the current data. */
+  deadGames: string[];
+}
+
+const bump = <K>(m: Map<K, number>, k: K) => m.set(k, (m.get(k) ?? 0) + 1);
+
+/** Generate `days` puzzles from `start` and check validity + variety. */
+export function analyzeSequence(start: string, days: number, catalog: Catalog): SequenceReport {
+  const puzzles: Puzzle[] = [];
+  const problems: string[] = [];
+  const gameCounts = new Map<string, number>();
+  const targetCounts = new Map<number, number>();
+  const answerCounts = { cpu: new Map<string, number>(), gpu: new Map<string, number>(), ram: new Map<number, number>() };
+
+  for (let i = 0; i < days; i++) {
+    const key = addDays(start, i);
+    const p = getPuzzle(key, catalog);
+    puzzles.push(p);
+
+    const v = checkPuzzle(p.game, p.targetFps, catalog);
+    if (!v.valid) problems.push(`${key}: invalid puzzle (${v.reason})`);
+    else if (v.answer.cpu !== p.answer.cpu || v.answer.gpu !== p.answer.gpu || v.answer.ram !== p.answer.ram)
+      problems.push(`${key}: stored answer does not match solver`);
+
+    // Determinism: regenerating with a fresh catalog object must match.
+    const fresh = getPuzzle(key, { ...catalog });
+    if (fresh.game.steamAppId !== p.game.steamAppId || fresh.targetFps !== p.targetFps)
+      problems.push(`${key}: non-deterministic result`);
+
+    bump(gameCounts, p.game.name);
+    bump(targetCounts, p.targetFps);
+    bump(answerCounts.cpu, catalog.cpus[p.answer.cpu].name);
+    bump(answerCounts.gpu, catalog.gpus[p.answer.gpu].name);
+    bump(answerCounts.ram, catalog.ram[p.answer.ram].sizeGB);
+  }
+
+  // No repeats within the window.
+  for (let i = 0; i < puzzles.length; i++) {
+    for (let j = Math.max(0, i - NO_REPEAT_DAYS); j < i; j++) {
+      if (puzzles[i].game.steamAppId === puzzles[j].game.steamAppId)
+        problems.push(`${puzzles[i].dateKey}: ${puzzles[i].game.name} repeats from ${puzzles[j].dateKey}`);
+    }
+  }
+
+  // Variety checks.
+  const maxTargetShare = Math.max(...targetCounts.values()) / days;
+  if (targetCounts.size < Math.min(5, FPS_TARGETS.length))
+    problems.push(`Only ${targetCounts.size} distinct FPS targets used`);
+  if (maxTargetShare > 0.35) problems.push(`One FPS target covers ${(maxTargetShare * 100).toFixed(0)}% of days`);
+  const minGames = Math.min(catalog.games.length, Math.floor(days / 4));
+  if (gameCounts.size < minGames) problems.push(`Only ${gameCounts.size} distinct games used (want >= ${minGames})`);
+  if (answerCounts.cpu.size < 8) problems.push(`Only ${answerCounts.cpu.size} distinct CPU answers`);
+  if (answerCounts.gpu.size < 8) problems.push(`Only ${answerCounts.gpu.size} distinct GPU answers`);
+
+  const deadGames = catalog.games
+    .filter((g) => !FPS_TARGETS.some((t) => checkPuzzle(g, t, catalog).valid))
+    .map((g) => g.name);
+
+  return { puzzles, problems, gameCounts, targetCounts, answerCounts, deadGames };
+}
