@@ -68,6 +68,7 @@ Replace these placeholders before applying to AdSense:
 ```
 index.html         the game (React app)
 about.html         crawlable About page
+accuracy.html      crawlable FPS-model accuracy study (published results)
 privacy.html       crawlable Privacy policy
 public/            favicon, ads.txt, robots.txt, sitemap.xml (copied as-is)
 .env.example       AdSense configuration template
@@ -136,6 +137,9 @@ You win by naming the exact minimum build, **or** with any build whose estimated
 
 ### Either brand counts
 Each brand has its own minimum part: the weakest AMD **and** the weakest Intel CPU that reach the target are both correct, and likewise the weakest NVIDIA and AMD GPU (`solveByBrand` / `acceptedAnswers`). Tiles compare a guess with the minimum of **its own brand**, by position in that brand's performance-sorted list. If no part of a brand can reach the target, guesses of that brand are gray ⬆. Hard mode accepts either brand's exact minimum; normal mode also accepts anything within ±10%. Puzzle selection and validity still use the overall minimum (`puzzle.answer`), so daily puzzles didn't change.
+
+### Accuracy study
+`accuracy.html` publishes a study of the FPS model against published benchmarks (20 comparisons: hardware rankings, resolution scaling and game frame rates; median error 2.8%, 18 of 20 within ±10%). It led to these data changes: 4K GPU multiplier 0.42 → 0.38, RTX 3070 score 119 → 126, Cyberpunk 2077 gpuLoad 0.8 → 0.9, Black Myth: Wukong 0.55 → 0.5, Starfield 0.6 → 0.5. Update the page if you retune the model.
 
 ### Benchmark data
 `src/data/benchmarks.json` holds real measured results, and they override the model wherever they exist:

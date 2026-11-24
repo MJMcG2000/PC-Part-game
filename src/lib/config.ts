@@ -60,7 +60,7 @@ export const PRESET: Preset = 'High';
 export const RESOLUTION_GPU_SCALE: Record<Resolution, number> = {
   '1080p': 1,
   '1440p': 0.72,
-  '4K': 0.42,
+  '4K': 0.38, // 0.42 before the 2026-11 accuracy study: reviews show 4K at ~47-55% of 1440p
 };
 
 /** VRAM requirement multiplier relative to 1080p. */

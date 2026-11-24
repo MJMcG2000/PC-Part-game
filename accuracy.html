@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d12" />
+    <title>How accurate is Rigdle's FPS model? – Rigdle</title>
+    <meta
+      name="description"
+      content="We checked Rigdle's frame-rate estimates against published benchmarks from TechSpot, Tom's Hardware, KitGuru, Notebookcheck and others. Results, corrections and limits."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <span></span>
+        <p class="logo"><a href="./" aria-label="Rigdle home"><span class="logo-text">RIGDLE</span></a></p>
+        <a class="play-link" href="./">Play ▸</a>
+      </header>
+
+      <main class="page">
+        <h1>How accurate is Rigdle's FPS model?</h1>
+        <p class="lede">Accuracy study · November 24, 2026</p>
+
+        <p>
+          Rigdle doesn't run real benchmarks. It estimates frame rates with a simple model: each CPU and GPU has a
+          relative score, each game has a CPU and a GPU "load", and a build's FPS is the lower of the CPU and GPU numbers.
+          We compared that model with published benchmark results to see how close it gets, and fixed what was off.
+        </p>
+
+        <div class="study-stats" role="list">
+          <div role="listitem"><strong>20</strong><span>comparisons with published results</span></div>
+          <div role="listitem"><strong>2.8%</strong><span>median error after fixes (was 3.4%)</span></div>
+          <div role="listitem"><strong>18 of 20</strong><span>within ±10% (was 15 of 20)</span></div>
+        </div>
+
+        <h2>How we tested</h2>
+        <ul>
+          <li>
+            <strong>Hardware rankings:</strong> how much faster one part is than another in Rigdle, compared with the
+            gaps reported in reviews (e.g. "RTX 4060 vs RTX 3060").
+          </li>
+          <li>
+            <strong>Resolution scaling:</strong> how much frame rates drop from 1080p to 1440p and from 1440p to 4K,
+            compared with multi-game averages from reviews.
+          </li>
+          <li>
+            <strong>Game frame rates:</strong> Rigdle's FPS for a specific game and part, compared with that game's
+            benchmark results.
+          </li>
+        </ul>
+        <p>
+          The error is how far Rigdle's number is from the published one, as a percentage. Where sources gave a range, we
+          compared with its middle. Reviews use different scenes, settings and test systems, so a few percent of
+          disagreement between sources is normal; we treat anything within ±10% as accurate for a puzzle game.
+        </p>
+
+        <h2>Hardware rankings</h2>
+        <div class="table-wrap">
+          <table class="study-table">
+            <thead>
+              <tr><th>Comparison</th><th>Published</th><th>Rigdle</th><th>Error</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>RTX 4060 vs RTX 3060 12GB</td><td>+20% <a href="https://www.notebookcheck.net/GeForce-RTX-4060-launch-review-analysis-showcases-20-faster-performance-at-1080p-and-67-better-efficiency-for-board-vs-RTX-3060.730672.0.html" rel="noopener">[1]</a></td><td>+16%</td><td class="ok">−3%</td></tr>
+              <tr><td>RTX 4060 vs RX 7600</td><td>+0–4% <a href="https://www.tomshardware.com/reviews/nvidia-geforce-rtx-4060-review-asus-dual/5" rel="noopener">[2]</a></td><td>+3%</td><td class="ok">+1%</td></tr>
+              <tr><td>RTX 4070 vs RTX 3080 10GB</td><td>on par <a href="https://www.notebookcheck.net/Efficient-RTX-4070-performs-21-faster-vs-RTX-3070-and-on-par-with-RTX-3080-10-GB-in-comprehensive-launch-review-roundup.707913.0.html" rel="noopener">[3]</a></td><td>+3%</td><td class="ok">+3%</td></tr>
+              <tr><td>RTX 4070 vs RTX 3070</td><td>+21% <a href="https://www.notebookcheck.net/Efficient-RTX-4070-performs-21-faster-vs-RTX-3070-and-on-par-with-RTX-3080-10-GB-in-comprehensive-launch-review-roundup.707913.0.html" rel="noopener">[3]</a></td><td><s>+29%</s> → +22%</td><td class="ok"><s>+7%</s> → +1%</td></tr>
+              <tr><td>RTX 4070 Super vs RTX 4070</td><td>+14–15% <a href="https://www.techspot.com/review/2791-nvidia-geforce-rtx-4070-super/" rel="noopener">[4]</a></td><td>+13%</td><td class="ok">−1%</td></tr>
+              <tr><td>RTX 4070 Super vs RX 7800 XT</td><td>+10% <a href="https://www.techspot.com/review/2791-nvidia-geforce-rtx-4070-super/" rel="noopener">[4]</a></td><td>+6%</td><td class="ok">−4%</td></tr>
+              <tr><td>RTX 4060 vs GTX 1060 6GB</td><td>+91% to +182%, typical +122% <a href="https://www.pcgameshardware.de/Geforce-RTX-5060-Grafikkarte-281134/Tests/GTX-1060-vs-2060-vs-3060-vs-4060-GPU-Vergleich-1492048/2/" rel="noopener">[5]</a> <a href="https://www.gpu-monkey.com/en/compare_gpu-nvidia_geforce_gtx_1060_6gb_gddr5-vs-nvidia_geforce_rtx_4060" rel="noopener">[5b]</a></td><td>+127%</td><td class="ok">+2%</td></tr>
+              <tr><td>GTX 1650 vs GTX 1050 Ti</td><td>about +25% (synthetic) <a href="https://videocardbenchmark.net/compare/3595vs4078/GeForce-GTX-1050-Ti-vs-GeForce-GTX-1650" rel="noopener">[6]</a></td><td>+23%</td><td class="ok">−1%</td></tr>
+              <tr><td>Ryzen 7 9800X3D vs 5800X3D</td><td>+32% <a href="https://www.techspot.com/review/3021-ryzen-7-5800x3d-cpu-gpu-scaling/" rel="noopener">[7]</a></td><td>+37%</td><td class="ok">+4%</td></tr>
+              <tr><td>Ryzen 7 5800X3D vs Ryzen 5 5600</td><td>+32% <a href="https://www.techspot.com/review/3021-ryzen-7-5800x3d-cpu-gpu-scaling/" rel="noopener">[7]</a></td><td>+28%</td><td class="ok">−3%</td></tr>
+              <tr><td>Ryzen 7 9800X3D vs 7800X3D (Flight Simulator 2024)</td><td>+8% to +22% (community tests) <a href="https://forums.flightsimulator.com/t/9800x3d-21-faster-than-the-7800x3d-1080p-highest-turbo/663355" rel="noopener">[8]</a></td><td>+9%</td><td class="ok">in range</td></tr>
+              <tr><td>Core i5-12400 vs Ryzen 5 5600 (Shadow of the Tomb Raider)</td><td>tied <a href="https://www.hwcooling.net/wp-content/uploads/2024/11/intel-core-ultra-7-265k-g73.html" rel="noopener">[9]</a></td><td>+3%</td><td class="ok">+3%</td></tr>
+              <tr><td>Ryzen 5 5600 vs Ryzen 5 3600 (Shadow of the Tomb Raider)</td><td>+40% <a href="https://www.hwcooling.net/wp-content/uploads/2024/11/intel-core-ultra-7-265k-g73.html" rel="noopener">[9]</a></td><td>+25%</td><td class="off">−10%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Resolution scaling</h2>
+        <div class="table-wrap">
+          <table class="study-table">
+            <thead>
+              <tr><th>Comparison</th><th>Published</th><th>Rigdle</th><th>Error</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1440p vs 1080p (RTX 4060, 12 games)</td><td>70% <a href="https://www.kitguru.net/components/graphic-cards/dominic-moass/nvidia-rtx-4060-review-ft-msi/18/" rel="noopener">[10]</a></td><td>72%</td><td class="ok">+3%</td></tr>
+              <tr><td>4K vs 1440p (RX 7800 XT, RTX 4070 Super)</td><td>47–55% <a href="https://www.techspot.com/review/2734-amd-radeon-rx-7800-xt/" rel="noopener">[11]</a> <a href="https://www.techspot.com/review/2791-nvidia-geforce-rtx-4070-super/" rel="noopener">[4]</a></td><td><s>58%</s> → 53%</td><td class="ok"><s>+14%</s> → +4%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Game frame rates (1080p)</h2>
+        <div class="table-wrap">
+          <table class="study-table">
+            <thead>
+              <tr><th>Game and part</th><th>Published</th><th>Rigdle</th><th>Error</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Counter-Strike 2, Ryzen 7 9800X3D (CPU-limited)</td><td>668 FPS <a href="https://www.techspot.com/review/2917-ryzen-9800x3d-vs-7800x3d/" rel="noopener">[12]</a></td><td>655 FPS</td><td class="ok">−2%</td></tr>
+              <tr><td>Cyberpunk 2077, RTX 4060 (High)</td><td>72–84 at Ultra, so ~85–100 at High <a href="https://kitguru.net/components/graphic-cards/dominic-moass/nvidia-rtx-4060-review-ft-msi/7" rel="noopener">[13]</a> <a href="https://www.notebookcheck.net/Preliminary-RTX-4060-Cyberpunk-2077-performance-test-depicts-up-to-27-uplift-vs-RTX-3060-at-1080p-without-DLSS.728641.0.html" rel="noopener">[14]</a></td><td><s>80</s> → 90 FPS</td><td class="ok"><s>−13%</s> → −2%</td></tr>
+              <tr><td>Black Myth: Wukong, RTX 4060 (High)</td><td>~50 FPS <a href="https://www.notebookcheck.net/Black-Myth-Wukong-Our-benchmarks-of-the-new-Unreal-Engine-5-game.876868.0.html" rel="noopener">[15]</a></td><td><s>55</s> → 50 FPS</td><td class="ok"><s>+10%</s> → 0%</td></tr>
+              <tr><td>Starfield, RTX 4060 Ti-class GPU (High)</td><td>61 FPS <a href="https://gamersnexus.net/game-benchmarks-graphics-guides/starfield-gpu-benchmarks-comparison-best-graphics-cards-starfield" rel="noopener">[16]</a></td><td><s>69</s> → 58 FPS</td><td class="ok"><s>+13%</s> → −5%</td></tr>
+              <tr><td>Hogwarts Legacy, RTX 4060</td><td>63–71 FPS (presets vary) <a href="https://www.techspot.com/review/2701-nvidia-geforce-rtx-4060/" rel="noopener">[17]</a> <a href="https://dropreference.com/en/benchmarks/hogwarts-legacy" rel="noopener">[18]</a></td><td>75 FPS</td><td class="off">+12%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted">Struck-through numbers are the model before this study.</p>
+
+        <h2>What we changed</h2>
+        <ul>
+          <li><strong>4K is harder on GPUs:</strong> the 4K multiplier went from 0.42 to 0.38 of 1080p performance.</li>
+          <li><strong>RTX 3070 score</strong> raised from 119 to 126, matching its gap to the RTX 4070.</li>
+          <li><strong>Cyberpunk 2077</strong> runs a bit faster (GPU load 0.8 → 0.9).</li>
+          <li><strong>Black Myth: Wukong</strong> (0.55 → 0.5) and <strong>Starfield</strong> (0.6 → 0.5) run a bit slower.</li>
+        </ul>
+        <p>
+          These changes reshuffled future puzzles before launch. We left two results flagged rather than "fixing" them on
+          thin evidence: the Ryzen 5 3600 gap comes from a single game, and the Hogwarts Legacy sources don't agree on
+          settings.
+        </p>
+
+        <h2>What the study doesn't cover</h2>
+        <ul>
+          <li>
+            <strong>Most of the 230 games.</strong> We checked five games directly; the rest rely on hand-set loads that
+            follow the same approach. Rigdle uses real benchmark results instead of estimates wherever we add them, and
+            labels each number as "Benchmark" or "Estimate".
+          </li>
+          <li>
+            <strong>Console games.</strong> They're estimated as played on a PC through an emulator or PC port. Emulator
+            performance varies a lot between versions and games, so these are the roughest numbers in Rigdle.
+          </li>
+          <li>
+            <strong>Hardware from 2000 to 2015.</strong> These parts can't run the games reviewers test today, so their
+            scores are extrapolated from period reviews rather than checked here.
+          </li>
+          <li>
+            <strong>The bottleneck rule.</strong> Real PCs slow down a little before one part fully limits the other, and
+            some games need features (like DirectX 12) that old parts lack. Rigdle ignores both to keep puzzles solvable
+            one part at a time.
+          </li>
+          <li>
+            <strong>Sources.</strong> Figures come from published reviews and, where noted, community or aggregator
+            sites. Settings and test scenes differ between sources.
+          </li>
+        </ul>
+
+        <p>
+          Rigdle is a game, not a buying guide. If you're choosing parts for a real PC, check full reviews for the games
+          you play. Read more <a href="./about.html">about Rigdle</a>.
+        </p>
+
+        <p class="page-cta"><a href="./">Play today's Rigdle</a></p>
+      </main>
+
+      <footer class="footer">
+        <nav class="footer-links" aria-label="Site">
+          <a href="./">Play</a>
+          <span aria-hidden="true">·</span>
+          <a href="./about.html">About</a>
+          <span aria-hidden="true">·</span>
+          <a href="./accuracy.html">Accuracy</a>
+          <span aria-hidden="true">·</span>
+          <a href="./privacy.html">Privacy</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>
