@@ -2,6 +2,12 @@
 
 A daily "-dle" puzzle about building a gaming PC (personal computer). Each day you get one Steam game and a target FPS (frames per second). In 6 guesses, pick the **minimum** CPU (central processing unit), GPU (graphics processing unit) and RAM (random access memory) that reach the target at 1080p High. Overkill counts as wrong.
 
+Two modes:
+- **Daily:** one rig per day, the same for everyone, resets at local midnight.
+- **Endless:** keep building rigs back to back, optionally filtered by platform (PC, PS2/Xbox, PS3/360, PS4/One, PS5/Series, Switch, Wii). Endless has its own stats and streak.
+
+A PC tower diagram (side view, glass panel) shows your latest guess for each part in the slot where it sits on the motherboard, and locks a part in green once you find it.
+
 Everything runs client-side: no backend, no accounts. Progress and stats live in `localStorage`.
 
 ## Setup
@@ -31,16 +37,18 @@ The build uses relative asset paths (`base: './'` in `vite.config.ts`), so the s
 
 ```
 src/
-  data/            games.json, cpus.json, gpus.json, ram.json  (editable)
+  data/            games.json (100 PC/Steam games), console-games.json (console top-15s),
+                   cpus.json, gpus.json, ram.json  (all editable)
   lib/
     config.ts      all tunables: launch date, FPS targets, resolution/preset, penalties
     rng.ts         string hash + mulberry32 PRNG (pseudo-random number generator)
     date.ts        local date keys, puzzle numbers, countdown
-    data.ts        loads JSON and sorts parts weakest -> strongest (list index = tier)
+    data.ts        loads JSON, assigns game ids/platforms, sorts parts weakest -> strongest
+    platforms.ts   platform list, Endless filter, cross-platform repeat key
     fps.ts         the FPS model
     solver.ts      minimum-build solver
-    puzzle.ts      daily generation, validity + reroll rules, 30-day no-repeat
-    feedback.ts    tiles (green/yellow/gray + arrows), ruled-out ranges
+    puzzle.ts      daily + Endless generation, validity + reroll rules, 30-day no-repeat
+    feedback.ts    tiles (green/yellow/gray + arrows)
     share.ts       share text
     storage.ts     localStorage state + stats
     validate.ts    sequence analysis used by the script and tests
@@ -53,8 +61,15 @@ scripts/validate-puzzles.ts
 ### Daily puzzle
 - Puzzle number = days since `LAUNCH_DATE` + 1 (`2026-12-01` is #1). Earlier dates show as "Preview".
 - A PRNG is seeded with a hash of the local date string `YYYY-MM-DD`. It picks a game, then a target from `[30, 60, 90, 120, 144, 165, 240]`.
-- If the candidate is invalid (target unreachable, or any part's answer is the weakest or strongest option) or the game appeared in the previous 30 days, the same seeded stream is drawn again.
+- If the candidate is invalid (target unreachable, or the CPU or GPU answer is the weakest or strongest option; any RAM size from 8 to 64 GB can be the answer) or the game appeared in the previous 30 days, the same seeded stream is drawn again.
 - To apply the no-repeat rule consistently, the sequence is replayed day by day from `SEQUENCE_START` and memoized. It's fast (well under a second for years of puzzles).
+
+### Console games
+`console-games.json` holds the top 15 games (by sales/popularity) for each console generation: PS2/Xbox, PS3/Xbox 360, PS4/Xbox One, PS5/Xbox Series X|S, Nintendo Switch and Nintendo Wii. They use the same FPS model, with coefficients estimated **as if played on a PC**:
+- **PS2/Xbox, PS3/360, Switch, Wii:** via emulation, upscaled to 1080p with frame rate unlocked. Emulation is CPU-heavy, so these puzzles lean on the CPU (PS3/360 especially). Running the original PC ports of these old games would hit hundreds of FPS on any part, which would make every puzzle trivial.
+- **PS4/One, PS5/Series:** via the game's PC port, or an estimated hypothetical port for exclusives such as Bloodborne or Astro Bot.
+
+Console top-15 games that are already in `games.json` (Elden Ring, God of War, Red Dead Redemption 2, and others) are tagged there with `"alsoOn": ["ps5-xsx"]` instead of being duplicated. The Daily puzzle draws from all games, PC and console. The no-repeat rule treats the same title on two platforms (e.g. GTA V on PC and on PS3/360) as one game. Console games use Steam art when the same game is on Steam (`steamAppId`). Otherwise the player's browser loads the cover art from English Wikipedia: first the article named by `wikiTitle`, then a Wikipedia search, then a platform-styled placeholder. Lookups are cached in `localStorage`.
 
 ### FPS model
 ```
@@ -66,20 +81,20 @@ buildFps = min(cpuFps, gpuFps) × ramMult
 Answer = weakest CPU with `cpuFps ≥ target`, weakest GPU with `gpuFps ≥ target` (penalty applied), smallest RAM `≥ ramRecGB`. Resolution and preset are constants in `config.ts` with scale tables, so you can switch to e.g. 1440p Ultra.
 
 ### Feedback
-Tiles compare tier indices: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. Each guess also shows its estimated FPS (red/green vs. target) and a **VRAM** tag if the GPU took the penalty. Picker options ruled out by earlier feedback are dimmed and struck through. Colorblind mode swaps green/yellow for orange/blue, including in share text.
+Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. Each guess also shows its estimated FPS (red/green vs. target) and a **VRAM** tag if the GPU took the penalty. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 
 All data files are `{ "_comment": ..., "items": [...] }`. Parts are sorted by score at load time, so order in the file doesn't matter.
 
-**Add a game** to `src/data/games.json`:
+**Add a game** to `src/data/games.json` (PC) or `src/data/console-games.json` (console; add `"platform": "switch"` etc. and an optional `steamAppId`):
 ```json
 {"steamAppId": 1091500, "name": "Cyberpunk 2077", "releaseYear": 2020, "genre": "Action RPG",
  "cpuLoad": 0.62, "gpuLoad": 0.8, "vramGB": 7, "ramMinGB": 12, "ramRecGB": 16}
 ```
 - `steamAppId` is the number in the store URL (`store.steampowered.com/app/<id>/`). The header image is loaded from Steam's CDN (content delivery network) by that ID, with a placeholder if it fails.
-- `ramRecGB` must be above 8 and at most 32. Otherwise the RAM answer is always the weakest/strongest option and the game can never be picked. The validate script flags such "dead" games.
-- Keep the pool between 60 and 100 games. It must stay larger than 30 for the no-repeat rule.
+- `ramRecGB` can be anything up to 64 GB (the largest RAM option). The answer is the smallest RAM option at or above it, so 8 means an 8 GB answer and anything above 32 means 64 GB. The validate script flags "dead" games that can never produce a valid puzzle.
+- Keep `games.json` between 60 and 100 games. `validate-puzzles` also checks every platform has at least 10 playable games for Endless.
 
 **Add a CPU/GPU** to `cpus.json` / `gpus.json`. Keep scores unique so the tier order is unambiguous.
 

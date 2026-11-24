@@ -27,10 +27,24 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         <h3>Hints</h3>
         <ul>
           <li>Each guess shows the build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
-          <li>Parts are listed strongest first with a tier number. Ruled-out parts are dimmed.</li>
+          <li>Parts are listed strongest first.</li>
+          <li>The PC diagram shows your latest guess for each part, and locks a part in green once you find it.</li>
           <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends.</li>
         </ul>
-        <p className="muted">A new rig every day at local midnight. Same puzzle for everyone.</p>
+        <h3>Modes</h3>
+        <ul>
+          <li>
+            <strong>Daily:</strong> one rig per day, the same for everyone. Resets at local midnight.
+          </li>
+          <li>
+            <strong>Endless:</strong> keep building rigs back to back. Filter by platform: PC, PS2/Xbox, PS3/360, PS4/One,
+            PS5/Series, Switch or Wii.
+          </li>
+        </ul>
+        <p className="muted">
+          Console games are estimated as played on a PC: older consoles through emulation (hard on the CPU), PS4/PS5-era games
+          through their PC port.
+        </p>
         <button className="btn btn-primary" onClick={onClose}>
           Let's build
         </button>

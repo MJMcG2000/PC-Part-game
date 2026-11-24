@@ -43,19 +43,24 @@ describe('share text', () => {
       'Rigdle #42 3/6 🎯144 FPS\n🟨⬛🟩\n🟩🟨🟩\n🟩🟩🟩',
     );
   });
+  it('supports an Endless label', () => {
+    expect(buildShareText({ number: 0, label: 'Endless', targetFps: 90, rows: rows.slice(2), won: true })).toBe(
+      'Rigdle Endless 1/6 🎯90 FPS\n🟩🟩🟩',
+    );
+  });
   it('uses X/6 on a loss', () => {
     expect(buildShareText({ number: 7, targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });
 });
 
-import { possibleRange } from './feedback';
-describe('possibleRange', () => {
-  it('narrows from gray and yellow feedback', () => {
-    const t = (guess: number, answer: number) => ({ guess, tile: tileFor('cpu', guess, answer) });
-    expect(possibleRange([], 10)).toEqual([0, 9]);
-    expect(possibleRange([t(2, 6)], 10)).toEqual([4, 9]);
-    expect(possibleRange([t(2, 6), t(9, 6)], 10)).toEqual([4, 7]);
-    expect(possibleRange([t(5, 6)], 10)).toEqual([6, 6]);
-    expect(possibleRange([t(6, 6)], 10)).toEqual([6, 6]);
+import { pickThumbnail } from './coverArt';
+describe('cover art', () => {
+  it('picks the best-ranked page with a thumbnail', () => {
+    expect(
+      pickThumbnail({
+        query: { pages: { '2': { index: 2, thumbnail: { source: 'b.jpg' } }, '1': { index: 1 }, '3': { index: 3, thumbnail: { source: 'c.jpg' } } } },
+      }),
+    ).toBe('b.jpg');
+    expect(pickThumbnail({})).toBeNull();
   });
 });

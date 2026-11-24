@@ -1,5 +1,18 @@
+export type PlatformId = 'pc' | 'ps2-xbox' | 'ps3-x360' | 'ps4-xone' | 'ps5-xsx' | 'switch' | 'wii';
+
+/** How a game's FPS coefficients were estimated. */
+export type PerfBasis = 'native' | 'port' | 'emulation';
+
 export interface Game {
-  steamAppId: number;
+  /** Unique, stable id (derived at load time). */
+  id: string;
+  platform: PlatformId;
+  /** Other console generations where this game is a top-15 title. */
+  alsoOn?: PlatformId[];
+  /** Present when the same game is on Steam (art + store link). */
+  steamAppId?: number;
+  /** English Wikipedia article for cover art when there is no Steam version. */
+  wikiTitle?: string;
   name: string;
   releaseYear: number;
   genre: string;

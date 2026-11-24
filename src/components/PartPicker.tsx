@@ -1,11 +1,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 export interface PickerOption {
-  index: number; // tier index (weakest = 0)
+  index: number; // position in the weakest -> strongest list
   label: string;
   detail?: string;
-  /** Ruled out by earlier feedback (still selectable). */
-  ruledOut?: boolean;
 }
 
 interface Props {
@@ -137,15 +135,13 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
               data-i={i}
               role="option"
               aria-selected={o.index === value}
-              className={`picker-opt${i === active ? ' is-active' : ''}${o.ruledOut ? ' is-ruled-out' : ''}`}
+              className={`picker-opt${i === active ? ' is-active' : ''}`}
               onPointerDown={(e) => e.preventDefault()}
               onClick={() => choose(o)}
               onMouseMove={() => setActive(i)}
             >
-              <span className="opt-tier mono">T{o.index + 1}</span>
               <span className="opt-label">{o.label}</span>
               {o.detail && <span className="opt-detail">{o.detail}</span>}
-              {o.ruledOut && <span className="sr-only"> (ruled out by your guesses)</span>}
             </li>
           ))}
         </ul>

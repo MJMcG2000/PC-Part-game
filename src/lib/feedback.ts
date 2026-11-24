@@ -38,27 +38,3 @@ export function tileEmoji(color: TileColor, colorblind = false): string {
 }
 
 export const arrowFor = (d: Direction) => (d === 'up' ? '⬆' : d === 'down' ? '⬇' : '');
-
-/**
- * Inclusive [min, max] tier range still possible for a part, given past
- * guesses for that part and their tiles. Used to dim ruled-out options.
- */
-export function possibleRange(
-  history: { guess: number; tile: Tile }[],
-  optionCount: number,
-): [min: number, max: number] {
-  let lo = 0;
-  let hi = optionCount - 1;
-  for (const { guess, tile } of history) {
-    if (tile.color === 'green') return [guess, guess];
-    const step = tile.color === 'yellow' ? 1 : 2;
-    if (tile.direction === 'up') {
-      lo = Math.max(lo, guess + step);
-      if (tile.color === 'yellow') hi = Math.min(hi, guess + 1);
-    } else {
-      hi = Math.min(hi, guess - step);
-      if (tile.color === 'yellow') lo = Math.max(lo, guess - 1);
-    }
-  }
-  return [lo, hi];
-}
