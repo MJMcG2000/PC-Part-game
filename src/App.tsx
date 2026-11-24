@@ -30,6 +30,7 @@ import { HelpModal } from './components/HelpModal';
 import { StatsModal } from './components/StatsModal';
 import { Countdown } from './components/Countdown';
 import { AdSlot } from './components/AdSlot';
+import { useIsDesktop } from './lib/useIsDesktop';
 
 const RECENT_KEEP = 60;
 const freshSeed = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
@@ -68,6 +69,7 @@ async function copyText(text: string): Promise<boolean> {
 }
 
 export default function App() {
+  const isDesktop = useIsDesktop();
   const [now, setNow] = useState(() => new Date());
   const todayKey = toDateKey(now);
   const daily = useMemo(() => getPuzzle(todayKey), [todayKey]);
@@ -222,7 +224,7 @@ export default function App() {
     daily.number > 0 ? `Rigdle #${daily.number}` : `Preview · launches in ${1 - daily.number} day${daily.number === 0 ? '' : 's'}`;
 
   return (
-    <div className="app">
+    <div className={`app${isDesktop ? ' is-desktop' : ''}`}>
       <header className="topbar">
         <button className="icon-btn" onClick={() => setHelpOpen(true)} aria-label="How to play">
           ?
@@ -246,6 +248,7 @@ export default function App() {
         </div>
       </header>
 
+      <div className="controls">
       <nav className="mode-tabs" aria-label="Game mode">
         {(['daily', 'endless'] as const).map((m) => (
           <button key={m} className={`mode-tab${mode === m ? ' is-on' : ''}`} aria-pressed={mode === m} onClick={() => setMode(m)}>
@@ -270,6 +273,7 @@ export default function App() {
           <span className="switch-knob" />
         </button>
       </div>
+      </div>
 
       <main className="main">
         {mode === 'daily' ? (
@@ -285,8 +289,9 @@ export default function App() {
               onGiveUp={giveUpDaily}
               toast={showToast}
               hard={dailyHard}
+              desktop={isDesktop}
+              aside={<Countdown now={now} />}
             />
-            <Countdown now={now} />
           </>
         ) : (
           <>
@@ -324,6 +329,7 @@ export default function App() {
               onGiveUp={giveUpEndless}
               toast={showToast}
               hard={endlessHard}
+              desktop={isDesktop}
               resultActions={
                 <button className="btn btn-primary next-btn" onClick={() => setEndless((s) => nextEndless(s, s.filter))}>
                   Next rig →

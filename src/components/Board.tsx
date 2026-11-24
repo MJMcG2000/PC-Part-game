@@ -6,7 +6,7 @@ import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
 import type { Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
-import { PART_KEYS, type BuildIdx, type PartKey } from '../lib/types';
+import { PART_KEYS, formatLaunch, launchKey, type BuildIdx, type PartKey } from '../lib/types';
 import { GameCard } from './GameCard';
 import { PartPicker, type PickerOption } from './PartPicker';
 import { ResultPanel } from './ResultPanel';
@@ -14,13 +14,18 @@ import { PcDiagram, type SlotState } from './PcDiagram';
 
 type Selection = { cpu: number | null; gpu: number | null; ram: number | null };
 
-// Picker options. `index` is the performance tier (used for feedback); the pickers list CPUs/GPUs by release year.
-const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}`, year: c.year }));
+// Picker options. `index` is the performance tier (used for feedback); the pickers list CPUs/GPUs by launch date.
+const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({
+  index: i,
+  label: c.name,
+  detail: `${c.brand} · ${formatLaunch(c.year, c.month)}`,
+  released: launchKey(c.year, c.month),
+}));
 const gpuOptions: PickerOption[] = catalog.gpus.map((g, i) => ({
   index: i,
   label: g.name,
-  detail: `${g.brand} · ${g.vramGB} GB · ${g.year}`,
-  year: g.year,
+  detail: `${g.brand} · ${g.vramGB} GB · ${formatLaunch(g.year, g.month)}`,
+  released: launchKey(g.year, g.month),
 }));
 const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB` }));
 
@@ -41,10 +46,14 @@ interface Props {
   hard: boolean;
   /** End the puzzle as a loss and reveal the answer. */
   onGiveUp: () => void;
+  /** Two-column desktop layout: game + target on the left, diagram + guessing on the right. */
+  desktop?: boolean;
+  /** Extra content for the game column on desktop (shown at the bottom on mobile), e.g. the countdown. */
+  aside?: ReactNode;
 }
 
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp, desktop = false, aside }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
@@ -95,8 +104,12 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   };
 
   return (
-    <>
-      <GameCard game={puzzle.game} targetFps={puzzle.targetFps} resolution={puzzle.resolution} label={label} />
+    <div className={`board${desktop ? ' board-desktop' : ''}`}>
+      <div className="board-game">
+        <GameCard game={puzzle.game} targetFps={puzzle.targetFps} resolution={puzzle.resolution} label={label} />
+        {desktop && aside}
+      </div>
+      <div className="board-play">
       <PcDiagram slots={slots} />
       <p className="pc-readout" aria-live="polite">
         {hard && <span className="hard-badge">HARD</span>}
@@ -161,6 +174,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           </button>
         </form>
       )}
-    </>
+      </div>
+      {!desktop && aside}
+    </div>
   );
 }

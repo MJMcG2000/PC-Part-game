@@ -4,8 +4,8 @@ export interface PickerOption {
   index: number; // position in the weakest -> strongest list
   label: string;
   detail?: string;
-  /** Release year: when present, options are listed newest first, then A-Z. */
-  year?: number;
+  /** Launch date as a sortable number (e.g. 202411): newest first, then A-Z. */
+  released?: number;
   /** Already used in a previous guess (still selectable). */
   crossed?: boolean;
 }
@@ -19,7 +19,7 @@ interface Props {
   disabled?: boolean;
 }
 
-/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first (or largest first when there's no year). */
+/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first (or largest first when there's no launch date). */
 export function PartPicker({ label, icon, options, value, onChange, disabled }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -33,8 +33,8 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
   const ordered = useMemo(
     () =>
       [...options].sort((a, b) =>
-        a.year !== undefined && b.year !== undefined
-          ? b.year - a.year || a.label.localeCompare(b.label, undefined, { numeric: true })
+        a.released !== undefined && b.released !== undefined
+          ? b.released - a.released || a.label.localeCompare(b.label, undefined, { numeric: true })
           : b.index - a.index,
       ),
     [options],

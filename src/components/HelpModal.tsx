@@ -39,7 +39,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         <h3>Hints</h3>
         <ul>
           <li>Under the PC you'll see your latest build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
-          <li>CPUs and GPUs are listed by release year, newest first. Parts you've already tried are crossed out.</li>
+          <li>CPUs and GPUs are listed by launch date (month and year), newest first. Parts you've already tried are crossed out.</li>
           <li>The PC diagram shows your latest guess for each part with its tile color, and locks a part in green once you find it.</li>
           <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends.</li>
         </ul>

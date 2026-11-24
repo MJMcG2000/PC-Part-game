@@ -147,7 +147,7 @@ CPU | GPU | RAM
 It names the game, so a shared Daily result tells others which game today's puzzle is.
 
 ### Feedback
-Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. CPUs and GPUs are listed by release year (newest first, then A–Z), so the list order gives away nothing about performance. Colorblind mode swaps green/yellow for orange/blue, including in share text.
+Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. CPUs and GPUs are listed by launch date (month and year, newest first, then A–Z), so the list order gives away nothing about performance. Launch months live in `cpus.json` / `gpus.json` as `month` (1–12). Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 

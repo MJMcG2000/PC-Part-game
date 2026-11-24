@@ -80,3 +80,17 @@ describe('±5% win rule', () => {
     expect(isCloseEnough(136.8, 144)).toBe(true);
   });
 });
+
+import { formatLaunch } from './types';
+describe('part launch dates', () => {
+  it('every CPU and GPU has a launch month and a sensible date', () => {
+    for (const p of [...catalog.cpus, ...catalog.gpus]) {
+      expect(Number.isInteger(p.month) && p.month >= 1 && p.month <= 12, p.name).toBe(true);
+      expect(p.year >= 2016 && p.year <= 2026, p.name).toBe(true);
+    }
+  });
+  it('formats as short month + year', () => {
+    expect(formatLaunch(2024, 11)).toBe('Nov 2024');
+    expect(formatLaunch(2016, 1)).toBe('Jan 2016');
+  });
+});
