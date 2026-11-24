@@ -238,7 +238,8 @@ describe('handheld Pokémon games', () => {
   });
 
   it('handheld games may have the weakest part as the answer; other games may not', () => {
-    const red = catalog.games.find((g) => g.name === 'Pokémon Red and Blue')!;
+    // A handheld game so light that even the weakest parts beat the target.
+    const red = { ...catalog.games.find((g) => g.name === 'Pokémon Red and Blue')!, cpuLoad: 100, gpuLoad: 1000 };
     const v = checkPuzzle(red, 60);
     expect(v.valid).toBe(true);
     if (v.valid) expect(v.answer.cpu).toBe(0);
@@ -256,5 +257,17 @@ describe('handheld Pokémon games', () => {
         }
       }
     }
+  });
+});
+
+describe('handheld weighting', () => {
+  it('handheld games are rare in Daily (at most 12% of a year)', () => {
+    const year = Array.from({ length: 365 }, (_, i) => getPuzzle(addDays('2027-01-01', i)));
+    const handheld = year.filter((p) => ['gb-gba', 'ds', '3ds'].includes(p.game.platform)).length;
+    expect(handheld / 365).toBeLessThanOrEqual(0.12);
+    expect(handheld).toBeGreaterThan(0);
+  });
+  it('a handheld-only Endless filter still serves its games', () => {
+    for (let i = 0; i < 10; i++) expect(generateEndless(`h${i}`, 'ds', []).game.platform).toBe('ds');
   });
 });

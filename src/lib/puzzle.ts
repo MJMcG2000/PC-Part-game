@@ -1,4 +1,4 @@
-import { FPS_TARGETS, MAX_REROLLS, NO_REPEAT_DAYS, RESOLUTION, RESOLUTIONS, SEQUENCE_START, type Resolution } from './config';
+import { FPS_TARGETS, HANDHELD_WEIGHT, MAX_REROLLS, NO_REPEAT_DAYS, RESOLUTION, RESOLUTIONS, SEQUENCE_START, type Resolution } from './config';
 import { catalog as defaultCatalog } from './data';
 import { addDays, daysBetween, puzzleNumber } from './date';
 import { hashString, mulberry32, randInt } from './rng';
@@ -54,6 +54,8 @@ export function generatePuzzle(
   dateKey: string,
   recentKeys: ReadonlySet<string> = new Set(),
   catalog: Catalog = defaultCatalog,
+  /** Chance of keeping a handheld game when it's drawn (1 = no down-weighting). */
+  handheldWeight: number = HANDHELD_WEIGHT,
 ): Puzzle {
   const rng = mulberry32(hashString(dateKey));
   const { games } = catalog;
@@ -72,6 +74,8 @@ export function generatePuzzle(
     const target = FPS_TARGETS[randInt(rng, FPS_TARGETS.length)];
     const res = RESOLUTIONS[randInt(rng, RESOLUTIONS.length)];
     if (recentKeys.has(repeatKey(game))) continue;
+    // Handheld games are drawn much less often (deterministic: same seeded stream).
+    if (handheldWeight < 1 && platformInfo(game.platform)?.handheld && rng() >= handheldWeight) continue;
     const v = checkPuzzle(game, target, catalog, res);
     if (v.valid) return make(game, target, res, v.answer, attempt);
   }
@@ -150,7 +154,9 @@ export function generateEndless(
   // Keep the no-repeat window well below the pool size so rerolls stay cheap.
   const window = Math.max(0, Math.min(NO_REPEAT_DAYS, Math.floor(pool.games.length / 2)));
   const recent = new Set(recentKeys.slice(-window));
-  return { ...generatePuzzle(`endless:${seed}`, recent, pool), number: 0 };
+  // A handheld-only filter should still serve its games at full rate.
+  const allHandheld = pool.games.every((g) => platformInfo(g.platform)?.handheld);
+  return { ...generatePuzzle(`endless:${seed}`, recent, pool, allHandheld ? 1 : HANDHELD_WEIGHT), number: 0 };
 }
 
 /** Rebuild a puzzle from a saved game id + target (used to restore Endless progress). */

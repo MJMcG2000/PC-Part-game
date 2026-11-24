@@ -32,6 +32,13 @@ export const FPS_TARGETS = [30, 60, 90, 120, 144, 165, 240] as const;
 /** A game may not appear again within this many previous days. */
 export const NO_REPEAT_DAYS = 30;
 
+/**
+ * Relative chance of picking a handheld game (Game Boy/GBA, DS, 3DS) for a
+ * puzzle, compared with any other game. They're valid at almost every target,
+ * so without this they'd show up far more than their share.
+ */
+export const HANDHELD_WEIGHT = 0.15;
+
 /** Upper bound on deterministic rerolls before falling back to a scan. */
 export const MAX_REROLLS = 1000;
 

@@ -70,6 +70,8 @@ export function analyzeSequence(start: string, days: number, catalog: Catalog): 
     const share = (resolutionCounts.get(r) ?? 0) / days;
     if (share < 0.1) problems.push(`Resolution ${r} only used on ${(share * 100).toFixed(0)}% of days`);
   }
+  const handheldDays = puzzles.filter((p) => PLATFORMS.find((x) => x.id === p.game.platform)?.handheld).length;
+  if (handheldDays / days > 0.12) problems.push(`Handheld games on ${handheldDays}/${days} days (want at most 12%)`);
   if (maxTargetShare > 0.35) problems.push(`One FPS target covers ${(maxTargetShare * 100).toFixed(0)}% of days`);
   const minGames = Math.min(catalog.games.length, Math.floor(days / 4));
   if (gameCounts.size < minGames) problems.push(`Only ${gameCounts.size} distinct games used (want >= ${minGames})`);

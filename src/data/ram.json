@@ -1,9 +1,13 @@
 {
-  "_comment": "System RAM capacity options in GB, as offered in the RAM picker.",
+  "_comment": "System RAM capacity options in GB (0.5 = 512 MB), as offered in the RAM picker. Small sizes exist for 2000s-era hardware and light emulation.",
   "items": [
-    { "sizeGB": 8 },
-    { "sizeGB": 16 },
-    { "sizeGB": 32 },
-    { "sizeGB": 64 }
+    {"sizeGB": 0.5},
+    {"sizeGB": 1},
+    {"sizeGB": 2},
+    {"sizeGB": 4},
+    {"sizeGB": 8},
+    {"sizeGB": 16},
+    {"sizeGB": 32},
+    {"sizeGB": 64}
   ]
 }
