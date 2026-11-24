@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { catalog } from '../lib/data';
-import { MAX_GUESSES, WIN_TOLERANCE } from '../lib/config';
+import { WIN_TOLERANCE, maxGuesses } from '../lib/config';
 import { evaluateBuild, isWin } from '../lib/feedback';
 import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
@@ -95,6 +95,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const cpuAlts = Object.values(accepted.cpu).filter((i): i is number => i !== null).map((i) => catalog.cpus[i]);
   const gpuAlts = Object.values(accepted.gpu).filter((i): i is number => i !== null).map((i) => catalog.gpus[i]);
   const finished = status !== 'playing';
+  const limit = maxGuesses(hard);
 
   // Estimated FPS of the latest guess (the hint that used to live in the guess grid).
   const last = guesses[guesses.length - 1];
@@ -153,7 +154,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       <p className="pc-readout" aria-live="polite">
         {hard && <span className="hard-badge">HARD</span>}
         <span>
-          Guess <strong className="mono">{Math.min(guesses.length, MAX_GUESSES)}</strong>/{MAX_GUESSES}
+          Guess <strong className="mono">{Math.min(guesses.length, limit)}</strong>/{limit}
         </span>
         {lastFps && (
           <span
@@ -175,7 +176,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
         <ResultPanel
           resolution={puzzle.resolution}
           won={status === 'won'}
-          gaveUp={status === 'lost' && guesses.length < MAX_GUESSES}
+          gaveUp={status === 'lost' && guesses.length < limit}
+          maxGuesses={limit}
           winningFps={status === 'won' && lastFps ? lastFps.fps : null}
           exact={tileRows.length > 0 && isWin(tileRows[tileRows.length - 1])}
           tolerancePct={Math.round(WIN_TOLERANCE * 100)}
@@ -230,7 +232,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
             onChange={(v) => setSelection((s) => ({ ...s, ram: v }))}
           />
           <button type="submit" className="btn btn-primary submit-btn">
-            Submit build <span className="muted">({guesses.length + 1}/{MAX_GUESSES})</span>
+            Submit build <span className="muted">({guesses.length + 1}/{limit})</span>
           </button>
           <button
             type="button"

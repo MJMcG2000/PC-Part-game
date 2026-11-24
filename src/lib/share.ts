@@ -1,4 +1,4 @@
-import { MAX_GUESSES, PRESET, RESOLUTION } from './config';
+import { PRESET, RESOLUTION, maxGuesses } from './config';
 import { tileEmoji, type Tile } from './feedback';
 
 export interface ShareInput {
@@ -10,7 +10,7 @@ export interface ShareInput {
   colorblind?: boolean;
   /** Overrides the '#N' label, e.g. 'Endless'. */
   label?: string;
-  /** Hard mode: score gets a '*', as in Wordle. */
+  /** Hard mode: out of 8 guesses, and the score gets a '*', as in Wordle. */
   hard?: boolean;
   /** Defaults to the configured resolution / preset. */
   resolution?: string;
@@ -38,7 +38,8 @@ export function buildShareText({
   preset = PRESET,
 }: ShareInput): string {
   const label = override ?? (number > 0 ? `#${number}` : 'Preview');
-  const score = (won ? `${rows.length}/${MAX_GUESSES}` : `X/${MAX_GUESSES}`) + (hard ? '*' : '');
+  const max = maxGuesses(hard);
+  const score = (won ? `${rows.length}/${max}` : `X/${max}`) + (hard ? '*' : '');
   const grid = rows.map((r) => r.map((t) => tileEmoji(t.color, colorblind)).join(' | '));
   return [`Rigdle ${label} ${score}`, `🎮 ${gameName}`, `🎯 ${targetFps} FPS @ ${resolution} ${preset}`, 'CPU | GPU | RAM', ...grid].join('\n');
 }

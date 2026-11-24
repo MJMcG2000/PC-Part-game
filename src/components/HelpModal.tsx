@@ -1,5 +1,5 @@
 import { Modal } from './Modal';
-import { MAX_GUESSES, PRESET, WIN_TOLERANCE } from '../lib/config';
+import { HARD_MAX_GUESSES, MAX_GUESSES, PRESET, WIN_TOLERANCE } from '../lib/config';
 
 export function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
@@ -8,7 +8,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         <p>
           Each day you get one Steam game and a <strong>target FPS</strong>. Spec the <strong>cheapest rig</strong> that hits it at{' '}
           the shown resolution (1080p, 1440p or 4K) and {PRESET} settings: the weakest CPU, GPU and RAM that get there. You
-          have {MAX_GUESSES} tries.
+          have {MAX_GUESSES} tries ({HARD_MAX_GUESSES} in Hard mode).
         </p>
         <p>
           Higher resolutions are much harder on the GPU and need more video memory (VRAM). The CPU's job doesn't change.
@@ -21,7 +21,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
           target (above or below), you win.
         </p>
         <p>
-          <strong>Hard mode:</strong> only the true minimum build wins. Turn it on before your first guess; shared hard-mode
+          <strong>Hard mode:</strong> only the true minimum build wins, and you get {HARD_MAX_GUESSES} guesses instead of {MAX_GUESSES}. Turn it on before your first guess; shared hard-mode
           scores get a *.
         </p>
         <h3>Tiles</h3>

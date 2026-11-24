@@ -1,6 +1,6 @@
 # Rigdle
 
-A daily "-dle" puzzle about building a gaming PC (personal computer). Each day you get one game, a target FPS (frames per second) and a resolution (1080p, 1440p or 4K, always High settings). In 6 guesses, pick the **minimum** CPU (central processing unit), GPU (graphics processing unit) and RAM (random access memory) that reach the target. Overkill counts as wrong.
+A daily "-dle" puzzle about building a gaming PC (personal computer). Each day you get one game, a target FPS (frames per second) and a resolution (1080p, 1440p or 4K, always High settings). In 6 guesses (8 in Hard mode), pick the **minimum** CPU (central processing unit), GPU (graphics processing unit) and RAM (random access memory) that reach the target. Overkill counts as wrong.
 
 Two modes:
 - **Daily:** one rig per day, the same for everyone, resets at local midnight.
@@ -129,7 +129,7 @@ The graphics preset is fixed at High (`PRESET`), with its own scale tables if yo
 ### Winning
 You win by naming the exact minimum build, **or** with any build whose estimated FPS is within ±5% of the target (`WIN_TOLERANCE` in `config.ts`). The exact build always wins, so every puzzle stays winnable even when no combination lands inside the 5% window.
 
-**Hard mode** (toggle under the mode tabs) turns off the ±5% rule: only the true minimum build wins. It can only be changed before the first guess on a puzzle, is remembered per puzzle, and adds a `*` to the shared score (`Rigdle #42 3/6*`).
+**Hard mode** (toggle under the mode tabs) turns off the ±5% rule: only the true minimum build wins, and you get 8 guesses instead of 6 (`HARD_MAX_GUESSES`). It can only be changed before the first guess on a puzzle, is remembered per puzzle, and adds a `*` to the shared score, out of 8 (`Rigdle #42 3/8*`).
 
 **Give up** (under Submit) ends the puzzle as a loss and reveals the answer, in both modes.
 
