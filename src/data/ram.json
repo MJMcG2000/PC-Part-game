@@ -1,0 +1,9 @@
+{
+  "_comment": "System RAM capacity options in GB, as offered in the RAM picker.",
+  "items": [
+    { "sizeGB": 8 },
+    { "sizeGB": 16 },
+    { "sizeGB": 32 },
+    { "sizeGB": 64 }
+  ]
+}
