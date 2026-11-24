@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { effectiveStreak, emptyEndlessStats, emptyStats, recordEndless, recordResult } from './storage';
+import { padDistribution, effectiveStreak, emptyEndlessStats, emptyStats, recordEndless, recordResult } from './storage';
 
 describe('stats', () => {
   it('tracks wins, streaks and distribution', () => {
@@ -7,7 +7,7 @@ describe('stats', () => {
     s = recordResult(s, '2027-01-01', true, 3);
     s = recordResult(s, '2027-01-02', true, 4);
     expect(s).toMatchObject({ played: 2, wins: 2, currentStreak: 2, maxStreak: 2 });
-    expect(s.distribution).toEqual([0, 0, 1, 1, 0, 0]);
+    expect(s.distribution).toEqual([0, 0, 1, 1, 0, 0, 0, 0]);
     s = recordResult(s, '2027-01-03', false, 6);
     expect(s).toMatchObject({ played: 3, wins: 2, currentStreak: 0, maxStreak: 2 });
     s = recordResult(s, '2027-01-05', true, 1);
@@ -32,6 +32,24 @@ describe('endless stats', () => {
     expect(s).toMatchObject({ played: 2, wins: 2, streak: 2, best: 2 });
     s = recordEndless(s, false, 6);
     expect(s).toMatchObject({ played: 3, wins: 2, streak: 0, best: 2 });
-    expect(s.distribution).toEqual([0, 1, 0, 0, 1, 0]);
+    expect(s.distribution).toEqual([0, 1, 0, 0, 1, 0, 0, 0]);
+  });
+});
+
+describe('guess limits', () => {
+  it('normal mode has 6 guesses and hard mode 8', async () => {
+    const { maxGuesses } = await import('./config');
+    expect(maxGuesses(false)).toBe(6);
+    expect(maxGuesses(true)).toBe(8);
+  });
+  it('records 7- and 8-guess hard-mode wins in the distribution', () => {
+    let s = emptyStats();
+    s = recordResult(s, '2027-01-01', true, 8);
+    s = recordResult(s, '2027-01-02', true, 7);
+    expect(s.distribution).toEqual([0, 0, 0, 0, 0, 0, 1, 1]);
+  });
+  it('pads old 6-entry saved distributions instead of resetting them', () => {
+    expect(padDistribution([1, 2, 3, 4, 5, 6])).toEqual([1, 2, 3, 4, 5, 6, 0, 0]);
+    expect(padDistribution(undefined)).toEqual([0, 0, 0, 0, 0, 0, 0, 0]);
   });
 });

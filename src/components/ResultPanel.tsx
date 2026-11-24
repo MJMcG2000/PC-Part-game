@@ -2,12 +2,14 @@ import type { ReactNode } from 'react';
 import type { BenchmarkEntry } from '../lib/benchmarks';
 import type { Cpu, Game, Gpu } from '../lib/types';
 import { buildFps, displayFps, requiredVramGB } from '../lib/fps';
-import { MAX_GUESSES, VRAM_PENALTY, type Resolution } from '../lib/config';
+import { VRAM_PENALTY, type Resolution } from '../lib/config';
 
 interface Props {
   resolution: Resolution;
   won: boolean;
   gaveUp: boolean;
+  /** Guess limit for this puzzle (6, or 8 in Hard mode). */
+  maxGuesses: number;
   /** FPS of the winning build, and whether it was the exact minimum build. */
   winningFps: number | null;
   exact: boolean;
@@ -41,7 +43,7 @@ function SourceTag({ entry }: { entry: BenchmarkEntry | null }) {
   );
 }
 
-export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, cpuAlts, gpuAlts, ramGB, onShare, shareLabel, children }: Props) {
+export function ResultPanel({ resolution, won, gaveUp, maxGuesses, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, cpuAlts, gpuAlts, ramGB, onShare, shareLabel, children }: Props) {
   const b = buildFps(cpu, gpu, ramGB, game, resolution);
   const vram = Math.round(requiredVramGB(game, resolution) * 10) / 10;
   const max = Math.max(b.cpuFps, b.gpuFps, targetFps) * 1.08;
@@ -49,7 +51,7 @@ export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolera
   return (
     <section className="result" aria-live="polite">
       <h2 className="result-title">
-        {won ? `Rig complete in ${guessCount}/${MAX_GUESSES}!` : gaveUp ? 'You gave up' : 'Out of guesses'}
+        {won ? `Rig complete in ${guessCount}/${maxGuesses}!` : gaveUp ? 'You gave up' : 'Out of guesses'}
       </h2>
       {won && !exact && winningFps !== null && (
         <p className="result-sub">

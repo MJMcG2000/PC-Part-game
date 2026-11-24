@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { generateEndless, getPuzzle, puzzleFromSaved } from './lib/puzzle';
 import { toDateKey } from './lib/date';
-import { MAX_GUESSES } from './lib/config';
+import { maxGuesses } from './lib/config';
 import { buildShareText } from './lib/share';
 import { tileRowsFor } from './lib/board';
 import { PLATFORMS, repeatKey, type PlatformFilter } from './lib/platforms';
@@ -164,7 +164,7 @@ export default function App() {
 
   const onDailyGuess = (g: StoredGuess, won: boolean) => {
     const guesses = [...day.guesses, g];
-    const status = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing';
+    const status = won ? 'won' : guesses.length >= maxGuesses(dailyHard) ? 'lost' : 'playing';
     setDay({ ...day, guesses, status, hard: dailyHard });
     if (status !== 'playing') {
       setStats((s) => recordResult(s, todayKey, won, guesses.length));
@@ -187,7 +187,7 @@ export default function App() {
 
   const onEndlessGuess = (g: StoredGuess, won: boolean) => {
     const guesses = [...endless.guesses, g];
-    const status = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing';
+    const status = won ? 'won' : guesses.length >= maxGuesses(endlessHard) ? 'lost' : 'playing';
     setEndless({ ...endless, guesses, status, hard: endlessHard });
     if (status !== 'playing') setEndlessStats((s) => recordEndless(s, won, guesses.length));
   };

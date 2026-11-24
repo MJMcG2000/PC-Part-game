@@ -1,4 +1,4 @@
-import { MAX_GUESSES } from './config';
+import { HARD_MAX_GUESSES } from './config';
 import { addDays } from './date';
 import type { PlatformFilter } from './platforms';
 import type { Resolution } from './config';
@@ -62,6 +62,16 @@ export interface EndlessStats {
   distribution: number[];
 }
 
+/**
+ * Guess distribution sized for the largest guess limit (Hard mode). Older saves
+ * with 6 entries are padded with zeros rather than reset.
+ */
+export function padDistribution(d: unknown): number[] {
+  const out: number[] = Array(HARD_MAX_GUESSES).fill(0);
+  if (Array.isArray(d)) d.slice(0, HARD_MAX_GUESSES).forEach((n, i) => (out[i] = Number(n) || 0));
+  return out;
+}
+
 const KEYS = {
   state: 'rigdle:state',
   stats: 'rigdle:stats',
@@ -75,7 +85,7 @@ export const emptyStats = (): Stats => ({
   wins: 0,
   currentStreak: 0,
   maxStreak: 0,
-  distribution: Array(MAX_GUESSES).fill(0),
+  distribution: Array(HARD_MAX_GUESSES).fill(0),
   lastPlayedDate: null,
   lastWonDate: null,
 });
@@ -109,9 +119,7 @@ export function loadStats(): Stats {
   const base = emptyStats();
   if (!s) return base;
   const merged = { ...base, ...s };
-  if (!Array.isArray(merged.distribution) || merged.distribution.length !== MAX_GUESSES) {
-    merged.distribution = base.distribution;
-  }
+  merged.distribution = padDistribution(merged.distribution);
   return merged;
 }
 export const saveStats = (s: Stats) => write(KEYS.stats, s);
@@ -163,12 +171,12 @@ export const emptyEndlessStats = (): EndlessStats => ({
   wins: 0,
   streak: 0,
   best: 0,
-  distribution: Array(MAX_GUESSES).fill(0),
+  distribution: Array(HARD_MAX_GUESSES).fill(0),
 });
 
 export function loadEndlessStats(): EndlessStats {
   const s = { ...emptyEndlessStats(), ...read<Partial<EndlessStats>>(KEYS.endlessStats) };
-  if (!Array.isArray(s.distribution) || s.distribution.length !== MAX_GUESSES) s.distribution = emptyEndlessStats().distribution;
+  s.distribution = padDistribution(s.distribution);
   return s;
 }
 export const saveEndlessStats = (s: EndlessStats) => write(KEYS.endlessStats, s);

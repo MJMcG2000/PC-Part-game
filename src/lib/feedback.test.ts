@@ -51,8 +51,9 @@ describe('share text', () => {
       'Rigdle Endless 1/6\n🎮 Wii Sports\n🎯 90 FPS @ 1080p High\nCPU | GPU | RAM\n🟩 | 🟩 | 🟩',
     );
   });
-  it('marks hard mode with a star', () => {
-    expect(buildShareText({ number: 42, gameName: 'X', targetFps: 144, rows, won: true, hard: true })).toMatch(/^Rigdle #42 3\/6\*\n/);
+  it('scores hard mode out of 8 and marks it with a star', () => {
+    expect(buildShareText({ number: 42, gameName: 'X', targetFps: 144, rows, won: true, hard: true })).toMatch(/^Rigdle #42 3\/8\*\n/);
+    expect(buildShareText({ number: 42, gameName: 'X', targetFps: 144, rows, won: false, hard: true })).toMatch(/^Rigdle #42 X\/8\*\n/);
   });
   it('uses X/6 on a loss', () => {
     expect(buildShareText({ number: 7, gameName: 'X', targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);

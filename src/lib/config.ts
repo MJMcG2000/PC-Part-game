@@ -13,7 +13,12 @@ export const LAUNCH_DATE = '2026-12-01';
  */
 export const SEQUENCE_START = '2026-01-01';
 
+/** Guesses per puzzle in normal mode. */
 export const MAX_GUESSES = 6;
+/** Guesses per puzzle in Hard mode (exact minimum build only, so it gets more tries). */
+export const HARD_MAX_GUESSES = 8;
+/** Guess limit for a puzzle. */
+export const maxGuesses = (hard: boolean) => (hard ? HARD_MAX_GUESSES : MAX_GUESSES);
 
 /**
  * You also win if your build's estimated FPS is within this fraction of the
