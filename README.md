@@ -83,6 +83,8 @@ Answer = weakest CPU with `cpuFps ≥ target`, weakest GPU with `gpuFps ≥ targ
 ### Winning
 You win by naming the exact minimum build, **or** with any build whose estimated FPS is within ±5% of the target (`WIN_TOLERANCE` in `config.ts`). The exact build always wins, so every puzzle stays winnable even when no combination lands inside the 5% window.
 
+**Hard mode** (toggle under the mode tabs) turns off the ±5% rule: only the true minimum build wins. It can only be changed before the first guess on a puzzle, is remembered per puzzle, and adds a `*` to the shared score (`Rigdle #42 3/6*`).
+
 ### Feedback
 Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 

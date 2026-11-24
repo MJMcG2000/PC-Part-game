@@ -123,6 +123,7 @@ export default function App() {
         rows: tileRowsFor(daily, day.guesses),
         won: day.status === 'won',
         colorblind: settings.colorblind,
+        hard: dailyHard,
       }),
     );
   const shareEndless = () =>
@@ -134,13 +135,27 @@ export default function App() {
         rows: tileRowsFor(endlessPuzzle, endless.guesses),
         won: endless.status === 'won',
         colorblind: settings.colorblind,
+        hard: endlessHard,
       }),
     );
+
+  // Hard mode is fixed for a puzzle once its first guess is made.
+  const dailyHard = day.guesses.length ? !!day.hard : settings.hard;
+  const endlessHard = endless.guesses.length ? !!endless.hard : settings.hard;
+  const currentLocked = mode === 'daily' ? day.guesses.length > 0 && day.status === 'playing' : endless.guesses.length > 0 && endless.status === 'playing';
+
+  const toggleHard = () => {
+    if (currentLocked) {
+      showToast('Hard mode can only be changed before your first guess');
+      return;
+    }
+    setSettings((s) => ({ ...s, hard: !s.hard }));
+  };
 
   const onDailyGuess = (g: StoredGuess, won: boolean) => {
     const guesses = [...day.guesses, g];
     const status = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing';
-    setDay({ ...day, guesses, status });
+    setDay({ ...day, guesses, status, hard: dailyHard });
     if (status !== 'playing') {
       setStats((s) => recordResult(s, todayKey, won, guesses.length));
       window.setTimeout(() => setStatsOpen(true), 1400);
@@ -150,7 +165,7 @@ export default function App() {
   const onEndlessGuess = (g: StoredGuess, won: boolean) => {
     const guesses = [...endless.guesses, g];
     const status = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing';
-    setEndless({ ...endless, guesses, status });
+    setEndless({ ...endless, guesses, status, hard: endlessHard });
     if (status !== 'playing') setEndlessStats((s) => recordEndless(s, won, guesses.length));
   };
 
@@ -208,6 +223,23 @@ export default function App() {
         ))}
       </nav>
 
+      <div className="hard-row">
+        <span className="hard-text">
+          <strong>Hard mode</strong>
+          <span className="muted"> · exact minimum build only{currentLocked ? ' (locked until next rig)' : ''}</span>
+        </span>
+        <button
+          className={`switch${settings.hard ? ' is-on' : ''}`}
+          role="switch"
+          aria-checked={settings.hard}
+          aria-label="Hard mode: only the exact minimum build wins"
+          aria-disabled={currentLocked}
+          onClick={toggleHard}
+        >
+          <span className="switch-knob" />
+        </button>
+      </div>
+
       <main className="main">
         {mode === 'daily' ? (
           <>
@@ -220,6 +252,7 @@ export default function App() {
               onGuess={onDailyGuess}
               onShare={shareDaily}
               toast={showToast}
+              hard={dailyHard}
             />
             <Countdown now={now} />
           </>
@@ -250,6 +283,7 @@ export default function App() {
               onGuess={onEndlessGuess}
               onShare={shareEndless}
               toast={showToast}
+              hard={endlessHard}
               resultActions={
                 <button className="btn btn-primary next-btn" onClick={() => setEndless((s) => nextEndless(s, s.filter))}>
                   Next rig →
