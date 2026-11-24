@@ -87,6 +87,19 @@ You win by naming the exact minimum build, **or** with any build whose estimated
 
 **Give up** (under Submit) ends the puzzle as a loss and reveals the answer, in both modes.
 
+### Sharing
+**Share result** copies text like this to the clipboard (one row per guess, columns CPU | GPU | RAM):
+```
+Rigdle #42 3/6
+🎮 Cyberpunk 2077
+🎯 144 FPS @ 1080p High
+CPU | GPU | RAM
+🟨 | ⬛ | 🟩
+🟩 | 🟨 | 🟩
+🟩 | 🟩 | 🟩
+```
+It names the game, so a shared Daily result tells others which game today's puzzle is.
+
 ### Feedback
 Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. CPUs and GPUs are listed by release year (newest first, then A–Z), so the list order gives away nothing about performance. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 

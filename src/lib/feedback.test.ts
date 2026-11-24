@@ -32,6 +32,9 @@ describe('feedback tiles', () => {
 });
 
 describe('share text', () => {
+  it('swaps emoji in colorblind mode', () => {
+    expect(buildShareText({ number: 1, gameName: 'X', targetFps: 60, rows: rows.slice(2), won: true, colorblind: true })).toMatch(/🟧 \| 🟧 \| 🟧$/);
+  });
   const answer = { cpu: 4, gpu: 6, ram: 1 };
   const rows = [
     evaluateGuess({ cpu: 3, gpu: 2, ram: 1 }, answer),
@@ -39,20 +42,20 @@ describe('share text', () => {
     evaluateGuess(answer, answer),
   ];
   it('matches the Wordle-style format and omits the game', () => {
-    expect(buildShareText({ number: 42, targetFps: 144, rows, won: true })).toBe(
-      'Rigdle #42 3/6 🎯144 FPS\n🟨⬛🟩\n🟩🟨🟩\n🟩🟩🟩',
+    expect(buildShareText({ number: 42, gameName: 'Cyberpunk 2077', targetFps: 144, rows, won: true })).toBe(
+      'Rigdle #42 3/6\n🎮 Cyberpunk 2077\n🎯 144 FPS @ 1080p High\nCPU | GPU | RAM\n🟨 | ⬛ | 🟩\n🟩 | 🟨 | 🟩\n🟩 | 🟩 | 🟩',
     );
   });
   it('supports an Endless label', () => {
-    expect(buildShareText({ number: 0, label: 'Endless', targetFps: 90, rows: rows.slice(2), won: true })).toBe(
-      'Rigdle Endless 1/6 🎯90 FPS\n🟩🟩🟩',
+    expect(buildShareText({ number: 0, gameName: 'Wii Sports', label: 'Endless', targetFps: 90, rows: rows.slice(2), won: true })).toBe(
+      'Rigdle Endless 1/6\n🎮 Wii Sports\n🎯 90 FPS @ 1080p High\nCPU | GPU | RAM\n🟩 | 🟩 | 🟩',
     );
   });
   it('marks hard mode with a star', () => {
-    expect(buildShareText({ number: 42, targetFps: 144, rows, won: true, hard: true })).toMatch(/^Rigdle #42 3\/6\* 🎯144 FPS/);
+    expect(buildShareText({ number: 42, gameName: 'X', targetFps: 144, rows, won: true, hard: true })).toMatch(/^Rigdle #42 3\/6\*\n/);
   });
   it('uses X/6 on a loss', () => {
-    expect(buildShareText({ number: 7, targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
+    expect(buildShareText({ number: 7, gameName: 'X', targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });
 });
 

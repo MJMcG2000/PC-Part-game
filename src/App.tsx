@@ -119,6 +119,7 @@ export default function App() {
     share(
       buildShareText({
         number: daily.number,
+        gameName: daily.game.name,
         targetFps: daily.targetFps,
         rows: tileRowsFor(daily, day.guesses),
         won: day.status === 'won',
@@ -131,6 +132,7 @@ export default function App() {
       buildShareText({
         number: 0,
         label: 'Endless',
+        gameName: endlessPuzzle.game.name,
         targetFps: endlessPuzzle.targetFps,
         rows: tileRowsFor(endlessPuzzle, endless.guesses),
         won: endless.status === 'won',
