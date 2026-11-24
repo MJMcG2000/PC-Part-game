@@ -2,7 +2,7 @@ import { FPS_TARGETS, MAX_REROLLS, NO_REPEAT_DAYS, RESOLUTION, RESOLUTIONS, SEQU
 import { catalog as defaultCatalog } from './data';
 import { addDays, daysBetween, puzzleNumber } from './date';
 import { hashString, mulberry32, randInt } from './rng';
-import { matchesPlatform, repeatKey, type PlatformFilter } from './platforms';
+import { matchesPlatform, platformInfo, repeatKey, type PlatformFilter } from './platforms';
 import { solve, solveByBrand, type BrandAnswers } from './solver';
 import type { BuildIdx, Catalog, Game } from './types';
 
@@ -26,6 +26,8 @@ export type Validity =
  * A puzzle is valid when the target is reachable and the CPU and GPU answers
  * are not the weakest or strongest option in their lists (too easy to guess).
  * RAM has only four options, so any of them (8-64 GB) can be the answer.
+ * Handheld games (Game Boy/GBA, DS, 3DS) may have the weakest part as the
+ * answer, since any modern PC is far more than they need.
  */
 export function checkPuzzle(
   game: Game,
@@ -35,7 +37,8 @@ export function checkPuzzle(
 ): Validity {
   const answer = solve(game, target, catalog, res);
   if (!answer) return { valid: false, reason: 'unreachable' };
-  const extreme = (i: number, len: number) => i === 0 || i === len - 1;
+  const weakestOk = platformInfo(game.platform)?.handheld === true;
+  const extreme = (i: number, len: number) => (i === 0 && !weakestOk) || i === len - 1;
   if (extreme(answer.cpu, catalog.cpus.length)) return { valid: false, reason: 'cpu-extreme' };
   if (extreme(answer.gpu, catalog.gpus.length)) return { valid: false, reason: 'gpu-extreme' };
   return { valid: true, answer };

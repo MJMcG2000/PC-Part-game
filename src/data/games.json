@@ -100,6 +100,7 @@
     {"steamAppId": 289070, "name": "Sid Meier's Civilization VI", "releaseYear": 2016, "genre": "4X Strategy", "cpuLoad": 0.55, "gpuLoad": 2.0, "vramGB": 3, "ramMinGB": 4, "ramRecGB": 8},
     {"steamAppId": 1295660, "name": "Sid Meier's Civilization VII", "releaseYear": 2025, "genre": "4X Strategy", "cpuLoad": 0.45, "gpuLoad": 1.3, "vramGB": 6, "ramMinGB": 8, "ramRecGB": 16},
     {"steamAppId": 1142710, "name": "Total War: WARHAMMER III", "releaseYear": 2022, "genre": "Strategy", "cpuLoad": 0.38, "gpuLoad": 0.8, "vramGB": 6, "ramMinGB": 8, "ramRecGB": 16},
-    {"steamAppId": 261550, "name": "Mount & Blade II: Bannerlord", "releaseYear": 2022, "genre": "Action RPG", "cpuLoad": 0.38, "gpuLoad": 1.3, "vramGB": 4, "ramMinGB": 8, "ramRecGB": 16}
+    {"steamAppId": 261550, "name": "Mount & Blade II: Bannerlord", "releaseYear": 2022, "genre": "Action RPG", "cpuLoad": 0.38, "gpuLoad": 1.3, "vramGB": 4, "ramMinGB": 8, "ramRecGB": 16},
+    {"name": "Minecraft: Java Edition", "releaseYear": 2011, "genre": "Sandbox", "cpuLoad": 0.9, "gpuLoad": 2.4, "vramGB": 4, "ramMinGB": 4, "ramRecGB": 8, "wikiTitle": "Minecraft"}
   ]
 }

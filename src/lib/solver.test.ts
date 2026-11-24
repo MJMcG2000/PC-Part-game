@@ -70,14 +70,15 @@ describe('solver', () => {
   });
 });
 
-describe('±5% win rule', () => {
-  it('accepts builds within 5% of the target, above or below', () => {
+describe('±10% win rule', () => {
+  it('accepts builds within 10% of the target, above or below', () => {
     expect(isCloseEnough(100, 100)).toBe(true);
-    expect(isCloseEnough(95, 100)).toBe(true);
-    expect(isCloseEnough(105, 100)).toBe(true);
-    expect(isCloseEnough(94.9, 100)).toBe(false);
-    expect(isCloseEnough(105.1, 100)).toBe(false);
-    expect(isCloseEnough(136.8, 144)).toBe(true);
+    expect(isCloseEnough(90, 100)).toBe(true);
+    expect(isCloseEnough(110, 100)).toBe(true);
+    expect(isCloseEnough(89.9, 100)).toBe(false);
+    expect(isCloseEnough(110.1, 100)).toBe(false);
+    expect(isCloseEnough(130, 144)).toBe(true);
+    expect(isCloseEnough(129, 144)).toBe(false);
   });
 });
 

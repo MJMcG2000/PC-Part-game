@@ -1,4 +1,4 @@
-export type PlatformId = 'pc' | 'ps2-xbox' | 'ps3-x360' | 'ps4-xone' | 'ps5-xsx' | 'switch' | 'wii';
+export type PlatformId = 'pc' | 'ps2-xbox' | 'ps3-x360' | 'ps4-xone' | 'ps5-xsx' | 'switch' | 'wii' | 'gb-gba' | 'ds' | '3ds';
 
 /** How a game's FPS coefficients were estimated. */
 export type PerfBasis = 'native' | 'port' | 'emulation';

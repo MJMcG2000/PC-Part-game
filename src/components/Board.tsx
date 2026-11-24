@@ -120,7 +120,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       });
       if (status === 'lost' && state.tile?.color !== 'green') {
         // Reveal the answer in the diagram only once the game is lost
-        // (a ±5% win keeps showing the player's own build).
+        // (a ±10% win keeps showing the player's own build).
         const name =
           k === 'cpu' ? cpuAlts.map((c) => c.name).join(' / ') : k === 'gpu' ? gpuAlts.map((g) => g.name).join(' / ') : partName(k, puzzle.answer);
         state = { name, tile: { part: k, color: 'green', direction: null } };

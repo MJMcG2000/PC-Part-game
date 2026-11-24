@@ -51,7 +51,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
           </li>
           <li>
             <strong>Endless:</strong> keep building rigs back to back. Filter by platform: PC, PS2/Xbox, PS3/360, PS4/One,
-            PS5/Series, Switch or Wii. Tap ↻ New rig to skip a puzzle (free before your first guess, a loss after).
+            PS5/Series, Switch, Wii, or handheld Pokémon (GB/GBA, DS, 3DS). Tap ↻ New rig to skip a puzzle (free before your first guess, a loss after).
           </li>
         </ul>
         <p className="muted">
