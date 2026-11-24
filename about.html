@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d12" />
+    <title>About Rigdle – the daily PC build puzzle</title>
+    <meta
+      name="description"
+      content="What Rigdle is, how Daily and Endless modes work, how minimum-part scoring works, and where its CPU, GPU and RAM frame-rate estimates come from."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <span></span>
+        <p class="logo"><a href="./" aria-label="Rigdle home"><span class="logo-text">RIGDLE</span></a></p>
+        <a class="play-link" href="./">Play ▸</a>
+      </header>
+
+      <main class="page">
+        <h1>About Rigdle</h1>
+        <p class="lede">A daily puzzle about building the cheapest gaming PC that still does the job.</p>
+
+        <p>
+          Every Rigdle puzzle gives you a game, a target frame rate and a resolution, such as
+          <em>Cyberpunk 2077 at 90 FPS in 1440p</em>. Your job is to spec the CPU, graphics card and amount of RAM
+          that get there. The catch is that you're looking for the <strong>minimum</strong> parts, not the best ones. An
+          RTX 5090 will hit almost any target, but it isn't the answer.
+        </p>
+
+        <h2>Daily and Endless</h2>
+        <p>
+          <strong>Daily</strong> mode has one puzzle per day, and everyone gets the same one. It's chosen from the date,
+          resets at your local midnight, and the same game won't come back within 30 days. <strong>Endless</strong> mode
+          gives you a fresh rig whenever you want one and keeps its own win streak. You can filter Endless by platform:
+          PC (Steam), PS2/Xbox, PS3/Xbox 360, PS4/Xbox One, PS5/Xbox Series X|S, Nintendo Switch or Nintendo Wii.
+        </p>
+
+        <h2>How scoring works</h2>
+        <p>
+          You get six guesses. After each one, a side view of a PC tower colors each part: green for the right part,
+          yellow for one step away, gray for further. An arrow says whether to go stronger or weaker. Each guess also
+          shows its estimated FPS. In normal mode you win with the exact minimum build or any build within 5% of the
+          target. Hard mode only accepts the exact minimum build.
+        </p>
+
+        <h2>Where the FPS numbers come from</h2>
+        <p>
+          Rigdle uses a deliberately simple model, not real benchmarks. Each of the 27 CPUs and 33 GPUs has a relative
+          score based loosely on public benchmark averages (a Ryzen 5 1600 is 100 for CPUs, an RTX 4060 is 100 for GPUs).
+          Each game has a CPU load and a GPU load that turn those scores into frame rates. The build's FPS is the lower of
+          the CPU and GPU numbers, cut by 15% or 50% if you have less RAM than the game recommends. A GPU with less video
+          memory than the game needs loses 40%. Higher resolutions only affect the GPU: about 72% of the 1080p frame rate
+          at 1440p and 42% at 4K, with more video memory required. Everything assumes High settings.
+        </p>
+        <p>
+          Console games are estimated as if played on a PC. PS2, Xbox, PS3, Xbox 360, Wii and Switch games are modeled as
+          running through an emulator, which leans heavily on the CPU. PS4- and PS5-era games use their PC port, or an
+          estimated one for exclusives.
+        </p>
+        <p>
+          The numbers are approximations meant to make a fair puzzle. Real performance depends on drivers, game patches,
+          settings, cooling and the rest of your system, so please don't use Rigdle as a buying guide.
+        </p>
+
+        <h2>Who made this</h2>
+        <p>
+          Rigdle is made by [YOUR NAME]. Questions, corrections or game suggestions are welcome at [CONTACT EMAIL]. Rigdle
+          isn't affiliated with Valve, Steam, Sony, Microsoft, Nintendo, AMD, Intel or NVIDIA.
+        </p>
+
+        <p class="page-cta"><a href="./">Play today's Rigdle</a></p>
+      </main>
+
+      <footer class="footer">
+        <nav class="footer-links" aria-label="Site">
+          <a href="./">Play</a>
+          <span aria-hidden="true">·</span>
+          <a href="./about.html">About</a>
+          <span aria-hidden="true">·</span>
+          <a href="./privacy.html">Privacy</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>

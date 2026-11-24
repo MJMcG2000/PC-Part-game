@@ -29,6 +29,7 @@ import { Board } from './components/Board';
 import { HelpModal } from './components/HelpModal';
 import { StatsModal } from './components/StatsModal';
 import { Countdown } from './components/Countdown';
+import { AdSlot } from './components/AdSlot';
 
 const RECENT_KEEP = 60;
 const freshSeed = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
@@ -333,7 +334,15 @@ export default function App() {
         )}
       </main>
 
+      {/* The only ad: below the game, outside the board, pickers and modals, with spacing from buttons. */}
+      <AdSlot slot={import.meta.env.VITE_ADSENSE_SLOT} />
+
       <footer className="footer">
+        <nav className="footer-links" aria-label="Site">
+          <a href="./about.html">About</a>
+          <span aria-hidden="true">·</span>
+          <a href="./privacy.html">Privacy</a>
+        </nav>
         <p>
           FPS is a simplified, approximate model ({'min(CPU, GPU) × RAM'}), not a benchmark. Console games are estimated as played on a
           PC (via emulation or a PC port). Not affiliated with Valve, Steam, Sony, Microsoft or Nintendo.

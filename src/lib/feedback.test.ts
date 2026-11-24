@@ -70,3 +70,18 @@ describe('cover art', () => {
     expect(pickThumbnail({})).toBeNull();
   });
 });
+
+import { adsenseScriptTag, normalizeAdsenseClient } from './adsense';
+describe('adsense config', () => {
+  it('accepts only ca-pub- plus 16 digits', () => {
+    expect(normalizeAdsenseClient('ca-pub-1234567890123456')).toBe('ca-pub-1234567890123456');
+    expect(normalizeAdsenseClient('  ca-pub-1234567890123456 ')).toBe('ca-pub-1234567890123456');
+    expect(normalizeAdsenseClient('ca-pub-XXXXXXXXXXXXXXXX')).toBeNull();
+    expect(normalizeAdsenseClient('pub-1234567890123456')).toBeNull();
+    expect(normalizeAdsenseClient('')).toBeNull();
+    expect(normalizeAdsenseClient(undefined)).toBeNull();
+  });
+  it('builds the loader tag with the client id', () => {
+    expect(adsenseScriptTag('ca-pub-1234567890123456')).toContain('adsbygoogle.js?client=ca-pub-1234567890123456');
+  });
+});
