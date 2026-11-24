@@ -36,10 +36,12 @@ interface Props {
   toast: (msg: string) => void;
   /** Extra controls under the result (e.g. "Next rig"). */
   resultActions?: ReactNode;
+  /** Hard mode: only the exact minimum build wins. */
+  hard: boolean;
 }
 
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
@@ -84,7 +86,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
       isWin(evaluateGuess(guess, puzzle.answer)) ||
-        isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game).fps, puzzle.targetFps),
+        (!hard &&
+          isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game).fps, puzzle.targetFps)),
     );
   };
 
@@ -93,13 +96,16 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       <GameCard game={puzzle.game} targetFps={puzzle.targetFps} label={label} />
       <PcDiagram slots={slots} />
       <p className="pc-readout" aria-live="polite">
+        {hard && <span className="hard-badge">HARD</span>}
         <span>
           Guess <strong className="mono">{Math.min(guesses.length, MAX_GUESSES)}</strong>/{MAX_GUESSES}
         </span>
         {lastFps && (
           <span
             className={
-              isCloseEnough(lastFps.fps, puzzle.targetFps) || lastFps.fps >= puzzle.targetFps ? 'is-hit' : 'is-miss'
+              (!hard && isCloseEnough(lastFps.fps, puzzle.targetFps)) || lastFps.fps + 1e-6 >= puzzle.targetFps
+                ? 'is-hit'
+                : 'is-miss'
             }
           >
             Last build: <strong className="mono">{displayFps(lastFps.fps)} FPS</strong>

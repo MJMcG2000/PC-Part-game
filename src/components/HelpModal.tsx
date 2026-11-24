@@ -16,6 +16,10 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
           <strong>Close enough wins too:</strong> if your build's estimated FPS is within {Math.round(WIN_TOLERANCE * 100)}% of the
           target (above or below), you win.
         </p>
+        <p>
+          <strong>Hard mode:</strong> only the true minimum build wins. Turn it on before your first guess; shared hard-mode
+          scores get a *.
+        </p>
         <h3>Tiles</h3>
         <ul className="help-tiles">
           <li>

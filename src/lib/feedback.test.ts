@@ -48,6 +48,9 @@ describe('share text', () => {
       'Rigdle Endless 1/6 🎯90 FPS\n🟩🟩🟩',
     );
   });
+  it('marks hard mode with a star', () => {
+    expect(buildShareText({ number: 42, targetFps: 144, rows, won: true, hard: true })).toMatch(/^Rigdle #42 3\/6\* 🎯144 FPS/);
+  });
   it('uses X/6 on a loss', () => {
     expect(buildShareText({ number: 7, targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });

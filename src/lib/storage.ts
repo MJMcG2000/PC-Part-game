@@ -15,6 +15,8 @@ export interface DayState {
   dateKey: string;
   guesses: StoredGuess[];
   status: GameStatus;
+  /** Hard mode was on when this puzzle's first guess was made. */
+  hard?: boolean;
 }
 
 export interface Stats {
@@ -34,6 +36,8 @@ export interface Settings {
   colorblind: boolean;
   seenHelp: boolean;
   mode: Mode;
+  /** Hard mode: only the exact minimum build wins (no ±5%). */
+  hard: boolean;
 }
 
 /** The Endless puzzle in progress, stored by game id + target so reloads restore it. */
@@ -43,6 +47,7 @@ export interface EndlessState {
   filter: PlatformFilter;
   guesses: StoredGuess[];
   status: GameStatus;
+  hard?: boolean;
   /** repeatKey()s of recently played Endless games, oldest first. */
   recent: string[];
 }
@@ -110,7 +115,7 @@ export function loadStats(): Stats {
 export const saveStats = (s: Stats) => write(KEYS.stats, s);
 
 export function loadSettings(): Settings {
-  return { colorblind: false, seenHelp: false, mode: 'daily', ...read<Partial<Settings>>(KEYS.settings) };
+  return { colorblind: false, seenHelp: false, mode: 'daily', hard: false, ...read<Partial<Settings>>(KEYS.settings) };
 }
 export const saveSettings = (s: Settings) => write(KEYS.settings, s);
 
