@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildFps, cpuFps, gpuFps, ramMultiplier } from './fps';
+import { buildFps, cpuFps, gpuFps, isCloseEnough, ramMultiplier } from './fps';
 import { solve, solveCpu, solveGpu, solveRam } from './solver';
 import { testGame, tinyCatalog } from './fixtures';
 import { catalog } from './data';
@@ -67,5 +67,16 @@ describe('solver', () => {
         for (let i = 0; i < a.gpu; i++) expect(gpuFps(catalog.gpus[i], g)).toBeLessThan(t);
       }
     }
+  });
+});
+
+describe('±5% win rule', () => {
+  it('accepts builds within 5% of the target, above or below', () => {
+    expect(isCloseEnough(100, 100)).toBe(true);
+    expect(isCloseEnough(95, 100)).toBe(true);
+    expect(isCloseEnough(105, 100)).toBe(true);
+    expect(isCloseEnough(94.9, 100)).toBe(false);
+    expect(isCloseEnough(105.1, 100)).toBe(false);
+    expect(isCloseEnough(136.8, 144)).toBe(true);
   });
 });

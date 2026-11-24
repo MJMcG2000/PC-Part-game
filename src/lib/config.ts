@@ -15,6 +15,12 @@ export const SEQUENCE_START = '2026-01-01';
 
 export const MAX_GUESSES = 6;
 
+/**
+ * You also win if your build's estimated FPS is within this fraction of the
+ * target (above or below), even if it isn't the exact minimum build.
+ */
+export const WIN_TOLERANCE = 0.05;
+
 /** Possible daily FPS targets. */
 export const FPS_TARGETS = [30, 60, 90, 120, 144, 165, 240] as const;
 

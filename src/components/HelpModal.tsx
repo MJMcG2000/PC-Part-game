@@ -1,5 +1,5 @@
 import { Modal } from './Modal';
-import { MAX_GUESSES, PRESET, RESOLUTION } from '../lib/config';
+import { MAX_GUESSES, PRESET, RESOLUTION, WIN_TOLERANCE } from '../lib/config';
 
 export function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
@@ -11,6 +11,10 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         </p>
         <p>
           <strong>Overkill counts as wrong.</strong> A RTX 5090 will hit any target, but it isn't the answer.
+        </p>
+        <p>
+          <strong>Close enough wins too:</strong> if your build's estimated FPS is within {Math.round(WIN_TOLERANCE * 100)}% of the
+          target (above or below), you win.
         </p>
         <h3>Tiles</h3>
         <ul className="help-tiles">

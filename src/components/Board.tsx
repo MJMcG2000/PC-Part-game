@@ -1,8 +1,8 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { catalog } from '../lib/data';
-import { MAX_GUESSES } from '../lib/config';
+import { MAX_GUESSES, WIN_TOLERANCE } from '../lib/config';
 import { evaluateGuess, isWin } from '../lib/feedback';
-import { buildFps, displayFps } from '../lib/fps';
+import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
 import type { Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
@@ -66,8 +66,9 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       guesses.forEach((g, i) => {
         if (state.tile?.color !== 'green') state = { name: partName(k, g[k]), tile: tileRows[i][j] };
       });
-      if (finished && state.tile?.color !== 'green') {
-        // Reveal the answer in the diagram only once the game is over.
+      if (status === 'lost' && state.tile?.color !== 'green') {
+        // Reveal the answer in the diagram only once the game is lost
+        // (a ±5% win keeps showing the player's own build).
         state = { name: partName(k, puzzle.answer[k]), tile: { part: k, color: 'green', direction: null } };
       }
       return [k, state];
@@ -82,7 +83,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     const guess: BuildIdx = { cpu, gpu, ram };
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
-      isWin(evaluateGuess(guess, puzzle.answer)),
+      isWin(evaluateGuess(guess, puzzle.answer)) ||
+        isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game).fps, puzzle.targetFps),
     );
   };
 
@@ -95,7 +97,11 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           Guess <strong className="mono">{Math.min(guesses.length, MAX_GUESSES)}</strong>/{MAX_GUESSES}
         </span>
         {lastFps && (
-          <span className={lastFps.fps + 1e-6 >= puzzle.targetFps ? 'is-hit' : 'is-miss'}>
+          <span
+            className={
+              isCloseEnough(lastFps.fps, puzzle.targetFps) || lastFps.fps >= puzzle.targetFps ? 'is-hit' : 'is-miss'
+            }
+          >
             Last build: <strong className="mono">{displayFps(lastFps.fps)} FPS</strong>
             {lastFps.vramPenalty && <span className="vram-flag" title="GPU has less VRAM than this game needs (×0.6)">VRAM</span>}
           </span>
@@ -104,6 +110,9 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       {finished ? (
         <ResultPanel
           won={status === 'won'}
+          winningFps={status === 'won' && lastFps ? lastFps.fps : null}
+          exact={tileRows.length > 0 && isWin(tileRows[tileRows.length - 1])}
+          tolerancePct={Math.round(WIN_TOLERANCE * 100)}
           guessCount={guesses.length}
           game={puzzle.game}
           targetFps={puzzle.targetFps}
