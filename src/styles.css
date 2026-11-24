@@ -854,6 +854,9 @@ input:focus-visible {
 .platform-ps4-xone .game-art-fallback { background: radial-gradient(circle at 25% 25%, rgba(0, 67, 156, 0.55), transparent 55%), radial-gradient(circle at 80% 80%, rgba(16, 124, 16, 0.4), transparent 55%), #0b1120; }
 .platform-ps5-xsx .game-art-fallback { background: radial-gradient(circle at 25% 25%, rgba(230, 235, 245, 0.25), transparent 55%), radial-gradient(circle at 80% 80%, rgba(16, 124, 16, 0.45), transparent 55%), #0f1218; }
 .platform-switch .game-art-fallback { background: radial-gradient(circle at 20% 50%, rgba(0, 171, 210, 0.5), transparent 50%), radial-gradient(circle at 80% 50%, rgba(255, 69, 84, 0.5), transparent 50%), #121218; }
+.platform-gb-gba .game-art-fallback { background: radial-gradient(circle at 25% 30%, rgba(139, 172, 15, 0.45), transparent 55%), radial-gradient(circle at 80% 80%, rgba(90, 60, 170, 0.4), transparent 55%), #12140f; }
+.platform-ds .game-art-fallback { background: radial-gradient(circle at 25% 30%, rgba(200, 205, 215, 0.25), transparent 55%), radial-gradient(circle at 80% 80%, rgba(60, 120, 220, 0.35), transparent 55%), #111419; }
+.platform-3ds .game-art-fallback { background: radial-gradient(circle at 25% 30%, rgba(210, 30, 50, 0.45), transparent 55%), radial-gradient(circle at 80% 80%, rgba(40, 40, 50, 0.5), transparent 55%), #140f11; }
 .platform-wii .game-art-fallback { background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.22), transparent 55%), radial-gradient(circle at 80% 80%, rgba(52, 190, 237, 0.35), transparent 55%), #121519; }
 
 /* ---------- PC tower diagram ---------- */

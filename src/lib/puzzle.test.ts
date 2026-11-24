@@ -3,7 +3,7 @@ import { checkPuzzle, generatePuzzle, getPuzzle } from './puzzle';
 import { catalog, buildCatalog } from './data';
 import { addDays } from './date';
 import { testGame, tinyCatalog } from './fixtures';
-import { NO_REPEAT_DAYS } from './config';
+import { FPS_TARGETS, NO_REPEAT_DAYS } from './config';
 import { analyzeSequence } from './validate';
 import { generateEndless, puzzleFromSaved } from './puzzle';
 import { matchesPlatform, repeatKey } from './platforms';
@@ -102,10 +102,21 @@ describe('validity and reroll rules', () => {
 });
 
 describe('platforms and endless mode', () => {
-  it('has unique game ids and 15 games per console generation', () => {
+  it('has unique game ids and at least 15 games per home-console generation', () => {
     expect(new Set(catalog.games.map((g) => g.id)).size).toBe(catalog.games.length);
-    for (const p of PLATFORMS.filter((x) => x.id !== 'pc')) {
-      expect(catalog.games.filter((g) => matchesPlatform(g, p.id)).length, p.label).toBe(15);
+    for (const p of PLATFORMS.filter((x) => x.id !== 'pc' && !x.handheld)) {
+      expect(catalog.games.filter((g) => matchesPlatform(g, p.id)).length, p.label).toBeGreaterThanOrEqual(15);
+    }
+  });
+
+  it('includes Minecraft and every Pokémon game on Switch and Wii', () => {
+    const names = catalog.games.map((g) => g.name);
+    expect(names).toContain('Minecraft: Java Edition');
+    const pokemon = catalog.games.filter((g) => /Pok[eé]|Pikachu|Pokkén/i.test(g.name));
+    expect(pokemon.filter((g) => g.platform === 'switch').length).toBe(12);
+    expect(pokemon.filter((g) => g.platform === 'wii').length).toBe(4);
+    for (const g of [...pokemon, catalog.games.find((x) => x.name === 'Minecraft: Java Edition')!]) {
+      expect(FPS_TARGETS.some((t) => checkPuzzle(g, t).valid || checkPuzzle(g, t, catalog, '1440p').valid), g.name).toBe(true);
     }
   });
 
@@ -216,5 +227,47 @@ describe('either brand counts', () => {
     expect(brandTile('gpu', 3, parts, answers)).toMatchObject({ color: 'yellow', direction: 'down' });
     // A brand with no part fast enough: always gray, too weak.
     expect(brandTile('gpu', 1, parts, { A: 4, B: null })).toMatchObject({ color: 'gray', direction: 'up' });
+  });
+});
+
+describe('handheld Pokémon games', () => {
+  it('adds Game Boy/GBA, DS and 3DS platforms with at least 12 games each', () => {
+    for (const id of ['gb-gba', 'ds', '3ds'] as const) {
+      expect(catalog.games.filter((g) => g.platform === id).length, id).toBeGreaterThanOrEqual(12);
+    }
+  });
+
+  it('handheld games may have the weakest part as the answer; other games may not', () => {
+    // A handheld game so light that even the weakest parts beat the target.
+    const red = { ...catalog.games.find((g) => g.name === 'Pokémon Red and Blue')!, cpuLoad: 100, gpuLoad: 1000 };
+    const v = checkPuzzle(red, 60);
+    expect(v.valid).toBe(true);
+    if (v.valid) expect(v.answer.cpu).toBe(0);
+    const pcGame = { ...red, platform: 'pc' as const };
+    expect(checkPuzzle(pcGame, 60)).toMatchObject({ valid: false, reason: 'cpu-extreme' });
+  });
+
+  it('handheld games still never ask for the strongest part', () => {
+    for (const g of catalog.games.filter((x) => ['gb-gba', 'ds', '3ds'].includes(x.platform))) {
+      for (const t of FPS_TARGETS) {
+        const v = checkPuzzle(g, t);
+        if (v.valid) {
+          expect(v.answer.cpu).toBeLessThan(catalog.cpus.length - 1);
+          expect(v.answer.gpu).toBeLessThan(catalog.gpus.length - 1);
+        }
+      }
+    }
+  });
+});
+
+describe('handheld weighting', () => {
+  it('handheld games are rare in Daily (at most 12% of a year)', () => {
+    const year = Array.from({ length: 365 }, (_, i) => getPuzzle(addDays('2027-01-01', i)));
+    const handheld = year.filter((p) => ['gb-gba', 'ds', '3ds'].includes(p.game.platform)).length;
+    expect(handheld / 365).toBeLessThanOrEqual(0.12);
+    expect(handheld).toBeGreaterThan(0);
+  });
+  it('a handheld-only Endless filter still serves its games', () => {
+    for (let i = 0; i < 10; i++) expect(generateEndless(`h${i}`, 'ds', []).game.platform).toBe('ds');
   });
 });

@@ -72,7 +72,7 @@ privacy.html       crawlable Privacy policy
 public/            favicon, ads.txt, robots.txt, sitemap.xml (copied as-is)
 .env.example       AdSense configuration template
 src/
-  data/            games.json (100 PC/Steam games), console-games.json (console top-15s),
+  data/            games.json (101 PC games, incl. Minecraft), console-games.json (console top-15s + all Switch/Wii Pokémon),
                    cpus.json, gpus.json, ram.json  (all editable)
   lib/
     config.ts      all tunables: launch date, FPS targets, resolution/preset, penalties
@@ -101,7 +101,8 @@ scripts/validate-puzzles.ts
 - To apply the no-repeat rule consistently, the sequence is replayed day by day from `SEQUENCE_START` and memoized. It's fast (well under a second for years of puzzles).
 
 ### Console games
-`console-games.json` holds the top 15 games (by sales/popularity) for each console generation: PS2/Xbox, PS3/Xbox 360, PS4/Xbox One, PS5/Xbox Series X|S, Nintendo Switch and Nintendo Wii. They use the same FPS model, with coefficients estimated **as if played on a PC**:
+`console-games.json` holds the top 15 games (by sales/popularity) for each console generation (PS2/Xbox, PS3/Xbox 360, PS4/Xbox One, PS5/Xbox Series X|S, Nintendo Switch and Nintendo Wii), plus every other Pokémon game on Switch and Wii, and the main Pokémon games on **Game Boy/GBA, DS and 3DS** (each its own Endless filter). They use the same FPS model, with coefficients estimated **as if played on a PC**:
+- **Game Boy/GBA, DS, 3DS (handheld Pokémon):** via emulation. Any modern PC is far more than these need (especially Game Boy/GBA), so handheld puzzles are allowed to have the weakest CPU/GPU as the answer (the strongest is still never the answer). They're also drawn much less often: `HANDHELD_WEIGHT` (0.15) in `config.ts` keeps them to under 10% of Daily puzzles and of Endless "All"; the GB/GBA, DS and 3DS filters still serve only their games.
 - **PS2/Xbox, PS3/360, Switch, Wii:** via emulation, upscaled to 1080p with frame rate unlocked. Emulation is CPU-heavy, so these puzzles lean on the CPU (PS3/360 especially). Running the original PC ports of these old games would hit hundreds of FPS on any part, which would make every puzzle trivial.
 - **PS4/One, PS5/Series:** via the game's PC port, or an estimated hypothetical port for exclusives such as Bloodborne or Astro Bot.
 
@@ -127,14 +128,14 @@ Resolution only affects the GPU side, through two tables in `config.ts`:
 The graphics preset is fixed at High (`PRESET`), with its own scale tables if you want to change it.
 
 ### Winning
-You win by naming the exact minimum build, **or** with any build whose estimated FPS is within ±5% of the target (`WIN_TOLERANCE` in `config.ts`). The exact build always wins, so every puzzle stays winnable even when no combination lands inside the 5% window.
+You win by naming the exact minimum build, **or** with any build whose estimated FPS is within ±10% of the target (`WIN_TOLERANCE` in `config.ts`). The exact build always wins, so every puzzle stays winnable even when no combination lands inside the 10% window.
 
-**Hard mode** (toggle under the mode tabs) turns off the ±5% rule: only the true minimum build wins, and you get 8 guesses instead of 6 (`HARD_MAX_GUESSES`). It can only be changed before the first guess on a puzzle, is remembered per puzzle, and adds a `*` to the shared score, out of 8 (`Rigdle #42 3/8*`).
+**Hard mode** (toggle under the mode tabs) turns off the ±10% rule: only the true minimum build wins, and you get 8 guesses instead of 6 (`HARD_MAX_GUESSES`). It can only be changed before the first guess on a puzzle, is remembered per puzzle, and adds a `*` to the shared score, out of 8 (`Rigdle #42 3/8*`).
 
 **Give up** (under Submit) ends the puzzle as a loss and reveals the answer, in both modes.
 
 ### Either brand counts
-Each brand has its own minimum part: the weakest Ryzen **and** the weakest Intel CPU that reach the target are both correct, and likewise the weakest NVIDIA and AMD GPU (`solveByBrand` / `acceptedAnswers`). Tiles compare a guess with the minimum of **its own brand**, by position in that brand's performance-sorted list. If no part of a brand can reach the target, guesses of that brand are gray ⬆. Hard mode accepts either brand's exact minimum; normal mode also accepts anything within ±5%. Puzzle selection and validity still use the overall minimum (`puzzle.answer`), so daily puzzles didn't change.
+Each brand has its own minimum part: the weakest AMD **and** the weakest Intel CPU that reach the target are both correct, and likewise the weakest NVIDIA and AMD GPU (`solveByBrand` / `acceptedAnswers`). Tiles compare a guess with the minimum of **its own brand**, by position in that brand's performance-sorted list. If no part of a brand can reach the target, guesses of that brand are gray ⬆. Hard mode accepts either brand's exact minimum; normal mode also accepts anything within ±10%. Puzzle selection and validity still use the overall minimum (`puzzle.answer`), so daily puzzles didn't change.
 
 ### Benchmark data
 `src/data/benchmarks.json` holds real measured results, and they override the model wherever they exist:
@@ -164,9 +165,9 @@ CPU | GPU | RAM
 It names the game, so a shared Daily result tells others which game today's puzzle is.
 
 ### Feedback
-Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. Each part picker starts with a brand switch: **Ryzen / Intel** for the CPU and **NVIDIA / AMD** for the GPU (Intel Arc cards were removed to keep it simple). Lists are sorted by launch date (month and year, newest first, then A–Z), so the list order gives away nothing about performance. Launch months live in `cpus.json` / `gpus.json` as `month` (1–12).
+Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. Each part picker starts with a brand switch: **AMD / Intel** for the CPU (AMD covers Ryzen, FX, Phenom and Athlon) and **NVIDIA / AMD** for the GPU (AMD includes older ATI Radeon cards; Intel Arc cards were removed to keep it simple). Hardware goes back to 2000 (Pentium III, Athlon, GeForce2, Radeon 8500); scores for 2000–2016 parts are extrapolated from period reviews and are rougher than for modern parts. Lists are sorted by launch date (month and year, newest first, then A–Z), so the list order gives away nothing about performance. Launch months live in `cpus.json` / `gpus.json` as `month` (1–12).
 
-**RAM type:** each CPU has a `memory` field (`DDR4` or `DDR5`) for its platform: DDR4 for Ryzen 1000–5000 and Intel 8th–11th gen, DDR5 for Ryzen 7000/9000 and Core Ultra, and DDR5 assumed for Intel 12th–14th gen (those boards exist with either). The RAM picker, PC diagram and answer show the type that matches the CPU (e.g. "16 GB DDR5"). It's a label only: you still just pick a capacity, and the FPS model is unchanged. Colorblind mode swaps green/yellow for orange/blue, including in share text.
+**RAM:** sizes run from 512 MB to 64 GB. Each CPU has a `memory` field for its platform: SDR (2000), DDR (2002–2005), DDR2 (2006–2009), DDR3 (2009–2014), DDR4 (Skylake through Ryzen 5000 / Intel 11th gen), DDR5 (Ryzen 7000/9000, Core Ultra; assumed for Intel 12th–14th gen, whose boards exist with either). The RAM picker, PC diagram and answer show the type that matches the CPU (e.g. "16 GB DDR5"). It's a label only: you still just pick a capacity, and the FPS model is unchanged. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 
@@ -179,7 +180,7 @@ All data files are `{ "_comment": ..., "items": [...] }`. Parts are sorted by sc
 ```
 - `steamAppId` is the number in the store URL (`store.steampowered.com/app/<id>/`). The header image is loaded from Steam's CDN (content delivery network) by that ID, with a placeholder if it fails.
 - `ramRecGB` can be anything up to 64 GB (the largest RAM option). The answer is the smallest RAM option at or above it, so 8 means an 8 GB answer and anything above 32 means 64 GB. The validate script flags "dead" games that can never produce a valid puzzle.
-- Keep `games.json` between 60 and 100 games. `validate-puzzles` also checks every platform has at least 10 playable games for Endless.
+- `games.json` started at 100 Steam games; Minecraft: Java Edition (not on Steam, so it has no `steamAppId` and uses Wikipedia art) makes 101. `validate-puzzles` also checks every platform has at least 10 playable games for Endless.
 
 **Add a CPU/GPU** to `cpus.json` / `gpus.json`. Keep scores unique so the tier order is unambiguous.
 

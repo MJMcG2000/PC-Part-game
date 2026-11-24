@@ -70,14 +70,15 @@ describe('solver', () => {
   });
 });
 
-describe('±5% win rule', () => {
-  it('accepts builds within 5% of the target, above or below', () => {
+describe('±10% win rule', () => {
+  it('accepts builds within 10% of the target, above or below', () => {
     expect(isCloseEnough(100, 100)).toBe(true);
-    expect(isCloseEnough(95, 100)).toBe(true);
-    expect(isCloseEnough(105, 100)).toBe(true);
-    expect(isCloseEnough(94.9, 100)).toBe(false);
-    expect(isCloseEnough(105.1, 100)).toBe(false);
-    expect(isCloseEnough(136.8, 144)).toBe(true);
+    expect(isCloseEnough(90, 100)).toBe(true);
+    expect(isCloseEnough(110, 100)).toBe(true);
+    expect(isCloseEnough(89.9, 100)).toBe(false);
+    expect(isCloseEnough(110.1, 100)).toBe(false);
+    expect(isCloseEnough(130, 144)).toBe(true);
+    expect(isCloseEnough(129, 144)).toBe(false);
   });
 });
 
@@ -86,7 +87,7 @@ describe('part launch dates', () => {
   it('every CPU and GPU has a launch month and a sensible date', () => {
     for (const p of [...catalog.cpus, ...catalog.gpus]) {
       expect(Number.isInteger(p.month) && p.month >= 1 && p.month <= 12, p.name).toBe(true);
-      expect(p.year >= 2016 && p.year <= 2026, p.name).toBe(true);
+      expect(p.year >= 2000 && p.year <= 2026, p.name).toBe(true);
     }
   });
   it('formats as short month + year', () => {
@@ -96,17 +97,40 @@ describe('part launch dates', () => {
 });
 
 describe('part brands and RAM type', () => {
-  it('GPUs are only NVIDIA or AMD; CPUs only AMD (Ryzen) or Intel', () => {
+  it('GPUs are only NVIDIA or AMD (incl. ATI); CPUs only AMD or Intel', () => {
     expect(new Set(catalog.gpus.map((g) => g.brand))).toEqual(new Set(['NVIDIA', 'AMD']));
     expect(new Set(catalog.cpus.map((c) => c.brand))).toEqual(new Set(['AMD', 'Intel']));
-    for (const c of catalog.cpus.filter((x) => x.brand === 'AMD')) expect(c.name.startsWith('Ryzen'), c.name).toBe(true);
+    for (const c of catalog.cpus.filter((x) => x.brand === 'AMD')) expect(c.name, c.name).toMatch(/^(Ryzen|FX|Phenom|Athlon)/);
   });
-  it('every CPU has a DDR4 or DDR5 memory type that fits its platform', () => {
-    for (const c of catalog.cpus) expect(['DDR4', 'DDR5']).toContain(c.memory);
+
+  it('hardware spans 2000 to today with unique scores', () => {
+    for (const list of [catalog.cpus, catalog.gpus]) {
+      expect(Math.min(...list.map((p) => p.year))).toBe(2000);
+      expect(Math.max(...list.map((p) => p.year))).toBeGreaterThanOrEqual(2024);
+    }
+    expect(new Set(catalog.cpus.map((c) => c.gamingScore)).size).toBe(catalog.cpus.length);
+    expect(new Set(catalog.gpus.map((g) => g.rasterScore)).size).toBe(catalog.gpus.length);
+  });
+
+  it('RAM runs from 512 MB to 64 GB and formats small sizes in MB', async () => {
+    const { formatMemory } = await import('./types');
+    expect(catalog.ram.map((r) => r.sizeGB)).toEqual([0.5, 1, 2, 4, 8, 16, 32, 64]);
+    expect(formatMemory(0.5)).toBe('512 MB');
+    expect(formatMemory(0.03125)).toBe('32 MB');
+    expect(formatMemory(0.75)).toBe('768 MB');
+    expect(formatMemory(16)).toBe('16 GB');
+  });
+  it('every CPU has a memory type (SDR through DDR5) that fits its platform', () => {
+    for (const c of catalog.cpus) expect(['SDR', 'DDR', 'DDR2', 'DDR3', 'DDR4', 'DDR5']).toContain(c.memory);
     const mem = (n: string) => catalog.cpus.find((c) => c.name === n)!.memory;
     expect(mem('Ryzen 7 5800X3D')).toBe('DDR4');
     expect(mem('Ryzen 7 7800X3D')).toBe('DDR5');
     expect(mem('Core i5-11400')).toBe('DDR4');
     expect(mem('Core Ultra 7 265K')).toBe('DDR5');
+    expect(mem('Pentium III 1.0 GHz')).toBe('SDR');
+    expect(mem('Athlon 64 3200+')).toBe('DDR');
+    expect(mem('Core 2 Quad Q6600')).toBe('DDR2');
+    expect(mem('Core i7-3770K')).toBe('DDR3');
+    expect(mem('Core i7-6700K')).toBe('DDR4');
   });
 });

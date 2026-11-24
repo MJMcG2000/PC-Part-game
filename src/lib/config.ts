@@ -24,13 +24,20 @@ export const maxGuesses = (hard: boolean) => (hard ? HARD_MAX_GUESSES : MAX_GUES
  * You also win if your build's estimated FPS is within this fraction of the
  * target (above or below), even if it isn't the exact minimum build.
  */
-export const WIN_TOLERANCE = 0.05;
+export const WIN_TOLERANCE = 0.1;
 
 /** Possible daily FPS targets. */
 export const FPS_TARGETS = [30, 60, 90, 120, 144, 165, 240] as const;
 
 /** A game may not appear again within this many previous days. */
 export const NO_REPEAT_DAYS = 30;
+
+/**
+ * Relative chance of picking a handheld game (Game Boy/GBA, DS, 3DS) for a
+ * puzzle, compared with any other game. They're valid at almost every target,
+ * so without this they'd show up far more than their share.
+ */
+export const HANDHELD_WEIGHT = 0.15;
 
 /** Upper bound on deterministic rerolls before falling back to a scan. */
 export const MAX_REROLLS = 1000;

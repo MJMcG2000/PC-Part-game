@@ -37,7 +37,7 @@ export interface Settings {
   colorblind: boolean;
   seenHelp: boolean;
   mode: Mode;
-  /** Hard mode: only the exact minimum build wins (no ±5%). */
+  /** Hard mode: only the exact minimum build wins (no ±10%). */
   hard: boolean;
 }
 

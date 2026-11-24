@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { BenchmarkEntry } from '../lib/benchmarks';
-import type { Cpu, Game, Gpu } from '../lib/types';
+import { formatMemory, type Cpu, type Game, type Gpu } from '../lib/types';
 import { buildFps, displayFps, requiredVramGB } from '../lib/fps';
 import { VRAM_PENALTY, type Resolution } from '../lib/config';
 
@@ -72,7 +72,7 @@ export function ResultPanel({ resolution, won, gaveUp, maxGuesses, winningFps, e
             {gpuAlts.map((g, i) => (
               <span key={g.name}>
                 {i > 0 && ' or '}
-                {g.name} <small>({g.vramGB} GB)</small>
+                {g.name} <small>({formatMemory(g.vramGB)})</small>
               </span>
             ))}
           </span>
@@ -80,7 +80,7 @@ export function ResultPanel({ resolution, won, gaveUp, maxGuesses, winningFps, e
         <li>
           <span className="ab-part">RAM</span>
           <span className="ab-name">
-            {ramGB} GB {[...new Set(cpuAlts.map((c) => c.memory))].join(' or ')}
+            {formatMemory(ramGB)} {[...new Set(cpuAlts.map((c) => c.memory))].join(' or ')}
           </span>
         </li>
       </ul>
@@ -111,8 +111,8 @@ export function ResultPanel({ resolution, won, gaveUp, maxGuesses, winningFps, e
         </div>
         <p className="bd-note">
           {b.limitedBy === 'cpu' ? 'CPU-limited' : 'GPU-limited'}: {displayFps(b.fps)} FPS (target {targetFps}).{' '}
-          {b.vramPenalty && `GPU VRAM is below the ${vram} GB this game wants at ${resolution} (×${VRAM_PENALTY}). `}
-          This game recommends {game.ramRecGB} GB RAM and wants {vram} GB VRAM at {resolution}.
+          {b.vramPenalty && `GPU VRAM is below the ${formatMemory(vram)} this game wants at ${resolution} (×${VRAM_PENALTY}). `}
+          This game recommends {formatMemory(game.ramRecGB)} RAM and wants {formatMemory(vram)} VRAM at {resolution}.
         </p>
       </div>
 

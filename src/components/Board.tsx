@@ -6,7 +6,7 @@ import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
 import { acceptedAnswers, type Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
-import { PART_KEYS, formatLaunch, launchKey, type BuildIdx, type PartKey } from '../lib/types';
+import { PART_KEYS, formatLaunch, formatMemory, launchKey, type BuildIdx, type PartKey } from '../lib/types';
 import { GameCard } from './GameCard';
 import { PartPicker, type PickerOption } from './PartPicker';
 import { ResultPanel } from './ResultPanel';
@@ -26,13 +26,13 @@ const gpuOptions = catalog.gpus.map((g, i) => ({
   index: i,
   brand: g.brand,
   label: g.name,
-  detail: `${g.vramGB} GB · ${formatLaunch(g.year, g.month)}`,
+  detail: `${formatMemory(g.vramGB)} · ${formatLaunch(g.year, g.month)}`,
   released: launchKey(g.year, g.month),
 }));
 
-// Brand switches: CPU "Ryzen" (AMD) or "Intel"; GPU "NVIDIA" or "AMD".
+// Brand switches: CPU "AMD" (Ryzen, FX, Phenom, Athlon) or "Intel"; GPU "NVIDIA" or "AMD" (incl. ATI Radeon).
 const CPU_BRANDS = [
-  { id: 'AMD', label: 'Ryzen' },
+  { id: 'AMD', label: 'AMD' },
   { id: 'Intel', label: 'Intel' },
 ];
 const GPU_BRANDS = [
@@ -41,7 +41,7 @@ const GPU_BRANDS = [
 ];
 
 /** RAM label with the type set by a CPU, e.g. "16 GB DDR5". */
-const ramName = (ramIdx: number, cpuIdx: number) => `${catalog.ram[ramIdx].sizeGB} GB ${catalog.cpus[cpuIdx].memory}`;
+const ramName = (ramIdx: number, cpuIdx: number) => `${formatMemory(catalog.ram[ramIdx].sizeGB)} ${catalog.cpus[cpuIdx].memory}`;
 
 const partName = (k: PartKey, g: BuildIdx) =>
   k === 'cpu' ? catalog.cpus[g.cpu].name : k === 'gpu' ? catalog.gpus[g.gpu].name : ramName(g.ram, g.cpu);
@@ -84,10 +84,10 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
 
   // RAM type follows the selected CPU's platform.
   const ramType = selection.cpu !== null ? catalog.cpus[selection.cpu].memory : null;
-  const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB${ramType ? ` ${ramType}` : ''}` }));
+  const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${formatMemory(r.sizeGB)}${ramType ? ` ${ramType}` : ''}` }));
   const ramNote = ramType
     ? `${ramType}: the RAM type the ${catalog.cpus[selection.cpu!].name} uses.`
-    : 'RAM type (DDR4 or DDR5) follows the CPU you pick.';
+    : 'RAM type (SDR through DDR5) follows the CPU you pick.';
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   // Either brand's minimum CPU/GPU counts as correct.
   const accepted = acceptedAnswers(puzzle);
@@ -120,7 +120,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       });
       if (status === 'lost' && state.tile?.color !== 'green') {
         // Reveal the answer in the diagram only once the game is lost
-        // (a ±5% win keeps showing the player's own build).
+        // (a ±10% win keeps showing the player's own build).
         const name =
           k === 'cpu' ? cpuAlts.map((c) => c.name).join(' / ') : k === 'gpu' ? gpuAlts.map((g) => g.name).join(' / ') : partName(k, puzzle.answer);
         state = { name, tile: { part: k, color: 'green', direction: null } };

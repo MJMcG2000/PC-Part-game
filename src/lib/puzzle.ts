@@ -1,8 +1,8 @@
-import { FPS_TARGETS, MAX_REROLLS, NO_REPEAT_DAYS, RESOLUTION, RESOLUTIONS, SEQUENCE_START, type Resolution } from './config';
+import { FPS_TARGETS, HANDHELD_WEIGHT, MAX_REROLLS, NO_REPEAT_DAYS, RESOLUTION, RESOLUTIONS, SEQUENCE_START, type Resolution } from './config';
 import { catalog as defaultCatalog } from './data';
 import { addDays, daysBetween, puzzleNumber } from './date';
 import { hashString, mulberry32, randInt } from './rng';
-import { matchesPlatform, repeatKey, type PlatformFilter } from './platforms';
+import { matchesPlatform, platformInfo, repeatKey, type PlatformFilter } from './platforms';
 import { solve, solveByBrand, type BrandAnswers } from './solver';
 import type { BuildIdx, Catalog, Game } from './types';
 
@@ -26,6 +26,8 @@ export type Validity =
  * A puzzle is valid when the target is reachable and the CPU and GPU answers
  * are not the weakest or strongest option in their lists (too easy to guess).
  * RAM has only four options, so any of them (8-64 GB) can be the answer.
+ * Handheld games (Game Boy/GBA, DS, 3DS) may have the weakest part as the
+ * answer, since any modern PC is far more than they need.
  */
 export function checkPuzzle(
   game: Game,
@@ -35,7 +37,8 @@ export function checkPuzzle(
 ): Validity {
   const answer = solve(game, target, catalog, res);
   if (!answer) return { valid: false, reason: 'unreachable' };
-  const extreme = (i: number, len: number) => i === 0 || i === len - 1;
+  const weakestOk = platformInfo(game.platform)?.handheld === true;
+  const extreme = (i: number, len: number) => (i === 0 && !weakestOk) || i === len - 1;
   if (extreme(answer.cpu, catalog.cpus.length)) return { valid: false, reason: 'cpu-extreme' };
   if (extreme(answer.gpu, catalog.gpus.length)) return { valid: false, reason: 'gpu-extreme' };
   return { valid: true, answer };
@@ -51,6 +54,8 @@ export function generatePuzzle(
   dateKey: string,
   recentKeys: ReadonlySet<string> = new Set(),
   catalog: Catalog = defaultCatalog,
+  /** Chance of keeping a handheld game when it's drawn (1 = no down-weighting). */
+  handheldWeight: number = HANDHELD_WEIGHT,
 ): Puzzle {
   const rng = mulberry32(hashString(dateKey));
   const { games } = catalog;
@@ -69,6 +74,8 @@ export function generatePuzzle(
     const target = FPS_TARGETS[randInt(rng, FPS_TARGETS.length)];
     const res = RESOLUTIONS[randInt(rng, RESOLUTIONS.length)];
     if (recentKeys.has(repeatKey(game))) continue;
+    // Handheld games are drawn much less often (deterministic: same seeded stream).
+    if (handheldWeight < 1 && platformInfo(game.platform)?.handheld && rng() >= handheldWeight) continue;
     const v = checkPuzzle(game, target, catalog, res);
     if (v.valid) return make(game, target, res, v.answer, attempt);
   }
@@ -147,7 +154,9 @@ export function generateEndless(
   // Keep the no-repeat window well below the pool size so rerolls stay cheap.
   const window = Math.max(0, Math.min(NO_REPEAT_DAYS, Math.floor(pool.games.length / 2)));
   const recent = new Set(recentKeys.slice(-window));
-  return { ...generatePuzzle(`endless:${seed}`, recent, pool), number: 0 };
+  // A handheld-only filter should still serve its games at full rate.
+  const allHandheld = pool.games.every((g) => platformInfo(g.platform)?.handheld);
+  return { ...generatePuzzle(`endless:${seed}`, recent, pool, allHandheld ? 1 : HANDHELD_WEIGHT), number: 0 };
 }
 
 /** Rebuild a puzzle from a saved game id + target (used to restore Endless progress). */

@@ -1,4 +1,4 @@
-export type PlatformId = 'pc' | 'ps2-xbox' | 'ps3-x360' | 'ps4-xone' | 'ps5-xsx' | 'switch' | 'wii';
+export type PlatformId = 'pc' | 'ps2-xbox' | 'ps3-x360' | 'ps4-xone' | 'ps5-xsx' | 'switch' | 'wii' | 'gb-gba' | 'ds' | '3ds';
 
 /** How a game's FPS coefficients were estimated. */
 export type PerfBasis = 'native' | 'port' | 'emulation';
@@ -32,7 +32,7 @@ export interface Cpu {
   /** Launch month, 1-12. */
   month: number;
   /** RAM type the CPU's platform uses. */
-  memory: 'DDR4' | 'DDR5';
+  memory: 'SDR' | 'DDR' | 'DDR2' | 'DDR3' | 'DDR4' | 'DDR5';
   gamingScore: number;
 }
 
@@ -77,3 +77,8 @@ export function formatLaunch(year: number, month: number): string {
 
 /** Sortable launch key: 202411 for Nov 2024. */
 export const launchKey = (year: number, month: number) => year * 100 + month;
+
+/** "512 MB" for 0.5, "16 GB" for 16. */
+export function formatMemory(gb: number): string {
+  return gb < 1 ? `${Math.round(gb * 1024)} MB` : `${Number.isInteger(gb) ? gb : gb.toFixed(1)} GB`;
+}
