@@ -27,6 +27,10 @@ export interface Cpu {
   name: string;
   brand: string;
   year: number;
+  /** Launch month, 1-12. */
+  month: number;
+  /** RAM type the CPU's platform uses. */
+  memory: 'DDR4' | 'DDR5';
   gamingScore: number;
 }
 
@@ -34,6 +38,8 @@ export interface Gpu {
   name: string;
   brand: string;
   year: number;
+  /** Launch month, 1-12. */
+  month: number;
   rasterScore: number;
   vramGB: number;
 }
@@ -59,3 +65,13 @@ export interface BuildIdx {
 
 export type PartKey = keyof BuildIdx;
 export const PART_KEYS: PartKey[] = ['cpu', 'gpu', 'ram'];
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** "Nov 2024" for a launch year + month. */
+export function formatLaunch(year: number, month: number): string {
+  return `${MONTHS[month - 1] ?? ''} ${year}`.trim();
+}
+
+/** Sortable launch key: 202411 for Nov 2024. */
+export const launchKey = (year: number, month: number) => year * 100 + month;

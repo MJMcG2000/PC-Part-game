@@ -4,23 +4,36 @@ export interface PickerOption {
   index: number; // position in the weakest -> strongest list
   label: string;
   detail?: string;
-  /** Release year: when present, options are listed newest first, then A-Z. */
-  year?: number;
+  /** Launch date as a sortable number (e.g. 202411): newest first, then A-Z. */
+  released?: number;
   /** Already used in a previous guess (still selectable). */
   crossed?: boolean;
+}
+
+export interface BrandChoice {
+  /** Value matched against each option's `brand`. */
+  id: string;
+  /** Button text, e.g. "Ryzen". */
+  label: string;
 }
 
 interface Props {
   label: string;
   icon: string;
+  /** Optional two-way brand switch shown above the field. */
+  brands?: BrandChoice[];
+  brand?: string;
+  onBrandChange?: (brand: string) => void;
+  /** Small note under the field (e.g. the RAM type). */
+  note?: string;
   options: PickerOption[];
   value: number | null;
   onChange: (index: number | null) => void;
   disabled?: boolean;
 }
 
-/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first (or largest first when there's no year). */
-export function PartPicker({ label, icon, options, value, onChange, disabled }: Props) {
+/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first (or largest first when there's no launch date). */
+export function PartPicker({ label, icon, brands, brand, onBrandChange, note, options, value, onChange, disabled }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -33,8 +46,8 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
   const ordered = useMemo(
     () =>
       [...options].sort((a, b) =>
-        a.year !== undefined && b.year !== undefined
-          ? b.year - a.year || a.label.localeCompare(b.label, undefined, { numeric: true })
+        a.released !== undefined && b.released !== undefined
+          ? b.released - a.released || a.label.localeCompare(b.label, undefined, { numeric: true })
           : b.index - a.index,
       ),
     [options],
@@ -107,9 +120,27 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
   const listId = `${id}-list`;
   return (
     <div className={`picker${disabled ? ' is-disabled' : ''}`} ref={wrapRef}>
-      <label htmlFor={`${id}-input`} className="picker-label">
-        <span aria-hidden="true">{icon}</span> {label}
-      </label>
+      <div className="picker-head">
+        <label htmlFor={`${id}-input`} className="picker-label">
+          <span aria-hidden="true">{icon}</span> {label}
+        </label>
+        {brands && (
+          <div className="brand-switch" role="radiogroup" aria-label={`${label} brand`}>
+            {brands.map((b) => (
+              <button
+                key={b.id}
+                type="button"
+                role="radio"
+                aria-checked={brand === b.id}
+                className={`brand-opt${brand === b.id ? ' is-on' : ''}`}
+                onClick={() => onBrandChange?.(b.id)}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
       <div className={`picker-field${open ? ' is-open' : ''}`}>
         <input
           ref={inputRef}
@@ -159,6 +190,7 @@ export function PartPicker({ label, icon, options, value, onChange, disabled }: 
           ))}
         </ul>
       )}
+      {note && <p className="picker-note">{note}</p>}
     </div>
   );
 }

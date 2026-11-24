@@ -1245,3 +1245,116 @@ p.logo {
   font-weight: 700;
   text-decoration: none;
 }
+
+/* ---------- Board columns ----------
+   Mobile: one column (game card, banner, diagram, pickers).
+   Desktop (useIsDesktop): game + target on the left, diagram + guessing on the right. */
+.board,
+.board-game,
+.board-play {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.app.is-desktop {
+  max-width: 1120px;
+  padding: 0 32px 40px;
+}
+.app.is-desktop .controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+.app.is-desktop .controls .mode-tabs,
+.app.is-desktop .controls .hard-row {
+  margin-top: 16px;
+}
+.app.is-desktop .main {
+  padding-top: 20px;
+  gap: 20px;
+}
+.board-desktop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+/* The game column stays in view while you work through guesses on the right. */
+.board-desktop .board-game {
+  position: sticky;
+  top: 84px;
+}
+.board-desktop .game-title {
+  font-size: 1.6rem;
+}
+.board-desktop .target-banner {
+  padding: 18px 20px;
+}
+.board-desktop .tb-value {
+  font-size: 3.4rem;
+}
+.board-desktop .tb-res-main {
+  font-size: 1.9rem;
+}
+.board-desktop .countdown {
+  justify-content: flex-start;
+  padding: 4px 4px 0;
+}
+.board-desktop .pc-case {
+  width: min(100%, 420px);
+}
+.board-desktop .pc-slot-name {
+  font-size: 0.78rem;
+}
+.app.is-desktop .endless-bar,
+.app.is-desktop .platform-filter {
+  flex-wrap: wrap;
+}
+.app.is-desktop .footer {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- Brand switch + picker note ---------- */
+.picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.picker-head .picker-label {
+  margin-bottom: 0;
+}
+.brand-switch {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+}
+.brand-opt {
+  min-width: 72px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.brand-opt.is-on {
+  background: var(--accent);
+  color: #fff;
+}
+.picker-note {
+  margin: 5px 2px 0;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}

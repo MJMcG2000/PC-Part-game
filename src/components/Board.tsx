@@ -6,7 +6,7 @@ import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
 import type { Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
-import { PART_KEYS, type BuildIdx, type PartKey } from '../lib/types';
+import { PART_KEYS, formatLaunch, launchKey, type BuildIdx, type PartKey } from '../lib/types';
 import { GameCard } from './GameCard';
 import { PartPicker, type PickerOption } from './PartPicker';
 import { ResultPanel } from './ResultPanel';
@@ -14,18 +14,37 @@ import { PcDiagram, type SlotState } from './PcDiagram';
 
 type Selection = { cpu: number | null; gpu: number | null; ram: number | null };
 
-// Picker options. `index` is the performance tier (used for feedback); the pickers list CPUs/GPUs by release year.
-const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}`, year: c.year }));
-const gpuOptions: PickerOption[] = catalog.gpus.map((g, i) => ({
+// Picker options. `index` is the performance tier (used for feedback); the pickers list CPUs/GPUs by launch date.
+const cpuOptions = catalog.cpus.map((c, i) => ({
   index: i,
-  label: g.name,
-  detail: `${g.brand} · ${g.vramGB} GB · ${g.year}`,
-  year: g.year,
+  brand: c.brand,
+  label: c.name,
+  detail: `${c.memory} · ${formatLaunch(c.year, c.month)}`,
+  released: launchKey(c.year, c.month),
 }));
-const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB` }));
+const gpuOptions = catalog.gpus.map((g, i) => ({
+  index: i,
+  brand: g.brand,
+  label: g.name,
+  detail: `${g.vramGB} GB · ${formatLaunch(g.year, g.month)}`,
+  released: launchKey(g.year, g.month),
+}));
 
-const partName = (k: PartKey, i: number) =>
-  k === 'cpu' ? catalog.cpus[i].name : k === 'gpu' ? catalog.gpus[i].name : `${catalog.ram[i].sizeGB} GB`;
+// Brand switches: CPU "Ryzen" (AMD) or "Intel"; GPU "NVIDIA" or "AMD".
+const CPU_BRANDS = [
+  { id: 'AMD', label: 'Ryzen' },
+  { id: 'Intel', label: 'Intel' },
+];
+const GPU_BRANDS = [
+  { id: 'NVIDIA', label: 'NVIDIA' },
+  { id: 'AMD', label: 'AMD' },
+];
+
+/** RAM label with the type set by a CPU, e.g. "16 GB DDR5". */
+const ramName = (ramIdx: number, cpuIdx: number) => `${catalog.ram[ramIdx].sizeGB} GB ${catalog.cpus[cpuIdx].memory}`;
+
+const partName = (k: PartKey, g: BuildIdx) =>
+  k === 'cpu' ? catalog.cpus[g.cpu].name : k === 'gpu' ? catalog.gpus[g.gpu].name : ramName(g.ram, g.cpu);
 
 interface Props {
   puzzle: Puzzle;
@@ -41,11 +60,34 @@ interface Props {
   hard: boolean;
   /** End the puzzle as a loss and reveal the answer. */
   onGiveUp: () => void;
+  /** Two-column desktop layout: game + target on the left, diagram + guessing on the right. */
+  desktop?: boolean;
+  /** Extra content for the game column on desktop (shown at the bottom on mobile), e.g. the countdown. */
+  aside?: ReactNode;
 }
 
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp, desktop = false, aside }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
+  const [cpuBrand, setCpuBrand] = useState(CPU_BRANDS[0].id);
+  const [gpuBrand, setGpuBrand] = useState(GPU_BRANDS[0].id);
+
+  // Switching brand clears a selected part of the other brand.
+  const changeCpuBrand = (b: string) => {
+    setCpuBrand(b);
+    setSelection((s) => (s.cpu !== null && catalog.cpus[s.cpu].brand !== b ? { ...s, cpu: null } : s));
+  };
+  const changeGpuBrand = (b: string) => {
+    setGpuBrand(b);
+    setSelection((s) => (s.gpu !== null && catalog.gpus[s.gpu].brand !== b ? { ...s, gpu: null } : s));
+  };
+
+  // RAM type follows the selected CPU's platform.
+  const ramType = selection.cpu !== null ? catalog.cpus[selection.cpu].memory : null;
+  const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB${ramType ? ` ${ramType}` : ''}` }));
+  const ramNote = ramType
+    ? `${ramType}: the RAM type your ${catalog.cpus[selection.cpu!].name} uses.`
+    : 'RAM type (DDR4 or DDR5) follows the CPU you pick.';
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
   const finished = status !== 'playing';
@@ -69,12 +111,12 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     PART_KEYS.map((k, j) => {
       let state: SlotState = { name: null, tile: null };
       guesses.forEach((g, i) => {
-        if (state.tile?.color !== 'green') state = { name: partName(k, g[k]), tile: tileRows[i][j] };
+        if (state.tile?.color !== 'green') state = { name: partName(k, g), tile: tileRows[i][j] };
       });
       if (status === 'lost' && state.tile?.color !== 'green') {
         // Reveal the answer in the diagram only once the game is lost
         // (a ±5% win keeps showing the player's own build).
-        state = { name: partName(k, puzzle.answer[k]), tile: { part: k, color: 'green', direction: null } };
+        state = { name: partName(k, puzzle.answer), tile: { part: k, color: 'green', direction: null } };
       }
       return [k, state];
     }),
@@ -95,8 +137,12 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   };
 
   return (
-    <>
-      <GameCard game={puzzle.game} targetFps={puzzle.targetFps} resolution={puzzle.resolution} label={label} />
+    <div className={`board${desktop ? ' board-desktop' : ''}`}>
+      <div className="board-game">
+        <GameCard game={puzzle.game} targetFps={puzzle.targetFps} resolution={puzzle.resolution} label={label} />
+        {desktop && aside}
+      </div>
+      <div className="board-play">
       <PcDiagram slots={slots} />
       <p className="pc-readout" aria-live="polite">
         {hard && <span className="hard-badge">HARD</span>}
@@ -144,9 +190,34 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           }}
           aria-label="Build your rig"
         >
-          <PartPicker label="CPU" icon="🧠" options={mark(cpuOptions, 'cpu')} value={selection.cpu} onChange={(v) => setSelection((s) => ({ ...s, cpu: v }))} />
-          <PartPicker label="GPU" icon="🎮" options={mark(gpuOptions, 'gpu')} value={selection.gpu} onChange={(v) => setSelection((s) => ({ ...s, gpu: v }))} />
-          <PartPicker label="RAM" icon="💾" options={mark(ramOptions, 'ram')} value={selection.ram} onChange={(v) => setSelection((s) => ({ ...s, ram: v }))} />
+          <PartPicker
+            label="CPU"
+            icon="🧠"
+            brands={CPU_BRANDS}
+            brand={cpuBrand}
+            onBrandChange={changeCpuBrand}
+            options={mark(cpuOptions.filter((o) => o.brand === cpuBrand), 'cpu')}
+            value={selection.cpu}
+            onChange={(v) => setSelection((s) => ({ ...s, cpu: v }))}
+          />
+          <PartPicker
+            label="GPU"
+            icon="🎮"
+            brands={GPU_BRANDS}
+            brand={gpuBrand}
+            onBrandChange={changeGpuBrand}
+            options={mark(gpuOptions.filter((o) => o.brand === gpuBrand), 'gpu')}
+            value={selection.gpu}
+            onChange={(v) => setSelection((s) => ({ ...s, gpu: v }))}
+          />
+          <PartPicker
+            label="RAM"
+            icon="💾"
+            note={ramNote}
+            options={mark(ramOptions, 'ram')}
+            value={selection.ram}
+            onChange={(v) => setSelection((s) => ({ ...s, ram: v }))}
+          />
           <button type="submit" className="btn btn-primary submit-btn">
             Submit build <span className="muted">({guesses.length + 1}/{MAX_GUESSES})</span>
           </button>
@@ -161,6 +232,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           </button>
         </form>
       )}
-    </>
+      </div>
+      {!desktop && aside}
+    </div>
   );
 }
