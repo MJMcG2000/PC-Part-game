@@ -86,7 +86,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const ramType = selection.cpu !== null ? catalog.cpus[selection.cpu].memory : null;
   const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB${ramType ? ` ${ramType}` : ''}` }));
   const ramNote = ramType
-    ? `${ramType}: the RAM type your ${catalog.cpus[selection.cpu!].name} uses.`
+    ? `${ramType}: the RAM type the ${catalog.cpus[selection.cpu!].name} uses.`
     : 'RAM type (DDR4 or DDR5) follows the CPU you pick.';
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
