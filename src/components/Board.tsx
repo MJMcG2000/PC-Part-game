@@ -1,21 +1,20 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { catalog } from '../lib/data';
-import { MAX_GUESSES } from '../lib/config';
+import { MAX_GUESSES, WIN_TOLERANCE } from '../lib/config';
 import { evaluateGuess, isWin } from '../lib/feedback';
-import { buildFps } from '../lib/fps';
+import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
 import { guessIndices } from '../lib/board';
 import type { Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
 import { PART_KEYS, type BuildIdx, type PartKey } from '../lib/types';
 import { GameCard } from './GameCard';
 import { PartPicker, type PickerOption } from './PartPicker';
-import { GuessGrid, type GuessRow } from './GuessGrid';
 import { ResultPanel } from './ResultPanel';
 import { PcDiagram, type SlotState } from './PcDiagram';
 
 type Selection = { cpu: number | null; gpu: number | null; ram: number | null };
 
-// Picker options are static: no hints about which parts are ruled out.
+// Picker options: the part lists, weakest -> strongest.
 const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}` }));
 const gpuOptions: PickerOption[] = catalog.gpus.map((g, i) => ({
   index: i,
@@ -46,15 +45,19 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
   const finished = status !== 'playing';
 
-  const rows: GuessRow[] = guesses.map((g, i) => {
-    const b = buildFps(catalog.cpus[g.cpu], catalog.gpus[g.gpu], catalog.ram[g.ram].sizeGB, puzzle.game);
-    return {
-      names: [partName('cpu', g.cpu), partName('gpu', g.gpu), partName('ram', g.ram)],
-      tiles: tileRows[i],
-      fps: b.fps,
-      vramPenalty: b.vramPenalty,
-    };
-  });
+  // Estimated FPS of the latest guess (the hint that used to live in the guess grid).
+  const last = guesses[guesses.length - 1];
+  const lastFps = last
+    ? buildFps(catalog.cpus[last.cpu], catalog.gpus[last.gpu], catalog.ram[last.ram].sizeGB, puzzle.game)
+    : null;
+
+  // Parts already tried are crossed out in the pickers (still selectable).
+  const tried = {
+    cpu: new Set(guesses.map((g) => g.cpu)),
+    gpu: new Set(guesses.map((g) => g.gpu)),
+    ram: new Set(guesses.map((g) => g.ram)),
+  };
+  const mark = (opts: PickerOption[], k: PartKey) => opts.map((o) => ({ ...o, crossed: tried[k].has(o.index) }));
 
   // Diagram: a part locks in green once found; otherwise it shows the latest guess.
   const slots = Object.fromEntries(
@@ -63,8 +66,9 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       guesses.forEach((g, i) => {
         if (state.tile?.color !== 'green') state = { name: partName(k, g[k]), tile: tileRows[i][j] };
       });
-      if (finished && state.tile?.color !== 'green') {
-        // Reveal the answer in the diagram only once the game is over.
+      if (status === 'lost' && state.tile?.color !== 'green') {
+        // Reveal the answer in the diagram only once the game is lost
+        // (a ±5% win keeps showing the player's own build).
         state = { name: partName(k, puzzle.answer[k]), tile: { part: k, color: 'green', direction: null } };
       }
       return [k, state];
@@ -79,7 +83,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     const guess: BuildIdx = { cpu, gpu, ram };
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
-      isWin(evaluateGuess(guess, puzzle.answer)),
+      isWin(evaluateGuess(guess, puzzle.answer)) ||
+        isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game).fps, puzzle.targetFps),
     );
   };
 
@@ -87,10 +92,27 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     <>
       <GameCard game={puzzle.game} targetFps={puzzle.targetFps} label={label} />
       <PcDiagram slots={slots} />
-      <GuessGrid rows={rows} targetFps={puzzle.targetFps} />
+      <p className="pc-readout" aria-live="polite">
+        <span>
+          Guess <strong className="mono">{Math.min(guesses.length, MAX_GUESSES)}</strong>/{MAX_GUESSES}
+        </span>
+        {lastFps && (
+          <span
+            className={
+              isCloseEnough(lastFps.fps, puzzle.targetFps) || lastFps.fps >= puzzle.targetFps ? 'is-hit' : 'is-miss'
+            }
+          >
+            Last build: <strong className="mono">{displayFps(lastFps.fps)} FPS</strong>
+            {lastFps.vramPenalty && <span className="vram-flag" title="GPU has less VRAM than this game needs (×0.6)">VRAM</span>}
+          </span>
+        )}
+      </p>
       {finished ? (
         <ResultPanel
           won={status === 'won'}
+          winningFps={status === 'won' && lastFps ? lastFps.fps : null}
+          exact={tileRows.length > 0 && isWin(tileRows[tileRows.length - 1])}
+          tolerancePct={Math.round(WIN_TOLERANCE * 100)}
           guessCount={guesses.length}
           game={puzzle.game}
           targetFps={puzzle.targetFps}
@@ -111,9 +133,9 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           }}
           aria-label="Build your rig"
         >
-          <PartPicker label="CPU" icon="🧠" options={cpuOptions} value={selection.cpu} onChange={(v) => setSelection((s) => ({ ...s, cpu: v }))} />
-          <PartPicker label="GPU" icon="🎮" options={gpuOptions} value={selection.gpu} onChange={(v) => setSelection((s) => ({ ...s, gpu: v }))} />
-          <PartPicker label="RAM" icon="💾" options={ramOptions} value={selection.ram} onChange={(v) => setSelection((s) => ({ ...s, ram: v }))} />
+          <PartPicker label="CPU" icon="🧠" options={mark(cpuOptions, 'cpu')} value={selection.cpu} onChange={(v) => setSelection((s) => ({ ...s, cpu: v }))} />
+          <PartPicker label="GPU" icon="🎮" options={mark(gpuOptions, 'gpu')} value={selection.gpu} onChange={(v) => setSelection((s) => ({ ...s, gpu: v }))} />
+          <PartPicker label="RAM" icon="💾" options={mark(ramOptions, 'ram')} value={selection.ram} onChange={(v) => setSelection((s) => ({ ...s, ram: v }))} />
           <button type="submit" className="btn btn-primary submit-btn">
             Submit build <span className="muted">({guesses.length + 1}/{MAX_GUESSES})</span>
           </button>

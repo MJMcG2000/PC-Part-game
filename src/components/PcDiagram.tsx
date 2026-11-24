@@ -52,9 +52,7 @@ export function PcDiagram({ slots }: { slots: Record<PartKey, SlotState> }) {
         <Slot part="cpu" state={slots.cpu} />
         <Slot part="ram" state={slots.ram} />
         <Slot part="gpu" state={slots.gpu} />
-        <div className="pc-psu" aria-hidden="true">
-          <span>PSU</span>
-        </div>
+        <div className="pc-psu" aria-hidden="true" />
       </div>
     </section>
   );

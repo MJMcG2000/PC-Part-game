@@ -5,6 +5,10 @@ import { MAX_GUESSES, VRAM_PENALTY } from '../lib/config';
 
 interface Props {
   won: boolean;
+  /** FPS of the winning build, and whether it was the exact minimum build. */
+  winningFps: number | null;
+  exact: boolean;
+  tolerancePct: number;
   guessCount: number;
   game: Game;
   targetFps: number;
@@ -16,7 +20,7 @@ interface Props {
   children?: ReactNode;
 }
 
-export function ResultPanel({ won, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel, children }: Props) {
+export function ResultPanel({ won, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel, children }: Props) {
   const b = buildFps(cpu, gpu, ramGB, game);
   const max = Math.max(b.cpuFps, b.gpuFps, targetFps) * 1.08;
   const pct = (v: number) => `${Math.min(100, (v / max) * 100)}%`;
@@ -25,6 +29,11 @@ export function ResultPanel({ won, guessCount, game, targetFps, cpu, gpu, ramGB,
       <h2 className="result-title">
         {won ? `Rig complete in ${guessCount}/${MAX_GUESSES}!` : 'Out of guesses'}
       </h2>
+      {won && !exact && winningFps !== null && (
+        <p className="result-sub">
+          Close enough: your build hit about <strong>{displayFps(winningFps)} FPS</strong>, within {tolerancePct}% of the target.
+        </p>
+      )}
       <p className="result-sub">The minimum build for {targetFps} FPS was:</p>
       <ul className="answer-build">
         <li>

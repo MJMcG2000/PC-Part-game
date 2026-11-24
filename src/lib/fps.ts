@@ -1,4 +1,5 @@
 import {
+  WIN_TOLERANCE,
   PRESET,
   PRESET_CPU_SCALE,
   PRESET_GPU_SCALE,
@@ -61,4 +62,9 @@ export function buildFps(cpu: Cpu, gpu: Gpu, ramGB: number, game: Game): FpsBrea
 /** Display helper: floor with a tiny epsilon so 59.9999999 shows as 60. */
 export function displayFps(fps: number): number {
   return Math.floor(fps + 1e-6);
+}
+
+/** True when fps is within ±WIN_TOLERANCE of the target (counts as a win). */
+export function isCloseEnough(fps: number, target: number): boolean {
+  return Math.abs(fps - target) <= target * WIN_TOLERANCE + 1e-6;
 }
