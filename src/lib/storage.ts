@@ -1,6 +1,7 @@
 import { MAX_GUESSES } from './config';
 import { addDays } from './date';
 import type { PlatformFilter } from './platforms';
+import type { Resolution } from './config';
 
 /** Guesses are stored by part name / size so data reordering can't corrupt them. */
 export interface StoredGuess {
@@ -44,6 +45,7 @@ export interface Settings {
 export interface EndlessState {
   gameId: string | null;
   targetFps: number;
+  resolution?: Resolution;
   filter: PlatformFilter;
   guesses: StoredGuess[];
   status: GameStatus;

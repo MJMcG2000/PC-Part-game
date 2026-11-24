@@ -53,7 +53,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   // Estimated FPS of the latest guess (the hint that used to live in the guess grid).
   const last = guesses[guesses.length - 1];
   const lastFps = last
-    ? buildFps(catalog.cpus[last.cpu], catalog.gpus[last.gpu], catalog.ram[last.ram].sizeGB, puzzle.game)
+    ? buildFps(catalog.cpus[last.cpu], catalog.gpus[last.gpu], catalog.ram[last.ram].sizeGB, puzzle.game, puzzle.resolution)
     : null;
 
   // Parts already tried are crossed out in the pickers (still selectable).
@@ -90,13 +90,13 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
       isWin(evaluateGuess(guess, puzzle.answer)) ||
         (!hard &&
-          isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game).fps, puzzle.targetFps)),
+          isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game, puzzle.resolution).fps, puzzle.targetFps)),
     );
   };
 
   return (
     <>
-      <GameCard game={puzzle.game} targetFps={puzzle.targetFps} label={label} />
+      <GameCard game={puzzle.game} targetFps={puzzle.targetFps} resolution={puzzle.resolution} label={label} />
       <PcDiagram slots={slots} />
       <p className="pc-readout" aria-live="polite">
         {hard && <span className="hard-badge">HARD</span>}
@@ -118,6 +118,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       </p>
       {finished ? (
         <ResultPanel
+          resolution={puzzle.resolution}
           won={status === 'won'}
           gaveUp={status === 'lost' && guesses.length < MAX_GUESSES}
           winningFps={status === 'won' && lastFps ? lastFps.fps : null}

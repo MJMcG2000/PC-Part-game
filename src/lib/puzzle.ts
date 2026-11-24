@@ -1,4 +1,4 @@
-import { FPS_TARGETS, MAX_REROLLS, NO_REPEAT_DAYS, SEQUENCE_START } from './config';
+import { FPS_TARGETS, MAX_REROLLS, NO_REPEAT_DAYS, RESOLUTION, RESOLUTIONS, SEQUENCE_START, type Resolution } from './config';
 import { catalog as defaultCatalog } from './data';
 import { addDays, daysBetween, puzzleNumber } from './date';
 import { hashString, mulberry32, randInt } from './rng';
@@ -11,6 +11,7 @@ export interface Puzzle {
   number: number;
   game: Game;
   targetFps: number;
+  resolution: Resolution;
   /** Answer as tier indices. Never render this before the game is over. */
   answer: BuildIdx;
   /** How many candidates were rejected before this one was accepted. */
@@ -26,8 +27,13 @@ export type Validity =
  * are not the weakest or strongest option in their lists (too easy to guess).
  * RAM has only four options, so any of them (8-64 GB) can be the answer.
  */
-export function checkPuzzle(game: Game, target: number, catalog: Catalog = defaultCatalog): Validity {
-  const answer = solve(game, target, catalog);
+export function checkPuzzle(
+  game: Game,
+  target: number,
+  catalog: Catalog = defaultCatalog,
+  res: Resolution = RESOLUTION,
+): Validity {
+  const answer = solve(game, target, catalog, res);
   if (!answer) return { valid: false, reason: 'unreachable' };
   const extreme = (i: number, len: number) => i === 0 || i === len - 1;
   if (extreme(answer.cpu, catalog.cpus.length)) return { valid: false, reason: 'cpu-extreme' };
@@ -48,11 +54,12 @@ export function generatePuzzle(
 ): Puzzle {
   const rng = mulberry32(hashString(dateKey));
   const { games } = catalog;
-  const make = (game: Game, targetFps: number, answer: BuildIdx, rerolls: number): Puzzle => ({
+  const make = (game: Game, targetFps: number, resolution: Resolution, answer: BuildIdx, rerolls: number): Puzzle => ({
     dateKey,
     number: puzzleNumber(dateKey),
     game,
     targetFps,
+    resolution,
     answer,
     rerolls,
   });
@@ -60,22 +67,26 @@ export function generatePuzzle(
   for (let attempt = 0; attempt < MAX_REROLLS; attempt++) {
     const game = games[randInt(rng, games.length)];
     const target = FPS_TARGETS[randInt(rng, FPS_TARGETS.length)];
+    const res = RESOLUTIONS[randInt(rng, RESOLUTIONS.length)];
     if (recentKeys.has(repeatKey(game))) continue;
-    const v = checkPuzzle(game, target, catalog);
-    if (v.valid) return make(game, target, v.answer, attempt);
+    const v = checkPuzzle(game, target, catalog, res);
+    if (v.valid) return make(game, target, res, v.answer, attempt);
   }
 
-  // Extremely unlikely fallback: deterministic scan from a seeded offset,
-  // first honoring the no-repeat rule, then relaxing it.
-  const offset = randInt(rng, games.length * FPS_TARGETS.length);
+  // Extremely unlikely fallback: deterministic scan from a seeded offset over
+  // every game x target x resolution, first honoring the no-repeat rule, then relaxing it.
+  const per = FPS_TARGETS.length * RESOLUTIONS.length;
+  const total = games.length * per;
+  const offset = randInt(rng, total);
   for (const honorRecent of [true, false]) {
-    for (let k = 0; k < games.length * FPS_TARGETS.length; k++) {
-      const n = (offset + k) % (games.length * FPS_TARGETS.length);
-      const game = games[Math.floor(n / FPS_TARGETS.length)];
-      const target = FPS_TARGETS[n % FPS_TARGETS.length];
+    for (let k = 0; k < total; k++) {
+      const n = (offset + k) % total;
+      const game = games[Math.floor(n / per)];
+      const target = FPS_TARGETS[Math.floor((n % per) / RESOLUTIONS.length)];
+      const res = RESOLUTIONS[n % RESOLUTIONS.length];
       if (honorRecent && recentKeys.has(repeatKey(game))) continue;
-      const v = checkPuzzle(game, target, catalog);
-      if (v.valid) return make(game, target, v.answer, MAX_REROLLS + k);
+      const v = checkPuzzle(game, target, catalog, res);
+      if (v.valid) return make(game, target, res, v.answer, MAX_REROLLS + k);
     }
   }
   throw new Error(`No valid puzzle exists for ${dateKey}: check the data files.`);
@@ -140,10 +151,15 @@ export function generateEndless(
 }
 
 /** Rebuild a puzzle from a saved game id + target (used to restore Endless progress). */
-export function puzzleFromSaved(gameId: string, targetFps: number, catalog: Catalog = defaultCatalog): Puzzle | null {
+export function puzzleFromSaved(
+  gameId: string,
+  targetFps: number,
+  resolution: Resolution = RESOLUTION,
+  catalog: Catalog = defaultCatalog,
+): Puzzle | null {
   const game = catalog.games.find((g) => g.id === gameId);
   if (!game) return null;
-  const v = checkPuzzle(game, targetFps, catalog);
+  const v = checkPuzzle(game, targetFps, catalog, resolution);
   if (!v.valid) return null;
-  return { dateKey: 'endless', number: 0, game, targetFps, answer: v.answer, rerolls: 0 };
+  return { dateKey: 'endless', number: 0, game, targetFps, resolution, answer: v.answer, rerolls: 0 };
 }

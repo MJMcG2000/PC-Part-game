@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Game } from '../lib/types';
-import { PRESET, RESOLUTION } from '../lib/config';
+import { PRESET, type Resolution } from '../lib/config';
 import { BASIS_LABEL, platformInfo } from '../lib/platforms';
 import { findCover } from '../lib/coverArt';
 
@@ -15,10 +15,11 @@ const imageSources = (id?: number) =>
 interface Props {
   game: Game;
   targetFps: number;
+  resolution: Resolution;
   label: string;
 }
 
-export function GameCard({ game, targetFps, label }: Props) {
+export function GameCard({ game, targetFps, resolution, label }: Props) {
   const [srcIdx, setSrcIdx] = useState(0);
   const [cover, setCover] = useState<string | null>(null);
   useEffect(() => {
@@ -87,7 +88,7 @@ export function GameCard({ game, targetFps, label }: Props) {
         </div>
       </section>
 
-      <section className="target-banner" aria-label={`Target: ${targetFps} FPS at ${RESOLUTION}, ${PRESET} settings`}>
+      <section className="target-banner" aria-label={`Target: ${targetFps} FPS at ${resolution}, ${PRESET} settings`}>
         <span className="tb-label">TARGET</span>
         <span className="tb-fps">
           <span className="tb-value mono">{targetFps}</span>
@@ -97,7 +98,7 @@ export function GameCard({ game, targetFps, label }: Props) {
           @
         </span>
         <span className="tb-res">
-          <span className="tb-res-main mono">{RESOLUTION}</span>
+          <span className="tb-res-main mono">{resolution}</span>
           <span className="tb-res-sub">{PRESET} settings</span>
         </span>
       </section>

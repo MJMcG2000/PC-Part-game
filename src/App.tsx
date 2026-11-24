@@ -39,6 +39,7 @@ function nextEndless(prev: EndlessState, filter: PlatformFilter): EndlessState {
   return {
     gameId: p.game.id,
     targetFps: p.targetFps,
+    resolution: p.resolution,
     filter,
     guesses: [],
     status: 'playing',
@@ -75,7 +76,7 @@ export default function App() {
   const [day, setDay] = useState<DayState>(() => loadDayState(todayKey));
   const [endless, setEndless] = useState<EndlessState>(() => {
     const s = loadEndless();
-    return s.gameId && puzzleFromSaved(s.gameId, s.targetFps) ? s : nextEndless(s, s.filter);
+    return s.gameId && puzzleFromSaved(s.gameId, s.targetFps, s.resolution) ? s : nextEndless(s, s.filter);
   });
   const [endlessStats, setEndlessStats] = useState(loadEndlessStats);
   const [helpOpen, setHelpOpen] = useState(() => !loadSettings().seenHelp);
@@ -85,8 +86,10 @@ export default function App() {
 
   const mode: Mode = settings.mode;
   const endlessPuzzle = useMemo(
-    () => puzzleFromSaved(endless.gameId ?? '', endless.targetFps) ?? generateEndless(freshSeed(), endless.filter, []),
-    [endless.gameId, endless.targetFps, endless.filter],
+    () =>
+      puzzleFromSaved(endless.gameId ?? '', endless.targetFps, endless.resolution) ??
+      generateEndless(freshSeed(), endless.filter, []),
+    [endless.gameId, endless.targetFps, endless.resolution, endless.filter],
   );
 
   // Tick every second for the countdown; roll over to the new daily puzzle at local midnight.
@@ -121,6 +124,7 @@ export default function App() {
         number: daily.number,
         gameName: daily.game.name,
         targetFps: daily.targetFps,
+        resolution: daily.resolution,
         rows: tileRowsFor(daily, day.guesses),
         won: day.status === 'won',
         colorblind: settings.colorblind,
@@ -134,6 +138,7 @@ export default function App() {
         label: 'Endless',
         gameName: endlessPuzzle.game.name,
         targetFps: endlessPuzzle.targetFps,
+        resolution: endlessPuzzle.resolution,
         rows: tileRowsFor(endlessPuzzle, endless.guesses),
         won: endless.status === 'won',
         colorblind: settings.colorblind,
@@ -308,7 +313,7 @@ export default function App() {
               )}
             </div>
             <Board
-              key={`endless-${endless.gameId}-${endless.targetFps}-${endless.recent.length}`}
+              key={`endless-${endless.gameId}-${endless.targetFps}-${endless.resolution}-${endless.recent.length}`}
               puzzle={endlessPuzzle}
               label="Endless"
               guesses={endless.guesses}
