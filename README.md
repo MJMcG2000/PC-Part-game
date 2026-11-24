@@ -4,7 +4,7 @@ A daily "-dle" puzzle about building a gaming PC (personal computer). Each day y
 
 Two modes:
 - **Daily:** one rig per day, the same for everyone, resets at local midnight.
-- **Endless:** keep building rigs back to back, optionally filtered by platform (PC, PS2/Xbox, PS3/360, PS4/One, PS5/Series, Switch, Wii). Endless has its own stats and streak.
+- **Endless:** keep building rigs back to back, optionally filtered by platform (PC, PS2/Xbox, PS3/360, PS4/One, PS5/Series, Switch, Wii). Endless has its own stats and streak. **↻ New rig** skips the current puzzle: free before the first guess, counted as a loss after it.
 
 A PC tower diagram (side view, glass panel) shows your latest guess for each part in the slot where it sits on the motherboard, and locks a part in green once you find it.
 
@@ -85,8 +85,23 @@ You win by naming the exact minimum build, **or** with any build whose estimated
 
 **Hard mode** (toggle under the mode tabs) turns off the ±5% rule: only the true minimum build wins. It can only be changed before the first guess on a puzzle, is remembered per puzzle, and adds a `*` to the shared score (`Rigdle #42 3/6*`).
 
+**Give up** (under Submit) ends the puzzle as a loss and reveals the answer, in both modes.
+
+### Sharing
+**Share result** copies text like this to the clipboard (one row per guess, columns CPU | GPU | RAM):
+```
+Rigdle #42 3/6
+🎮 Cyberpunk 2077
+🎯 144 FPS @ 1080p High
+CPU | GPU | RAM
+🟨 | ⬛ | 🟩
+🟩 | 🟨 | 🟩
+🟩 | 🟩 | 🟩
+```
+It names the game, so a shared Daily result tells others which game today's puzzle is.
+
 ### Feedback
-Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. Colorblind mode swaps green/yellow for orange/blue, including in share text.
+Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. CPUs and GPUs are listed by release year (newest first, then A–Z), so the list order gives away nothing about performance. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 

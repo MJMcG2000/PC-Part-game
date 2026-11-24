@@ -119,6 +119,7 @@ export default function App() {
     share(
       buildShareText({
         number: daily.number,
+        gameName: daily.game.name,
         targetFps: daily.targetFps,
         rows: tileRowsFor(daily, day.guesses),
         won: day.status === 'won',
@@ -131,6 +132,7 @@ export default function App() {
       buildShareText({
         number: 0,
         label: 'Endless',
+        gameName: endlessPuzzle.game.name,
         targetFps: endlessPuzzle.targetFps,
         rows: tileRowsFor(endlessPuzzle, endless.guesses),
         won: endless.status === 'won',
@@ -162,11 +164,34 @@ export default function App() {
     }
   };
 
+  // Giving up ends the puzzle as a loss (stats + streak) and reveals the answer.
+  const giveUpDaily = () => {
+    if (day.status !== 'playing') return;
+    setDay({ ...day, status: 'lost', hard: dailyHard });
+    setStats((s) => recordResult(s, todayKey, false, day.guesses.length));
+    window.setTimeout(() => setStatsOpen(true), 1400);
+  };
+  const giveUpEndless = () => {
+    if (endless.status !== 'playing') return;
+    setEndless({ ...endless, status: 'lost', hard: endlessHard });
+    setEndlessStats((s) => recordEndless(s, false, endless.guesses.length));
+  };
+
   const onEndlessGuess = (g: StoredGuess, won: boolean) => {
     const guesses = [...endless.guesses, g];
     const status = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing';
     setEndless({ ...endless, guesses, status, hard: endlessHard });
     if (status !== 'playing') setEndlessStats((s) => recordEndless(s, won, guesses.length));
+  };
+
+  // Skip to a fresh Endless rig. Free before the first guess; after that it counts as a loss.
+  const refreshEndless = () => {
+    const started = endless.guesses.length > 0 && endless.status === 'playing';
+    if (started) {
+      if (!window.confirm('Skip this rig? Since you already guessed, it counts as a loss and resets your streak.')) return;
+      setEndlessStats((s) => recordEndless(s, false, endless.guesses.length));
+    }
+    setEndless((s) => nextEndless(s, s.filter));
   };
 
   const changeFilter = (filter: PlatformFilter) => {
@@ -251,6 +276,7 @@ export default function App() {
               status={day.status}
               onGuess={onDailyGuess}
               onShare={shareDaily}
+              onGiveUp={giveUpDaily}
               toast={showToast}
               hard={dailyHard}
             />
@@ -270,10 +296,17 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <p className="endless-stats">
-              Solved <strong>{endlessStats.wins}</strong> · Streak <strong>{endlessStats.streak}</strong> · Best{' '}
-              <strong>{endlessStats.best}</strong>
-            </p>
+            <div className="endless-bar">
+              <p className="endless-stats">
+                Solved <strong>{endlessStats.wins}</strong> · Streak <strong>{endlessStats.streak}</strong> · Best{' '}
+                <strong>{endlessStats.best}</strong>
+              </p>
+              {endless.status === 'playing' && (
+                <button className="btn refresh-btn" onClick={refreshEndless} aria-label="Skip to a new rig">
+                  ↻ New rig
+                </button>
+              )}
+            </div>
             <Board
               key={`endless-${endless.gameId}-${endless.targetFps}-${endless.recent.length}`}
               puzzle={endlessPuzzle}
@@ -282,6 +315,7 @@ export default function App() {
               status={endless.status}
               onGuess={onEndlessGuess}
               onShare={shareEndless}
+              onGiveUp={giveUpEndless}
               toast={showToast}
               hard={endlessHard}
               resultActions={

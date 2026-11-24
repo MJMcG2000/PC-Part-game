@@ -14,12 +14,13 @@ import { PcDiagram, type SlotState } from './PcDiagram';
 
 type Selection = { cpu: number | null; gpu: number | null; ram: number | null };
 
-// Picker options: the part lists, weakest -> strongest.
-const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}` }));
+// Picker options. `index` is the performance tier (used for feedback); the pickers list CPUs/GPUs by release year.
+const cpuOptions: PickerOption[] = catalog.cpus.map((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}`, year: c.year }));
 const gpuOptions: PickerOption[] = catalog.gpus.map((g, i) => ({
   index: i,
   label: g.name,
   detail: `${g.brand} · ${g.vramGB} GB · ${g.year}`,
+  year: g.year,
 }));
 const ramOptions: PickerOption[] = catalog.ram.map((r, i) => ({ index: i, label: `${r.sizeGB} GB` }));
 
@@ -38,10 +39,12 @@ interface Props {
   resultActions?: ReactNode;
   /** Hard mode: only the exact minimum build wins. */
   hard: boolean;
+  /** End the puzzle as a loss and reveal the answer. */
+  onGiveUp: () => void;
 }
 
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
@@ -116,6 +119,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       {finished ? (
         <ResultPanel
           won={status === 'won'}
+          gaveUp={status === 'lost' && guesses.length < MAX_GUESSES}
           winningFps={status === 'won' && lastFps ? lastFps.fps : null}
           exact={tileRows.length > 0 && isWin(tileRows[tileRows.length - 1])}
           tolerancePct={Math.round(WIN_TOLERANCE * 100)}
@@ -144,6 +148,15 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           <PartPicker label="RAM" icon="💾" options={mark(ramOptions, 'ram')} value={selection.ram} onChange={(v) => setSelection((s) => ({ ...s, ram: v }))} />
           <button type="submit" className="btn btn-primary submit-btn">
             Submit build <span className="muted">({guesses.length + 1}/{MAX_GUESSES})</span>
+          </button>
+          <button
+            type="button"
+            className="btn giveup-btn"
+            onClick={() => {
+              if (window.confirm('Give up? The answer will be revealed and this counts as a loss.')) onGiveUp();
+            }}
+          >
+            🏳 Give up
           </button>
         </form>
       )}

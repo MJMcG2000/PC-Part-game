@@ -35,10 +35,11 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         <h3>Hints</h3>
         <ul>
           <li>Under the PC you'll see your latest build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
-          <li>Parts are listed strongest first. Parts you've already tried are crossed out.</li>
+          <li>CPUs and GPUs are listed by release year, newest first. Parts you've already tried are crossed out.</li>
           <li>The PC diagram shows your latest guess for each part with its tile color, and locks a part in green once you find it.</li>
           <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends.</li>
         </ul>
+        <p className="muted">Stuck? Tap 🏳 Give up to see the answer (counts as a loss).</p>
         <h3>Modes</h3>
         <ul>
           <li>
@@ -46,7 +47,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
           </li>
           <li>
             <strong>Endless:</strong> keep building rigs back to back. Filter by platform: PC, PS2/Xbox, PS3/360, PS4/One,
-            PS5/Series, Switch or Wii.
+            PS5/Series, Switch or Wii. Tap ↻ New rig to skip a puzzle (free before your first guess, a loss after).
           </li>
         </ul>
         <p className="muted">
