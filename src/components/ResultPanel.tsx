@@ -53,7 +53,9 @@ export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolera
         </li>
         <li>
           <span className="ab-part">RAM</span>
-          <span className="ab-name">{ramGB} GB</span>
+          <span className="ab-name">
+            {ramGB} GB {cpu.memory}
+          </span>
         </li>
       </ul>
 

@@ -21,10 +21,10 @@ export const tinyCatalog = (games: Game[] = [testGame()]) =>
   buildCatalog(
     games,
     [
-      { name: 'CPU 200', brand: 'X', year: 2020, month: 1, gamingScore: 200 },
-      { name: 'CPU 50', brand: 'X', year: 2020, month: 1, gamingScore: 50 },
-      { name: 'CPU 100', brand: 'X', year: 2020, month: 1, gamingScore: 100 },
-      { name: 'CPU 150', brand: 'X', year: 2020, month: 1, gamingScore: 150 },
+      { name: 'CPU 200', brand: 'X', year: 2020, month: 1, memory: 'DDR4', gamingScore: 200 },
+      { name: 'CPU 50', brand: 'X', year: 2020, month: 1, memory: 'DDR4', gamingScore: 50 },
+      { name: 'CPU 100', brand: 'X', year: 2020, month: 1, memory: 'DDR4', gamingScore: 100 },
+      { name: 'CPU 150', brand: 'X', year: 2020, month: 1, memory: 'DDR4', gamingScore: 150 },
     ],
     [
       { name: 'GPU 40', brand: 'Y', year: 2020, month: 1, rasterScore: 40, vramGB: 4 },

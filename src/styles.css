@@ -1316,3 +1316,45 @@ p.logo {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ---------- Brand switch + picker note ---------- */
+.picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.picker-head .picker-label {
+  margin-bottom: 0;
+}
+.brand-switch {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+}
+.brand-opt {
+  min-width: 72px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.brand-opt.is-on {
+  background: var(--accent);
+  color: #fff;
+}
+.picker-note {
+  margin: 5px 2px 0;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}

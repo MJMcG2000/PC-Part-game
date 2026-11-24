@@ -147,7 +147,9 @@ CPU | GPU | RAM
 It names the game, so a shared Daily result tells others which game today's puzzle is.
 
 ### Feedback
-Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. CPUs and GPUs are listed by launch date (month and year, newest first, then A–Z), so the list order gives away nothing about performance. Launch months live in `cpus.json` / `gpus.json` as `month` (1–12). Colorblind mode swaps green/yellow for orange/blue, including in share text.
+Tiles compare positions in the performance-sorted part lists: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. There is no guess grid: the PC diagram shows the latest guess for each part (green parts stay locked), and a line under it shows the latest build's estimated FPS (red/green vs. target) with a **VRAM** tag if the GPU took the penalty. Parts already guessed are crossed out in the pickers. Each part picker starts with a brand switch: **Ryzen / Intel** for the CPU and **NVIDIA / AMD** for the GPU (Intel Arc cards were removed to keep it simple). Lists are sorted by launch date (month and year, newest first, then A–Z), so the list order gives away nothing about performance. Launch months live in `cpus.json` / `gpus.json` as `month` (1–12).
+
+**RAM type:** each CPU has a `memory` field (`DDR4` or `DDR5`) for its platform: DDR4 for Ryzen 1000–5000 and Intel 8th–11th gen, DDR5 for Ryzen 7000/9000 and Core Ultra, and DDR5 assumed for Intel 12th–14th gen (those boards exist with either). The RAM picker, PC diagram and answer show the type that matches the CPU (e.g. "16 GB DDR5"). It's a label only: you still just pick a capacity, and the FPS model is unchanged. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 

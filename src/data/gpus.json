@@ -1,5 +1,5 @@
 {
-  "_comment": "rasterScore is an APPROXIMATE relative rasterization index at 1080p High (RTX 4060 = 100), loosely based on public benchmark aggregates. Meant to be tuned. Keep scores unique so the performance order is unambiguous. 'year' and 'month' (1-12) are the retail launch date, shown and sorted in the part pickers.",
+  "_comment": "rasterScore is an APPROXIMATE relative rasterization index at 1080p High (RTX 4060 = 100), loosely based on public benchmark aggregates. Meant to be tuned. Keep scores unique so the performance order is unambiguous. 'year' and 'month' (1-12) are the retail launch date, shown and sorted in the part pickers. Only NVIDIA and AMD cards are included (the GPU picker has an NVIDIA / AMD switch).",
   "items": [
     {"name": "GeForce GTX 1050 Ti", "brand": "NVIDIA", "year": 2016, "month": 10, "rasterScore": 30, "vramGB": 4},
     {"name": "GeForce GTX 1650", "brand": "NVIDIA", "year": 2019, "month": 4, "rasterScore": 37, "vramGB": 4},
@@ -8,12 +8,10 @@
     {"name": "GeForce RTX 3050 8GB", "brand": "NVIDIA", "year": 2022, "month": 1, "rasterScore": 57, "vramGB": 8},
     {"name": "GeForce GTX 1660 Super", "brand": "NVIDIA", "year": 2019, "month": 10, "rasterScore": 61, "vramGB": 6},
     {"name": "GeForce RTX 2060", "brand": "NVIDIA", "year": 2019, "month": 1, "rasterScore": 70, "vramGB": 6},
-    {"name": "Arc A750", "brand": "Intel", "year": 2022, "month": 10, "rasterScore": 79, "vramGB": 8},
     {"name": "Radeon RX 6600", "brand": "AMD", "year": 2021, "month": 10, "rasterScore": 83, "vramGB": 8},
     {"name": "GeForce RTX 3060 12GB", "brand": "NVIDIA", "year": 2021, "month": 2, "rasterScore": 86, "vramGB": 12},
     {"name": "Radeon RX 7600", "brand": "AMD", "year": 2023, "month": 5, "rasterScore": 97, "vramGB": 8},
     {"name": "GeForce RTX 4060", "brand": "NVIDIA", "year": 2023, "month": 6, "rasterScore": 100, "vramGB": 8},
-    {"name": "Arc B580", "brand": "Intel", "year": 2024, "month": 12, "rasterScore": 106, "vramGB": 12},
     {"name": "GeForce RTX 3060 Ti", "brand": "NVIDIA", "year": 2020, "month": 12, "rasterScore": 110, "vramGB": 8},
     {"name": "Radeon RX 6700 XT", "brand": "AMD", "year": 2021, "month": 3, "rasterScore": 116, "vramGB": 12},
     {"name": "GeForce RTX 3070", "brand": "NVIDIA", "year": 2020, "month": 10, "rasterScore": 119, "vramGB": 8},

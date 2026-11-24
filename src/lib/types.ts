@@ -29,6 +29,8 @@ export interface Cpu {
   year: number;
   /** Launch month, 1-12. */
   month: number;
+  /** RAM type the CPU's platform uses. */
+  memory: 'DDR4' | 'DDR5';
   gamingScore: number;
 }
 
