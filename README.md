@@ -133,6 +133,23 @@ You win by naming the exact minimum build, **or** with any build whose estimated
 
 **Give up** (under Submit) ends the puzzle as a loss and reveals the answer, in both modes.
 
+### Either brand counts
+Each brand has its own minimum part: the weakest Ryzen **and** the weakest Intel CPU that reach the target are both correct, and likewise the weakest NVIDIA and AMD GPU (`solveByBrand` / `acceptedAnswers`). Tiles compare a guess with the minimum of **its own brand**, by position in that brand's performance-sorted list. If no part of a brand can reach the target, guesses of that brand are gray ⬆. Hard mode accepts either brand's exact minimum; normal mode also accepts anything within ±5%. Puzzle selection and validity still use the overall minimum (`puzzle.answer`), so daily puzzles didn't change.
+
+### Benchmark data
+`src/data/benchmarks.json` holds real measured results, and they override the model wherever they exist:
+- **GPU entry:** average FPS for a GPU at a resolution, High settings, tested with a fast CPU (GPU-limited). It replaces `gpuFps` for that game + GPU + resolution, and the VRAM penalty isn't applied on top, since a measurement already includes it.
+- **CPU entry:** average FPS for a CPU tested with a fast GPU (CPU-limited). It replaces `cpuFps` for that game + CPU.
+- **Calibration:** each game with measurements gets its `cpuLoad` / `gpuLoad` set to the median implied by them, so untested parts are estimated consistently with the tested ones.
+- **In the game:** results show "📊 source" (linked when there's a URL) or "Estimate" next to each FPS bar, the line under the PC says "· benchmark" or "· estimate", and the game card shows how many results a game uses.
+
+The file ships **empty**: every number is a model estimate until you add measurements you can cite. Add them from a spreadsheet:
+```bash
+npm run import-benchmarks -- results.csv --dry-run   # check names and values first
+npm run import-benchmarks -- results.csv             # merge into benchmarks.json
+```
+Columns (see `scripts/benchmarks-template.csv`): `game, kind (cpu|gpu), part, resolution (gpu rows), fps, source, url, tested (YYYY-MM)`. Names must match the data files; the importer suggests close matches and refuses to write anything if a row is invalid. Rows replace earlier entries for the same game + part (+ resolution). `validate-puzzles` reports coverage and fails on invalid entries. **Adding or changing benchmark data reshuffles future puzzles**, like any data change, so do it before launch or treat it as a new season.
+
 ### Sharing
 **Share result** copies text like this to the clipboard (one row per guess, columns CPU | GPU | RAM):
 ```

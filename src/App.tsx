@@ -350,8 +350,8 @@ export default function App() {
           <a href="./privacy.html">Privacy</a>
         </nav>
         <p>
-          FPS is a simplified, approximate model ({'min(CPU, GPU) × RAM'}), not a benchmark. Console games are estimated as played on a
-          PC (via emulation or a PC port). Not affiliated with Valve, Steam, Sony, Microsoft or Nintendo.
+          FPS uses measured benchmark results where available and a simplified model ({'min(CPU, GPU) × RAM'}) otherwise. Console
+          games are estimated as played on a PC (via emulation or a PC port). Not affiliated with Valve, Steam, Sony, Microsoft or Nintendo.
         </p>
       </footer>
 

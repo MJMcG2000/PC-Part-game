@@ -41,8 +41,9 @@
 
         <h2>How scoring works</h2>
         <p>
-          You get six guesses. After each one, a side view of a PC tower colors each part: green for the right part,
-          yellow for one step away, gray for further. An arrow says whether to go stronger or weaker. Each guess also
+          You get six guesses. Either brand can be right: the weakest Ryzen and the weakest Intel CPU that reach the target
+          both count, and the same goes for NVIDIA and AMD graphics cards. After each guess, a side view of a PC tower colors
+          each part: green for a correct part, yellow for one step away within its brand, gray for further. An arrow says whether to go stronger or weaker. Each guess also
           shows its estimated FPS. In normal mode you win with the exact minimum build or any build within 5% of the
           target. Hard mode only accepts the exact minimum build.
         </p>
@@ -55,6 +56,10 @@
           the CPU and GPU numbers, cut by 15% or 50% if you have less RAM than the game recommends. A GPU with less video
           memory than the game needs loses 40%. Higher resolutions only affect the GPU: about 72% of the 1080p frame rate
           at 1440p and 42% at 4K, with more video memory required. Everything assumes High settings.
+        </p>
+        <p>
+          Where real benchmark results exist for a game and a part, Rigdle uses the measured number instead of the estimate,
+          shows its source, and adjusts that game's estimates for untested parts to match.
         </p>
         <p>
           Console games are estimated as if played on a PC. PS2, Xbox, PS3, Xbox 360, Wii and Switch games are modeled as

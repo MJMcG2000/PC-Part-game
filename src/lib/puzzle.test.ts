@@ -161,3 +161,60 @@ describe('resolutions', () => {
     }
   });
 });
+
+import { acceptedAnswers } from './puzzle';
+import { brandTile, evaluateBuild, isWin } from './feedback';
+import { cpuFps, gpuFps } from './fps';
+describe('either brand counts', () => {
+  const days = Array.from({ length: 120 }, (_, i) => getPuzzle(addDays('2027-01-01', i)));
+
+  it('the overall minimum is always one of the per-brand minimums', () => {
+    for (const p of days) {
+      const a = acceptedAnswers(p);
+      expect(Object.values(a.cpu)).toContain(p.answer.cpu);
+      expect(Object.values(a.gpu)).toContain(p.answer.gpu);
+      expect(a.ram).toBe(p.answer.ram);
+    }
+  });
+
+  it('each brand minimum reaches the target and the part below it (same brand) does not', () => {
+    for (const p of days) {
+      const a = acceptedAnswers(p);
+      for (const [brand, i] of Object.entries(a.gpu)) {
+        if (i === null) continue;
+        expect(gpuFps(catalog.gpus[i], p.game, p.resolution) + 1e-6).toBeGreaterThanOrEqual(p.targetFps);
+        const weaker = catalog.gpus.slice(0, i).filter((g) => g.brand === brand);
+        for (const g of weaker) expect(gpuFps(g, p.game, p.resolution)).toBeLessThan(p.targetFps);
+      }
+      for (const [, i] of Object.entries(a.cpu)) {
+        if (i !== null) expect(cpuFps(catalog.cpus[i], p.game) + 1e-6).toBeGreaterThanOrEqual(p.targetFps);
+      }
+    }
+  });
+
+  it('a guess with the other brand\'s minimum CPU and GPU wins', () => {
+    const p = days.find((d) => {
+      const a = acceptedAnswers(d);
+      return Object.values(a.cpu).every((x) => x !== null) && Object.values(a.gpu).every((x) => x !== null);
+    })!;
+    const a = acceptedAnswers(p);
+    for (const cpu of Object.values(a.cpu) as number[]) {
+      for (const gpu of Object.values(a.gpu) as number[]) {
+        expect(isWin(evaluateBuild({ cpu, gpu, ram: a.ram }, a, catalog))).toBe(true);
+      }
+    }
+  });
+
+  it('tiles compare within the guessed brand', () => {
+    const parts = [{ brand: 'A' }, { brand: 'B' }, { brand: 'A' }, { brand: 'B' }, { brand: 'A' }];
+    // A-list: [0, 2, 4]; B-list: [1, 3]. A's minimum is index 4, B's is index 1.
+    const answers = { A: 4, B: 1 };
+    expect(brandTile('gpu', 4, parts, answers).color).toBe('green');
+    expect(brandTile('gpu', 1, parts, answers).color).toBe('green');
+    expect(brandTile('gpu', 2, parts, answers)).toMatchObject({ color: 'yellow', direction: 'up' });
+    expect(brandTile('gpu', 0, parts, answers)).toMatchObject({ color: 'gray', direction: 'up' });
+    expect(brandTile('gpu', 3, parts, answers)).toMatchObject({ color: 'yellow', direction: 'down' });
+    // A brand with no part fast enough: always gray, too weak.
+    expect(brandTile('gpu', 1, parts, { A: 4, B: null })).toMatchObject({ color: 'gray', direction: 'up' });
+  });
+});

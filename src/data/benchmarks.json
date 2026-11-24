@@ -1,0 +1,4 @@
+{
+  "_comment": "Real measured FPS, used instead of the model wherever an entry exists (see src/lib/benchmarks.ts and the README 'Benchmark data' section). Each entry: game (exact name from games.json / console-games.json), kind ('gpu' = GPU-limited result at a resolution with a fast CPU; 'cpu' = CPU-limited result with a fast GPU), part (exact CPU/GPU name), resolution (gpu entries: 1080p, 1440p or 4K), fps (average at High settings), source, url, tested (YYYY-MM). Add entries with `npm run import-benchmarks -- file.csv`. Only add numbers you can cite; adding or changing entries reshuffles future puzzles.",
+  "items": []
+}

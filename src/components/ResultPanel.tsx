@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { BenchmarkEntry } from '../lib/benchmarks';
 import type { Cpu, Game, Gpu } from '../lib/types';
 import { buildFps, displayFps, requiredVramGB } from '../lib/fps';
 import { MAX_GUESSES, VRAM_PENALTY, type Resolution } from '../lib/config';
@@ -16,13 +17,31 @@ interface Props {
   targetFps: number;
   cpu: Cpu;
   gpu: Gpu;
+  /** The minimum part of each brand; any of them counts as correct. */
+  cpuAlts: Cpu[];
+  gpuAlts: Gpu[];
   ramGB: number;
   onShare: () => void;
   shareLabel: string;
   children?: ReactNode;
 }
 
-export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel, children }: Props) {
+/** "Benchmark" (linked to its source) or "Estimate" next to an FPS bar. */
+function SourceTag({ entry }: { entry: BenchmarkEntry | null }) {
+  if (!entry) return <span className="src-tag is-est">Estimate</span>;
+  const label = `Benchmark · ${entry.source}${entry.tested ? `, ${entry.tested}` : ''}`;
+  return entry.url ? (
+    <a className="src-tag is-bench" href={entry.url} target="_blank" rel="noreferrer noopener" title={label}>
+      📊 {entry.source}
+    </a>
+  ) : (
+    <span className="src-tag is-bench" title={label}>
+      📊 {entry.source}
+    </span>
+  );
+}
+
+export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, cpuAlts, gpuAlts, ramGB, onShare, shareLabel, children }: Props) {
   const b = buildFps(cpu, gpu, ramGB, game, resolution);
   const vram = Math.round(requiredVramGB(game, resolution) * 10) / 10;
   const max = Math.max(b.cpuFps, b.gpuFps, targetFps) * 1.08;
@@ -38,30 +57,40 @@ export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolera
         </p>
       )}
       <p className="result-sub">
-        The minimum build for {targetFps} FPS at {resolution} was:
+        The minimum parts for {targetFps} FPS at {resolution} (either brand counts):
       </p>
       <ul className="answer-build">
         <li>
           <span className="ab-part">CPU</span>
-          <span className="ab-name">{cpu.name}</span>
+          <span className="ab-name">{cpuAlts.map((c) => c.name).join(' or ')}</span>
         </li>
         <li>
           <span className="ab-part">GPU</span>
           <span className="ab-name">
-            {gpu.name} <small>({gpu.vramGB} GB)</small>
+            {gpuAlts.map((g, i) => (
+              <span key={g.name}>
+                {i > 0 && ' or '}
+                {g.name} <small>({g.vramGB} GB)</small>
+              </span>
+            ))}
           </span>
         </li>
         <li>
           <span className="ab-part">RAM</span>
           <span className="ab-name">
-            {ramGB} GB {cpu.memory}
+            {ramGB} GB {[...new Set(cpuAlts.map((c) => c.memory))].join(' or ')}
           </span>
         </li>
       </ul>
 
+      <p className="bd-caption">
+        FPS breakdown for the overall minimum: {cpu.name} + {gpu.name}
+      </p>
       <div className="breakdown" aria-label="FPS breakdown">
         <div className="bd-row">
-          <span className="bd-label">CPU limit</span>
+          <span className="bd-label">
+            CPU limit <SourceTag entry={b.cpuSource} />
+          </span>
           <div className="bd-track">
             <div className="bd-bar bd-cpu" style={{ width: pct(b.cpuFps) }} />
             <div className="bd-target" style={{ left: pct(targetFps) }} />
@@ -69,7 +98,9 @@ export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolera
           <span className="bd-val mono">{displayFps(b.cpuFps)}</span>
         </div>
         <div className="bd-row">
-          <span className="bd-label">GPU limit</span>
+          <span className="bd-label">
+            GPU limit <SourceTag entry={b.gpuSource} />
+          </span>
           <div className="bd-track">
             <div className="bd-bar bd-gpu" style={{ width: pct(b.gpuFps) }} />
             <div className="bd-target" style={{ left: pct(targetFps) }} />

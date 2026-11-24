@@ -2,7 +2,8 @@
  * npm run validate-puzzles [-- --days 365 --start YYYY-MM-DD]
  * Generates upcoming puzzles, checks validity/variety, prints distributions.
  */
-import { catalog } from '../src/lib/data';
+import { benchmarkEntries, catalog } from '../src/lib/data';
+import { validateBenchmarks } from '../src/lib/benchmarks';
 import { toDateKey } from '../src/lib/date';
 import { FPS_TARGETS } from '../src/lib/config';
 import { analyzeSequence } from '../src/lib/validate';
@@ -15,6 +16,11 @@ const days = Number(arg('days') ?? 365);
 const start = arg('start') ?? toDateKey(new Date());
 
 const r = analyzeSequence(start, days, catalog);
+
+// Benchmark data: must reference real games/parts; report coverage.
+const benchProblems = validateBenchmarks(benchmarkEntries, catalog.games, catalog.cpus, catalog.gpus);
+r.problems.push(...benchProblems);
+const benchGames = new Set(benchmarkEntries.map((e) => e.game)).size;
 
 const bar = (n: number, max: number) => '█'.repeat(Math.round((n / max) * 30));
 function table<K>(title: string, m: Map<K, number>, sort: (a: [K, number], b: [K, number]) => number) {
@@ -41,6 +47,10 @@ table('RAM answers (GB)', r.answerCounts.ram, (a, b) => a[0] - b[0]);
 
 const avgRerolls = r.puzzles.reduce((s, p) => s + p.rerolls, 0) / r.puzzles.length;
 console.log(`\nAverage rerolls per day: ${avgRerolls.toFixed(2)}`);
+console.log(
+  `Benchmark data: ${benchmarkEntries.length} measured results covering ${benchGames}/${catalog.games.length} games` +
+    (benchmarkEntries.length ? '' : ' (all FPS values are model estimates)'),
+);
 
 if (r.deadGames.length) {
   console.log(`\n⚠ ${r.deadGames.length} game(s) can never produce a valid puzzle (check their coefficients):`);
