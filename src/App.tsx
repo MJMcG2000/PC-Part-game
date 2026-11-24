@@ -162,6 +162,19 @@ export default function App() {
     }
   };
 
+  // Giving up ends the puzzle as a loss (stats + streak) and reveals the answer.
+  const giveUpDaily = () => {
+    if (day.status !== 'playing') return;
+    setDay({ ...day, status: 'lost', hard: dailyHard });
+    setStats((s) => recordResult(s, todayKey, false, day.guesses.length));
+    window.setTimeout(() => setStatsOpen(true), 1400);
+  };
+  const giveUpEndless = () => {
+    if (endless.status !== 'playing') return;
+    setEndless({ ...endless, status: 'lost', hard: endlessHard });
+    setEndlessStats((s) => recordEndless(s, false, endless.guesses.length));
+  };
+
   const onEndlessGuess = (g: StoredGuess, won: boolean) => {
     const guesses = [...endless.guesses, g];
     const status = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing';
@@ -261,6 +274,7 @@ export default function App() {
               status={day.status}
               onGuess={onDailyGuess}
               onShare={shareDaily}
+              onGiveUp={giveUpDaily}
               toast={showToast}
               hard={dailyHard}
             />
@@ -299,6 +313,7 @@ export default function App() {
               status={endless.status}
               onGuess={onEndlessGuess}
               onShare={shareEndless}
+              onGiveUp={giveUpEndless}
               toast={showToast}
               hard={endlessHard}
               resultActions={

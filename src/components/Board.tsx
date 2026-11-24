@@ -39,10 +39,12 @@ interface Props {
   resultActions?: ReactNode;
   /** Hard mode: only the exact minimum build wins. */
   hard: boolean;
+  /** End the puzzle as a loss and reveal the answer. */
+  onGiveUp: () => void;
 }
 
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   const tileRows = useMemo(() => guesses.map((g) => evaluateGuess(g, puzzle.answer)), [guesses, puzzle.answer]);
@@ -117,6 +119,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
       {finished ? (
         <ResultPanel
           won={status === 'won'}
+          gaveUp={status === 'lost' && guesses.length < MAX_GUESSES}
           winningFps={status === 'won' && lastFps ? lastFps.fps : null}
           exact={tileRows.length > 0 && isWin(tileRows[tileRows.length - 1])}
           tolerancePct={Math.round(WIN_TOLERANCE * 100)}
@@ -145,6 +148,15 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           <PartPicker label="RAM" icon="💾" options={mark(ramOptions, 'ram')} value={selection.ram} onChange={(v) => setSelection((s) => ({ ...s, ram: v }))} />
           <button type="submit" className="btn btn-primary submit-btn">
             Submit build <span className="muted">({guesses.length + 1}/{MAX_GUESSES})</span>
+          </button>
+          <button
+            type="button"
+            className="btn giveup-btn"
+            onClick={() => {
+              if (window.confirm('Give up? The answer will be revealed and this counts as a loss.')) onGiveUp();
+            }}
+          >
+            🏳 Give up
           </button>
         </form>
       )}

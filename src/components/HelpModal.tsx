@@ -39,6 +39,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
           <li>The PC diagram shows your latest guess for each part with its tile color, and locks a part in green once you find it.</li>
           <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends.</li>
         </ul>
+        <p className="muted">Stuck? Tap 🏳 Give up to see the answer (counts as a loss).</p>
         <h3>Modes</h3>
         <ul>
           <li>
