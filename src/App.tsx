@@ -3,7 +3,7 @@ import { catalog } from './lib/data';
 import { getPuzzle } from './lib/puzzle';
 import { toDateKey } from './lib/date';
 import { MAX_GUESSES } from './lib/config';
-import { evaluateGuess, isWin, possibleRange, type Tile } from './lib/feedback';
+import { evaluateGuess, isWin, type Tile } from './lib/feedback';
 import { buildFps } from './lib/fps';
 import { buildShareText } from './lib/share';
 import {
@@ -19,7 +19,7 @@ import {
   type Settings,
   type StoredGuess,
 } from './lib/storage';
-import { PART_KEYS, type BuildIdx, type PartKey } from './lib/types';
+import type { BuildIdx } from './lib/types';
 import { GameCard } from './components/GameCard';
 import { PartPicker, type PickerOption } from './components/PartPicker';
 import { GuessGrid, type GuessRow } from './components/GuessGrid';
@@ -96,37 +96,19 @@ export default function App() {
   const finished = day.status !== 'playing';
   const won = day.status === 'won';
 
-  // Options for the pickers, with parts ruled out by feedback dimmed.
-  const ranges = useMemo(() => {
-    const counts = { cpu: catalog.cpus.length, gpu: catalog.gpus.length, ram: catalog.ram.length };
-    return Object.fromEntries(
-      PART_KEYS.map((k, j) => [
-        k,
-        possibleRange(
-          guesses.map((g, i) => ({ guess: g[k], tile: tileRows[i][j] })),
-          counts[k],
-        ),
-      ]),
-    ) as Record<PartKey, [number, number]>;
-  }, [guesses, tileRows]);
-  const { cpuOptions, gpuOptions, ramOptions } = useMemo(() => {
-    const out = (k: PartKey, i: number) => i < ranges[k][0] || i > ranges[k][1];
-    return {
-      cpuOptions: catalog.cpus.map<PickerOption>((c, i) => ({
-        index: i,
-        label: c.name,
-        detail: `${c.brand} · ${c.year}`,
-        ruledOut: out('cpu', i),
-      })),
+  // Picker options (static: no hints about which parts are ruled out).
+  const { cpuOptions, gpuOptions, ramOptions } = useMemo(
+    () => ({
+      cpuOptions: catalog.cpus.map<PickerOption>((c, i) => ({ index: i, label: c.name, detail: `${c.brand} · ${c.year}` })),
       gpuOptions: catalog.gpus.map<PickerOption>((g, i) => ({
         index: i,
         label: g.name,
         detail: `${g.brand} · ${g.vramGB} GB · ${g.year}`,
-        ruledOut: out('gpu', i),
       })),
-      ramOptions: catalog.ram.map<PickerOption>((r, i) => ({ index: i, label: `${r.sizeGB} GB`, ruledOut: out('ram', i) })),
-    };
-  }, [ranges]);
+      ramOptions: catalog.ram.map<PickerOption>((r, i) => ({ index: i, label: `${r.sizeGB} GB` })),
+    }),
+    [],
+  );
 
   const shareText = () =>
     buildShareText({

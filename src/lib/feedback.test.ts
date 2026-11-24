@@ -47,15 +47,3 @@ describe('share text', () => {
     expect(buildShareText({ number: 7, targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });
 });
-
-import { possibleRange } from './feedback';
-describe('possibleRange', () => {
-  it('narrows from gray and yellow feedback', () => {
-    const t = (guess: number, answer: number) => ({ guess, tile: tileFor('cpu', guess, answer) });
-    expect(possibleRange([], 10)).toEqual([0, 9]);
-    expect(possibleRange([t(2, 6)], 10)).toEqual([4, 9]);
-    expect(possibleRange([t(2, 6), t(9, 6)], 10)).toEqual([4, 7]);
-    expect(possibleRange([t(5, 6)], 10)).toEqual([6, 6]);
-    expect(possibleRange([t(6, 6)], 10)).toEqual([6, 6]);
-  });
-});

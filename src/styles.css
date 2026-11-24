@@ -515,12 +515,6 @@ input:focus-visible {
   content: ' ✓';
   color: var(--accent);
 }
-.picker-opt.is-ruled-out {
-  opacity: 0.42;
-}
-.picker-opt.is-ruled-out .opt-label {
-  text-decoration: line-through;
-}
 .opt-tier {
   grid-area: tier;
   align-self: center;

@@ -40,7 +40,7 @@ src/
     fps.ts         the FPS model
     solver.ts      minimum-build solver
     puzzle.ts      daily generation, validity + reroll rules, 30-day no-repeat
-    feedback.ts    tiles (green/yellow/gray + arrows), ruled-out ranges
+    feedback.ts    tiles (green/yellow/gray + arrows)
     share.ts       share text
     storage.ts     localStorage state + stats
     validate.ts    sequence analysis used by the script and tests
@@ -66,7 +66,7 @@ buildFps = min(cpuFps, gpuFps) × ramMult
 Answer = weakest CPU with `cpuFps ≥ target`, weakest GPU with `gpuFps ≥ target` (penalty applied), smallest RAM `≥ ramRecGB`. Resolution and preset are constants in `config.ts` with scale tables, so you can switch to e.g. 1440p Ultra.
 
 ### Feedback
-Tiles compare tier indices: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. Each guess also shows its estimated FPS (red/green vs. target) and a **VRAM** tag if the GPU took the penalty. Picker options ruled out by earlier feedback are dimmed and struck through. Colorblind mode swaps green/yellow for orange/blue, including in share text.
+Tiles compare tier indices: 🟩 exact, 🟨 one tier away, ⬛ further. ⬆ means too weak, ⬇ means overkill. Each guess also shows its estimated FPS (red/green vs. target) and a **VRAM** tag if the GPU took the penalty. Colorblind mode swaps green/yellow for orange/blue, including in share text.
 
 ## Adding games and parts
 
