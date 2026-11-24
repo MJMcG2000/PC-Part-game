@@ -96,7 +96,7 @@ describe('validity and reroll rules', () => {
   it('every generated puzzle is valid', () => {
     for (let i = 0; i < 200; i++) {
       const p = getPuzzle(addDays('2026-12-01', i));
-      expect(checkPuzzle(p.game, p.targetFps).valid).toBe(true);
+      expect(checkPuzzle(p.game, p.targetFps, catalog, p.resolution).valid).toBe(true);
     }
   });
 });
@@ -120,7 +120,7 @@ describe('platforms and endless mode', () => {
       for (let i = 0; i < 25; i++) {
         const z = generateEndless(`s${i}`, p.id, []);
         expect(matchesPlatform(z.game, p.id)).toBe(true);
-        expect(checkPuzzle(z.game, z.targetFps).valid).toBe(true);
+        expect(checkPuzzle(z.game, z.targetFps, catalog, z.resolution).valid).toBe(true);
       }
     }
   });
@@ -136,8 +136,28 @@ describe('platforms and endless mode', () => {
 
   it('restores a saved endless puzzle with the same answer', () => {
     const z = generateEndless('restore', 'all', []);
-    const r = puzzleFromSaved(z.game.id, z.targetFps)!;
+    const r = puzzleFromSaved(z.game.id, z.targetFps, z.resolution)!;
     expect(r.answer).toEqual(z.answer);
     expect(puzzleFromSaved('nope', 60)).toBeNull();
+  });
+});
+
+describe('resolutions', () => {
+  it('daily puzzles use 1080p, 1440p and 4K', () => {
+    const seen = new Set(Array.from({ length: 60 }, (_, i) => getPuzzle(addDays('2027-01-01', i)).resolution));
+    expect([...seen].sort()).toEqual(['1080p', '1440p', '4K']);
+  });
+
+  it('higher resolutions need an equal or stronger GPU, never a different CPU', () => {
+    const game = catalog.games.find((g) => g.name === 'Cyberpunk 2077')!;
+    const a = checkPuzzle(game, 90, catalog, '1080p');
+    const b = checkPuzzle(game, 90, catalog, '1440p');
+    const c = checkPuzzle(game, 90, catalog, '4K');
+    expect(a.valid && b.valid && c.valid).toBe(true);
+    if (a.valid && b.valid && c.valid) {
+      expect(b.answer.gpu).toBeGreaterThanOrEqual(a.answer.gpu);
+      expect(c.answer.gpu).toBeGreaterThan(b.answer.gpu);
+      expect(new Set([a.answer.cpu, b.answer.cpu, c.answer.cpu]).size).toBe(1);
+    }
   });
 });

@@ -29,6 +29,7 @@ console.log(`Rigdle puzzle validation: ${days} days from ${start}`);
 console.log(`Pool: ${catalog.games.length} games, ${catalog.cpus.length} CPUs, ${catalog.gpus.length} GPUs, ${catalog.ram.length} RAM options`);
 
 table('FPS targets', r.targetCounts, (a, b) => FPS_TARGETS.indexOf(a[0] as never) - FPS_TARGETS.indexOf(b[0] as never));
+table('Resolutions', r.resolutionCounts, () => 0);
 table('Daily puzzles by platform', r.platformCounts, (a, b) => b[1] - a[1]);
 table('Playable games per platform (Endless pool)', r.playableByPlatform, () => 0);
 table('Games', r.gameCounts, (a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])));

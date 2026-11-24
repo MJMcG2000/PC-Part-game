@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
 import type { Cpu, Game, Gpu } from '../lib/types';
-import { buildFps, displayFps } from '../lib/fps';
-import { MAX_GUESSES, VRAM_PENALTY } from '../lib/config';
+import { buildFps, displayFps, requiredVramGB } from '../lib/fps';
+import { MAX_GUESSES, VRAM_PENALTY, type Resolution } from '../lib/config';
 
 interface Props {
+  resolution: Resolution;
   won: boolean;
   gaveUp: boolean;
   /** FPS of the winning build, and whether it was the exact minimum build. */
@@ -21,8 +22,9 @@ interface Props {
   children?: ReactNode;
 }
 
-export function ResultPanel({ won, gaveUp, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel, children }: Props) {
-  const b = buildFps(cpu, gpu, ramGB, game);
+export function ResultPanel({ resolution, won, gaveUp, winningFps, exact, tolerancePct, guessCount, game, targetFps, cpu, gpu, ramGB, onShare, shareLabel, children }: Props) {
+  const b = buildFps(cpu, gpu, ramGB, game, resolution);
+  const vram = Math.round(requiredVramGB(game, resolution) * 10) / 10;
   const max = Math.max(b.cpuFps, b.gpuFps, targetFps) * 1.08;
   const pct = (v: number) => `${Math.min(100, (v / max) * 100)}%`;
   return (
@@ -35,7 +37,9 @@ export function ResultPanel({ won, gaveUp, winningFps, exact, tolerancePct, gues
           Close enough: your build hit about <strong>{displayFps(winningFps)} FPS</strong>, within {tolerancePct}% of the target.
         </p>
       )}
-      <p className="result-sub">The minimum build for {targetFps} FPS was:</p>
+      <p className="result-sub">
+        The minimum build for {targetFps} FPS at {resolution} was:
+      </p>
       <ul className="answer-build">
         <li>
           <span className="ab-part">CPU</span>
@@ -72,8 +76,8 @@ export function ResultPanel({ won, gaveUp, winningFps, exact, tolerancePct, gues
         </div>
         <p className="bd-note">
           {b.limitedBy === 'cpu' ? 'CPU-limited' : 'GPU-limited'}: {displayFps(b.fps)} FPS (target {targetFps}).{' '}
-          {b.vramPenalty && `GPU VRAM is below the ${game.vramGB} GB this game wants (×${VRAM_PENALTY}). `}
-          This game recommends {game.ramRecGB} GB RAM and wants {game.vramGB} GB VRAM.
+          {b.vramPenalty && `GPU VRAM is below the ${vram} GB this game wants at ${resolution} (×${VRAM_PENALTY}). `}
+          This game recommends {game.ramRecGB} GB RAM and wants {vram} GB VRAM at {resolution}.
         </p>
       </div>
 

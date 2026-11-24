@@ -1,6 +1,6 @@
 # Rigdle
 
-A daily "-dle" puzzle about building a gaming PC (personal computer). Each day you get one Steam game and a target FPS (frames per second). In 6 guesses, pick the **minimum** CPU (central processing unit), GPU (graphics processing unit) and RAM (random access memory) that reach the target at 1080p High. Overkill counts as wrong.
+A daily "-dle" puzzle about building a gaming PC (personal computer). Each day you get one game, a target FPS (frames per second) and a resolution (1080p, 1440p or 4K, always High settings). In 6 guesses, pick the **minimum** CPU (central processing unit), GPU (graphics processing unit) and RAM (random access memory) that reach the target. Overkill counts as wrong.
 
 Two modes:
 - **Daily:** one rig per day, the same for everyone, resets at local midnight.
@@ -60,7 +60,7 @@ scripts/validate-puzzles.ts
 
 ### Daily puzzle
 - Puzzle number = days since `LAUNCH_DATE` + 1 (`2026-12-01` is #1). Earlier dates show as "Preview".
-- A PRNG is seeded with a hash of the local date string `YYYY-MM-DD`. It picks a game, then a target from `[30, 60, 90, 120, 144, 165, 240]`.
+- A PRNG is seeded with a hash of the local date string `YYYY-MM-DD`. It picks a game, a target from `[30, 60, 90, 120, 144, 165, 240]`, and a resolution from `1080p`, `1440p`, `4K` (`RESOLUTIONS` in `config.ts`).
 - If the candidate is invalid (target unreachable, or the CPU or GPU answer is the weakest or strongest option; any RAM size from 8 to 64 GB can be the answer) or the game appeared in the previous 30 days, the same seeded stream is drawn again.
 - To apply the no-repeat rule consistently, the sequence is replayed day by day from `SEQUENCE_START` and memoized. It's fast (well under a second for years of puzzles).
 
@@ -78,7 +78,17 @@ gpuFps   = gpu.rasterScore × game.gpuLoad   (× 0.6 if gpu.vramGB < game.vramGB
 ramMult  = 1.0 if ram ≥ ramRecGB, 0.85 if ram ≥ ramMinGB, else 0.5
 buildFps = min(cpuFps, gpuFps) × ramMult
 ```
-Answer = weakest CPU with `cpuFps ≥ target`, weakest GPU with `gpuFps ≥ target` (penalty applied), smallest RAM `≥ ramRecGB`. Resolution and preset are constants in `config.ts` with scale tables, so you can switch to e.g. 1440p Ultra.
+Answer = weakest CPU with `cpuFps ≥ target`, weakest GPU with `gpuFps ≥ target` (penalty applied), smallest RAM `≥ ramRecGB`.
+
+Resolution only affects the GPU side, through two tables in `config.ts`:
+
+| Resolution | GPU FPS multiplier | VRAM needed |
+|---|---|---|
+| 1080p | × 1.00 | game.vramGB × 1.0 |
+| 1440p | × 0.72 | game.vramGB × 1.2 |
+| 4K | × 0.42 | game.vramGB × 1.5 |
+
+The graphics preset is fixed at High (`PRESET`), with its own scale tables if you want to change it.
 
 ### Winning
 You win by naming the exact minimum build, **or** with any build whose estimated FPS is within ±5% of the target (`WIN_TOLERANCE` in `config.ts`). The exact build always wins, so every puzzle stays winnable even when no combination lands inside the 5% window.

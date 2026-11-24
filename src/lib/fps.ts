@@ -10,6 +10,7 @@ import {
   RESOLUTION_GPU_SCALE,
   RESOLUTION_VRAM_SCALE,
   VRAM_PENALTY,
+  type Resolution,
 } from './config';
 import type { Cpu, Game, Gpu } from './types';
 
@@ -17,17 +18,19 @@ export function cpuFps(cpu: Cpu, game: Game): number {
   return cpu.gamingScore * game.cpuLoad * PRESET_CPU_SCALE[PRESET];
 }
 
-export function requiredVramGB(game: Game): number {
-  return game.vramGB * RESOLUTION_VRAM_SCALE[RESOLUTION];
+/** VRAM the game wants at this resolution (higher resolutions need more). */
+export function requiredVramGB(game: Game, res: Resolution = RESOLUTION): number {
+  return game.vramGB * RESOLUTION_VRAM_SCALE[res];
 }
 
-export function hasVramPenalty(gpu: Gpu, game: Game): boolean {
-  return gpu.vramGB < requiredVramGB(game);
+export function hasVramPenalty(gpu: Gpu, game: Game, res: Resolution = RESOLUTION): boolean {
+  return gpu.vramGB < requiredVramGB(game, res);
 }
 
-export function gpuFps(gpu: Gpu, game: Game): number {
-  const base = gpu.rasterScore * game.gpuLoad * RESOLUTION_GPU_SCALE[RESOLUTION] * PRESET_GPU_SCALE[PRESET];
-  return hasVramPenalty(gpu, game) ? base * VRAM_PENALTY : base;
+/** GPU-limited FPS. Resolution only affects the GPU side; CPU FPS is unchanged. */
+export function gpuFps(gpu: Gpu, game: Game, res: Resolution = RESOLUTION): number {
+  const base = gpu.rasterScore * game.gpuLoad * RESOLUTION_GPU_SCALE[res] * PRESET_GPU_SCALE[PRESET];
+  return hasVramPenalty(gpu, game, res) ? base * VRAM_PENALTY : base;
 }
 
 export function ramMultiplier(ramGB: number, game: Game): number {
@@ -45,15 +48,15 @@ export interface FpsBreakdown {
   limitedBy: 'cpu' | 'gpu';
 }
 
-export function buildFps(cpu: Cpu, gpu: Gpu, ramGB: number, game: Game): FpsBreakdown {
+export function buildFps(cpu: Cpu, gpu: Gpu, ramGB: number, game: Game, res: Resolution = RESOLUTION): FpsBreakdown {
   const c = cpuFps(cpu, game);
-  const g = gpuFps(gpu, game);
+  const g = gpuFps(gpu, game, res);
   const m = ramMultiplier(ramGB, game);
   return {
     cpuFps: c,
     gpuFps: g,
     ramMultiplier: m,
-    vramPenalty: hasVramPenalty(gpu, game),
+    vramPenalty: hasVramPenalty(gpu, game, res),
     fps: Math.min(c, g) * m,
     limitedBy: c <= g ? 'cpu' : 'gpu',
   };

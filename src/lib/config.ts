@@ -37,7 +37,10 @@ export const MAX_REROLLS = 1000;
 export type Resolution = '1080p' | '1440p' | '4K';
 export type Preset = 'Low' | 'Medium' | 'High' | 'Ultra';
 
-/** Fixed resolution and graphics preset the puzzles assume. */
+/** Resolutions a puzzle can ask for (picked by the daily seed with the game and FPS). */
+export const RESOLUTIONS: readonly Resolution[] = ['1080p', '1440p', '4K'];
+
+/** Default resolution (used when none is given) and the fixed graphics preset. */
 export const RESOLUTION: Resolution = '1080p';
 export const PRESET: Preset = 'High';
 

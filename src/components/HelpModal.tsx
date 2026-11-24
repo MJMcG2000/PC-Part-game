@@ -1,5 +1,5 @@
 import { Modal } from './Modal';
-import { MAX_GUESSES, PRESET, RESOLUTION, WIN_TOLERANCE } from '../lib/config';
+import { MAX_GUESSES, PRESET, WIN_TOLERANCE } from '../lib/config';
 
 export function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
@@ -7,7 +7,11 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
       <div className="help">
         <p>
           Each day you get one Steam game and a <strong>target FPS</strong>. Spec the <strong>cheapest rig</strong> that hits it at{' '}
-          {RESOLUTION} {PRESET}: the weakest CPU, GPU and RAM that get there. You have {MAX_GUESSES} tries.
+          the shown resolution (1080p, 1440p or 4K) and {PRESET} settings: the weakest CPU, GPU and RAM that get there. You
+          have {MAX_GUESSES} tries.
+        </p>
+        <p>
+          Higher resolutions are much harder on the GPU and need more video memory (VRAM). The CPU's job doesn't change.
         </p>
         <p>
           <strong>Overkill counts as wrong.</strong> A RTX 5090 will hit any target, but it isn't the answer.
