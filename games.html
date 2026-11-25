@@ -66,7 +66,7 @@
         <p>
           Daily puzzles draw from all of these. In Endless mode you can filter by platform. Console games are estimated as
           if played on a PC, through emulation or their PC port. Some games also count toward other console generations
-          (marked "also").
+          (marked "also"). Box art loads from Steam or Wikipedia as you scroll.
         </p>
         <div class="lib-controls">
           <input id="lib-search" class="lib-search" type="search" placeholder="Search games, genres or years…" aria-label="Search games" autocomplete="off" />
@@ -74,8 +74,8 @@
         </div>
         <p id="lib-count" class="lib-count" aria-live="polite"></p>
         <div class="table-wrap"><table class="study-table lib-table">
-          <thead><tr><th>Game</th><th>Platform</th><th>Year</th><th>Genre</th></tr></thead>
-          <tbody id="lib-rows"><tr><td colspan="4"><noscript>Turn on JavaScript to see the game list.</noscript></td></tr></tbody>
+          <thead><tr><th><span class="sr-only">Box art</span></th><th>Game</th><th>Platform</th><th>Year</th><th>Genre</th></tr></thead>
+          <tbody id="lib-rows"><tr><td colspan="5"><noscript>Turn on JavaScript to see the game list.</noscript></td></tr></tbody>
         </table></div>
         <p class="page-cta"><a href="./">Back to the game</a></p>
       </main>
