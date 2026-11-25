@@ -3,7 +3,7 @@ import { catalog } from '../lib/data';
 import { WIN_TOLERANCE, maxGuesses } from '../lib/config';
 import { evaluateBuild, isWin } from '../lib/feedback';
 import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
-import { gpuChecker, guessIndices } from '../lib/board';
+import { guessIndices, partChecks } from '../lib/board';
 import { acceptedAnswers, type Puzzle } from '../lib/puzzle';
 import type { GameStatus, PartSort, StoredGuess } from '../lib/storage';
 import { PART_KEYS, formatLaunch, formatMemory, launchKey, type BuildIdx, type PartKey } from '../lib/types';
@@ -99,8 +99,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   // Either brand's minimum CPU/GPU counts as correct.
   const accepted = acceptedAnswers(puzzle);
-  const checkGpu = useMemo(() => gpuChecker(puzzle), [puzzle]);
-  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog, checkGpu)), [guesses, accepted, checkGpu]);
+  const checks = useMemo(() => partChecks(puzzle, hard), [puzzle, hard]);
+  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog, checks)), [guesses, accepted, checks]);
   const cpuAlts = Object.values(accepted.cpu).filter((i): i is number => i !== null).map((i) => catalog.cpus[i]);
   const gpuAlts = Object.values(accepted.gpu).filter((i): i is number => i !== null).map((i) => catalog.gpus[i]);
   const finished = status !== 'playing';
@@ -146,7 +146,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     const guess: BuildIdx = { cpu, gpu, ram };
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
-      isWin(evaluateBuild(guess, accepted, catalog, checkGpu)) ||
+      isWin(evaluateBuild(guess, accepted, catalog, checks)) ||
         (!hard &&
           isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game, puzzle.resolution).fps, puzzle.targetFps)),
     );
@@ -178,6 +178,24 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
               {(lastFps.limitedBy === 'cpu' ? lastFps.cpuSource : lastFps.gpuSource) ? ' · benchmark' : ' · estimate'}
             </span>
             {lastFps.vramPenalty && <span className="vram-flag" title="GPU has less VRAM than this game needs (×0.6)">VRAM</span>}
+          </span>
+        )}
+        {lastFps && (
+          <span className="readout-split" title="What each part could do on its own. The slower one sets your frame rate.">
+            <span className={lastFps.limitedBy === 'cpu' ? 'is-limit' : undefined}>
+              CPU <strong className="mono">{displayFps(lastFps.cpuFps)}</strong>
+            </span>
+            <span aria-hidden="true">·</span>
+            <span className={lastFps.limitedBy === 'gpu' ? 'is-limit' : undefined}>
+              GPU <strong className="mono">{displayFps(lastFps.gpuFps)}</strong>
+            </span>
+            {lastFps.ramMultiplier < 1 && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span className="is-limit">RAM −{Math.round((1 - lastFps.ramMultiplier) * 100)}%</span>
+              </>
+            )}
+            <span className="sr-only">. The {lastFps.limitedBy === 'cpu' ? 'CPU' : 'GPU'} is the bottleneck.</span>
           </span>
         )}
       </p>

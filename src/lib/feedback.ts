@@ -11,6 +11,8 @@ export interface Tile {
   direction: Direction;
   /** GPU only: the card has less video memory than this game needs at this resolution. */
   vramShort?: boolean;
+  /** Green because the part alone lands within the win tolerance of the target, not because it's the exact minimum. */
+  close?: boolean;
 }
 
 export function tileFor(part: PartKey, guess: number, answer: number): Tile {
@@ -61,12 +63,21 @@ export function brandTile(
   return tileFor(part, same.indexOf(guess), same.indexOf(ans));
 }
 
-/** How a guessed GPU does on this puzzle (from the FPS model). */
-export interface GpuCheck {
+/** How a guessed CPU or GPU does on this puzzle on its own (from the FPS model). */
+export interface PartCheck {
   /** Its FPS falls short of the target. */
   misses: boolean;
-  /** It has less VRAM than the game needs at this resolution. */
-  vramShort: boolean;
+  /** GPU only: it has less VRAM than the game needs at this resolution. */
+  vramShort?: boolean;
+  /** Normal mode: its own FPS is within the win tolerance of the target, so it counts as green. */
+  close?: boolean;
+}
+/** @deprecated use PartCheck */
+export type GpuCheck = PartCheck;
+
+/** Close enough counts as green (normal mode only; the checker leaves `close` unset in Hard mode). */
+export function applyClose(tile: Tile, check: PartCheck | undefined): Tile {
+  return check?.close && tile.color !== 'green' ? { part: tile.part, color: 'green', direction: null, close: true } : tile;
 }
 
 /**
@@ -76,7 +87,7 @@ export interface GpuCheck {
  * would say "go weaker", which is wrong: it is gray, points up (not enough)
  * and is flagged as short on VRAM.
  */
-export function applyVram(tile: Tile, check: GpuCheck | undefined): Tile {
+export function applyVram(tile: Tile, check: PartCheck | undefined): Tile {
   if (!check || tile.color === 'green') return tile;
   if (check.misses && tile.direction === 'down') return { ...tile, color: 'gray', direction: 'up', vramShort: true };
   return check.vramShort ? { ...tile, vramShort: true } : tile;
@@ -87,11 +98,13 @@ export function evaluateBuild(
   guess: BuildIdx,
   answers: { cpu: Record<string, number | null>; gpu: Record<string, number | null>; ram: number },
   parts: { cpus: { brand: string }[]; gpus: { brand: string }[] },
-  checkGpu?: (gpu: number) => GpuCheck,
+  checks?: { cpu?: (cpu: number) => PartCheck; gpu?: (gpu: number) => PartCheck },
 ): Tile[] {
+  const cpuCheck = checks?.cpu?.(guess.cpu);
+  const gpuCheck = checks?.gpu?.(guess.gpu);
   return [
-    brandTile('cpu', guess.cpu, parts.cpus, answers.cpu),
-    applyVram(brandTile('gpu', guess.gpu, parts.gpus, answers.gpu), checkGpu?.(guess.gpu)),
+    applyClose(brandTile('cpu', guess.cpu, parts.cpus, answers.cpu), cpuCheck),
+    applyClose(applyVram(brandTile('gpu', guess.gpu, parts.gpus, answers.gpu), gpuCheck), gpuCheck),
     tileFor('ram', guess.ram, answers.ram),
   ];
 }

@@ -1152,6 +1152,16 @@ input:focus-visible {
 .pc-readout .is-miss strong {
   color: var(--miss);
 }
+.readout-split {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 0.82rem;
+}
+.readout-split .is-limit,
+.readout-split .is-limit strong {
+  color: var(--warn);
+}
 .pc-readout .vram-flag {
   margin-left: 6px;
   vertical-align: middle;

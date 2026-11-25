@@ -1,6 +1,6 @@
 import { catalog as defaultCatalog } from './data';
-import { evaluateBuild, type GpuCheck, type Tile } from './feedback';
-import { gpuFps, hasVramPenalty } from './fps';
+import { evaluateBuild, type PartCheck, type Tile } from './feedback';
+import { cpuFps, gpuFps, hasVramPenalty, isCloseEnough } from './fps';
 import { FPS_EPSILON } from './config';
 import { acceptedAnswers, type Puzzle } from './puzzle';
 import type { StoredGuess } from './storage';
@@ -18,18 +18,31 @@ export function guessIndices(guesses: StoredGuess[]): BuildIdx[] {
   return guesses.map((g) => toIdx(g)).filter((g): g is BuildIdx => g !== null);
 }
 
-/** GPU check for a puzzle's tiles: does the card miss the target, and is it short on VRAM? */
-export function gpuChecker(puzzle: Puzzle, catalog: Catalog = defaultCatalog): (gpu: number) => GpuCheck {
-  return (i) => {
-    const g = catalog.gpus[i];
-    return {
-      misses: gpuFps(g, puzzle.game, puzzle.resolution) + FPS_EPSILON < puzzle.targetFps,
-      vramShort: hasVramPenalty(g, puzzle.game, puzzle.resolution),
-    };
+/**
+ * Per-part checks for a puzzle's tiles. A CPU or GPU whose own FPS is within
+ * the win tolerance of the target counts as green in normal mode (not in Hard
+ * mode, which wants the exact minimum part). GPUs also report a VRAM shortfall.
+ */
+export function partChecks(puzzle: Puzzle, hard = false, catalog: Catalog = defaultCatalog) {
+  const t = puzzle.targetFps;
+  const close = (fps: number) => !hard && isCloseEnough(fps, t);
+  return {
+    cpu: (i: number): PartCheck => {
+      const fps = cpuFps(catalog.cpus[i], puzzle.game);
+      return { misses: fps + FPS_EPSILON < t, close: close(fps) };
+    },
+    gpu: (i: number): PartCheck => {
+      const g = catalog.gpus[i];
+      const fps = gpuFps(g, puzzle.game, puzzle.resolution);
+      return { misses: fps + FPS_EPSILON < t, vramShort: hasVramPenalty(g, puzzle.game, puzzle.resolution), close: close(fps) };
+    },
   };
 }
 
-export function tileRowsFor(puzzle: Puzzle, guesses: StoredGuess[]): Tile[][] {
+/** GPU check only (kept for callers that don't need the CPU). */
+export const gpuChecker = (puzzle: Puzzle, hard = false) => partChecks(puzzle, hard).gpu;
+
+export function tileRowsFor(puzzle: Puzzle, guesses: StoredGuess[], hard = false): Tile[][] {
   const accepted = acceptedAnswers(puzzle);
-  return guessIndices(guesses).map((g) => evaluateBuild(g, accepted, defaultCatalog, gpuChecker(puzzle)));
+  return guessIndices(guesses).map((g) => evaluateBuild(g, accepted, defaultCatalog, partChecks(puzzle, hard)));
 }
