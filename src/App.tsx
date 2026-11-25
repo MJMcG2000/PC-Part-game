@@ -31,6 +31,8 @@ import { StatsModal } from './components/StatsModal';
 import { Countdown } from './components/Countdown';
 import { AdSlot } from './components/AdSlot';
 import { useIsDesktop } from './lib/useIsDesktop';
+import { SiteMenu } from './components/SiteMenu';
+import { TipModal } from './components/TipModal';
 
 const RECENT_KEEP = 60;
 const freshSeed = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
@@ -84,6 +86,7 @@ export default function App() {
   const [endlessStats, setEndlessStats] = useState(loadEndlessStats);
   const [helpOpen, setHelpOpen] = useState(() => !loadSettings().seenHelp);
   const [statsOpen, setStatsOpen] = useState(false);
+  const [tipOpen, setTipOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -215,6 +218,19 @@ export default function App() {
 
   const setMode = (m: Mode) => setSettings((s) => ({ ...s, mode: m }));
 
+  // Links from the static pages' menus: ./#daily, ./#endless, ./#tip, ./#help, ./#stats.
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    if (hash === 'daily' || hash === 'endless') setSettings((s) => ({ ...s, mode: hash }));
+    else if (hash === 'tip') setTipOpen(true);
+    else if (hash === 'help') setHelpOpen(true);
+    else if (hash === 'stats') setStatsOpen(true);
+    else return;
+    if (hash !== 'help') setHelpOpen(false);
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }, []);
+
   const closeHelp = () => {
     setHelpOpen(false);
     if (!settings.seenHelp) setSettings((s) => ({ ...s, seenHelp: true }));
@@ -245,6 +261,13 @@ export default function App() {
           <button className="icon-btn" onClick={() => setStatsOpen(true)} aria-label="Statistics">
             <span aria-hidden="true">▮▮▯</span>
           </button>
+          <SiteMenu
+            mode={mode}
+            onMode={setMode}
+            onHelp={() => setHelpOpen(true)}
+            onStats={() => setStatsOpen(true)}
+            onTip={() => setTipOpen(true)}
+          />
         </div>
       </header>
 
@@ -362,6 +385,7 @@ export default function App() {
       </div>
 
       <HelpModal open={helpOpen} onClose={closeHelp} />
+      <TipModal open={tipOpen} onClose={() => setTipOpen(false)} />
       <StatsModal
         open={statsOpen}
         onClose={() => setStatsOpen(false)}

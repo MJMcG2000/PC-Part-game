@@ -138,6 +138,11 @@ You win by naming the exact minimum build, **or** with any build whose estimated
 ### Either brand counts
 Each brand has its own minimum part: the weakest AMD **and** the weakest Intel CPU that reach the target are both correct, and likewise the weakest NVIDIA and AMD GPU (`solveByBrand` / `acceptedAnswers`). Tiles compare a guess with the minimum of **its own brand**, by position in that brand's performance-sorted list. If no part of a brand can reach the target, guesses of that brand are gray ⬆. Hard mode accepts either brand's exact minimum; normal mode also accepts anything within ±10%. Puzzle selection and validity still use the overall minimum (`puzzle.answer`), so daily puzzles didn't change.
 
+### Site menu and tips
+The ☰ button (top right, on the game and on every content page) lists everything the site offers: Daily, Endless, How to play, Statistics, About, FPS accuracy, Privacy, and **🍺 Buy me a beer**. The game's menu is `src/components/SiteMenu.tsx` (pages listed in `src/lib/site.ts`); the static pages use a JavaScript-free `<details>` menu whose links jump into the game with `./#daily`, `./#endless`, `./#help`, `./#stats` and `./#tip`. Keep the two lists in sync when adding a page.
+
+**Tips are a placeholder:** "Buy me a beer" opens a "tips aren't set up yet" message and links to no payment service. To turn it on later, set `VITE_TIP_URL` to an `https://` tip page (see `.env.example`) and redeploy; the message then shows a "Leave a tip" button.
+
 ### Accuracy study
 `accuracy.html` publishes a study of the FPS model against published benchmarks (20 comparisons: hardware rankings, resolution scaling and game frame rates; median error 2.8%, 18 of 20 within ±10%). It led to these data changes: 4K GPU multiplier 0.42 → 0.38, RTX 3070 score 119 → 126, Cyberpunk 2077 gpuLoad 0.8 → 0.9, Black Myth: Wukong 0.55 → 0.5, Starfield 0.6 → 0.5. Update the page if you retune the model.
 
