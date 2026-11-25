@@ -53,3 +53,18 @@ describe('fallbacks for generic requirements', () => {
     expect(findGpus('GTX 560 Ti / Intel HD 4000').map((g) => g.score)).toEqual([20, 2]);
   });
 });
+
+describe('very old requirement styles', () => {
+  it('reads MHz CPUs, Athlon ratings and tiny video cards', () => {
+    expect(guessCpu('Pentium II or Athlon 450 MHz')).toBe(1);
+    expect(guessCpu('Intel Pentium IV 2.4 GHz or AMD 3500+')).toBe(7);
+    expect(guessCpu('AMD 2000+ processor')).toBe(7.1);
+    expect(guessGpu('16MB Direct3D Compatible Graphics Card')).toEqual({ score: 0.3, vramGB: 16 / 1024 });
+    expect(findGpus('NVIDIA 7800GTX+ or ATI 1950+').map((g) => g.score)).toEqual([6, 8]); // 7800 GTX is in gpus.json at 6
+    expect(findGpus('NVIDIA GeForce 8800 or ATI Radeon X1900').map((g) => g.score)).toEqual([9, 7]);
+  });
+  it('handles requirements without labels', () => {
+    const r = parseRequirements({ minimum: '<ul><li>500 mhz processor, 96mb ram, 16mb video card, Windows XP</li></ul>' });
+    expect(r).not.toBeNull();
+  });
+});

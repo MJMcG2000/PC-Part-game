@@ -32,7 +32,7 @@ export const stripHtml = (html: string) =>
 /** The text after a label such as "Processor:" or "Graphics:", up to the next line. */
 function field(text: string, labels: string[]): string {
   for (const l of labels) {
-    const m = text.match(new RegExp(`${l}\\s*:?\\s*([^\\n]+)`, 'i'));
+    const m = text.match(new RegExp(`${l}\\s*:\\s*([^\\n]+)`, 'i'));
     if (m) return m[1];
   }
   return '';
@@ -60,8 +60,9 @@ interface Tier {
 function tier(html: string | undefined): Tier | null {
   if (!html) return null;
   const text = stripHtml(html);
-  const cpuLine = field(text, ['Processor', 'CPU']);
-  const gpuLine = field(text, ['Graphics', 'Video Card', 'Video', 'GPU']);
+  const cpuLine = field(text, ['Processor', 'CPU']) || (text.match(/[^\n,]*(?:ghz|mhz|pentium|athlon|core)[^\n,]*/i)?.[0] ?? '');
+  const gpuLine =
+    field(text, ['Graphics', 'Video Card', 'Video', 'GPU']) || (text.match(/[^\n,]*\d+\s*mb\s*(?:video|graphics|vram)[^\n,]*/i)?.[0] ?? '');
   let cpus = findCpus(cpuLine);
   let gpus = findGpus(gpuLine);
   if (!cpus.length) {
@@ -73,6 +74,9 @@ function tier(html: string | undefined): Tier | null {
     if (g) gpus = [g];
   }
   const vramText = field(text, ['Graphics', 'Video Card', 'Video', 'GPU']).match(/(\d+)\s*GB\s*(?:of\s*)?(?:VRAM|video|dedicated)/i);
+  // Only one side named: infer the other from it (era-matched CPUs score about twice their GPUs here).
+  if (!cpus.length && gpus.length) cpus = [Math.max(2, mean(gpus.slice(0, 2).map((g) => g.score)) * 2)];
+  if (cpus.length && !gpus.length && !gpuLine) gpus = [{ score: Math.max(0.3, mean(cpus.slice(0, 2)) / 2), vramGB: 1 }];
   return {
     cpu: cpus.length ? mean(cpus.slice(0, 2)) : null,
     gpu: gpus.length ? mean(gpus.slice(0, 2).map((g) => g.score)) : null,

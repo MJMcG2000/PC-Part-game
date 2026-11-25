@@ -26,7 +26,8 @@ export function normPart(s: string): string {
 
 const EXTRA_GPUS: Record<string, [number, number]> = {
   // NVIDIA (older parts common in Steam requirements)
-  '6600': [1.5, 0.125], '7600 gt': [2, 0.25], '7800 gt': [5, 0.25], '7900 gt': [5.5, 0.25], '8600 gt': [3, 0.25], '8800 gt': [10, 0.5],
+  '6600': [1.5, 0.125], '6800': [3, 0.25], '7300': [1, 0.125], '7800': [5, 0.25], '7900': [5.5, 0.25], '8600': [3, 0.25],
+  '8800': [9, 0.5], '9600': [6, 0.5], '9800': [10, 0.5], 'x1300': [1.5, 0.125], 'x1900': [7, 0.5], 'fx 5200': [0.8, 0.125], '7600 gt': [2, 0.25], '7800 gt': [5, 0.25], '7900 gt': [5.5, 0.25], '8600 gt': [3, 0.25], '8800 gt': [10, 0.5],
   '8800 gts': [9, 0.5], '9600 gt': [6, 0.5], '9800 gt': [10, 0.5], '9800 gtx': [11, 0.5], 'gts 250': [11, 0.5], 'gts 450': [11, 1],
   'gtx 260': [13, 0.875], 'gtx 275': [15, 0.875], 'gtx 460': [15, 1], 'gtx 470': [18, 1.25], 'gtx 550 ti': [12, 1], 'gtx 560': [17, 1],
   'gtx 560 ti': [20, 1], 'gtx 570': [22, 1.25], 'gtx 590': [30, 1.5], 'gtx 690': [45, 2], 'gt 640': [6, 1], 'gt 710': [2, 1],
@@ -98,7 +99,9 @@ const gpuKeys = [...gpuTable.keys()].sort((a, b) => b.length - a.length);
 const cpuKeys = [...cpuTable.keys()].sort((a, b) => b.length - a.length);
 
 /** Model-like tokens in a requirement line, e.g. "GTX 1060", "RX 580", "i5-4460", "Ryzen 5 1600", "FX-6300". */
-const GPU_RE = /\b(?:geforce\s*)?(?:(?:gtx|rtx|gts|gt)\s*-?\s*\d{3,4}(?:\s*(?:ti|super))*|titan\s*x|(?:radeon\s*)?(?:rx\s*(?:vega\s*)?\d{2,4}(?:\s*(?:xtx|xt|gre))?|r[79]\s*\d{3}x?|r9\s*fury\s*x?|hd\s*\d{4}|x\d{3,4})|arc\s*[ab]\d{3}|(?:u?hd|intel\s*hd)\s*(?:graphics\s*)?\d{3,4}|iris\s*(?:xe|plus)|geforce\s*\d{4}\s*gt[sx]?|geforce\s*6600|\b[6-9][68]00\s*gt[sx]?)\b/gi;
+const GPU_RE = /\b(?:geforce\s*)?(?:(?:gtx|rtx|gts|gt)\s*-?\s*\d{3,4}(?:\s*(?:ti|super))*|titan\s*x|(?:radeon\s*)?(?:rx\s*(?:vega\s*)?\d{2,4}(?:\s*(?:xtx|xt|gre))?|r[79]\s*\d{3}x?|r9\s*fury\s*x?|hd\s*\d{4}|x\d{3,4})|arc\s*[ab]\d{3}|(?:u?hd|intel\s*hd)\s*(?:graphics\s*)?\d{3,4}|iris\s*(?:xe|plus)|(?:geforce|nvidia)\s*(?:fx\s*5200|[6-9][0-9]00(?:\s*gt[sx]?)?)|\b[6-9][68]00\s*gt[sx]?)\b/gi;
+/** "ATI 1950" / "Radeon 1300" mean the X1950 / X1300. */
+const ATI_X = /\b(?:ati|radeon)\s*(1[3-9]\d0)\b/gi;
 const CPU_RE = /\b(?:i[3579]\s*-?\s*\d{3,5}[a-z]{0,2}|ryzen\s*[3579]\s*(?:pro\s*)?\d{4}x?(?:3d)?[a-z]?|fx\s*-?\s*\d{4}|phenom\s*ii\s*x[46]\s*\d{3,4}t?|athlon\s*(?:64\s*)?x[24]\s*\d{3,4}k?\+?|core\s*2\s*(?:duo|quad)\s*[eq]\d{4}|pentium\s*g\d{4}|core\s*ultra\s*[579]\s*\d{3}k?)\b/gi;
 
 function lookup<T>(token: string, keys: string[], table: Map<string, T>): T | undefined {
@@ -112,6 +115,7 @@ function lookup<T>(token: string, keys: string[], table: Map<string, T>): T | un
 
 /** GPUs named in a requirement text (in order), with scores. */
 export function findGpus(text: string): GpuInfo[] {
+  text = text.replace(ATI_X, 'radeon x$1');
   return [...text.matchAll(GPU_RE)].map((m) => lookup(m[0], gpuKeys, gpuTable)).filter((g): g is GpuInfo => !!g);
 }
 
@@ -127,11 +131,15 @@ export function findCpus(text: string): number[] {
  */
 export function guessCpu(line: string): number | null {
   const t = line.toLowerCase();
-  const ghz = Number(t.match(/(\d(?:\.\d+)?)\s*ghz/)?.[1] ?? 0);
+  const mhz = Number(t.match(/(\d{3,4})\s*mhz/)?.[1] ?? 0);
+  const ghz = Number(t.match(/(\d(?:\.\d+)?)\s*\+?\s*ghz/)?.[1] ?? 0) || mhz / 1000;
+  // Athlon XP / Athlon 64 performance ratings ("AMD 3500+", "Athlon 2000+").
+  const rating = Number(t.match(/\b(?:amd|athlon)[^0-9]{0,12}([1-4]\d{3})\s*\+/)?.[1] ?? 0);
+  if (rating && !ghz) return Math.round((rating / 280) * 10) / 10;
   const generic: [RegExp, number][] = [
     [/ryzen\s*7/, 120], [/ryzen\s*5/, 100], [/ryzen\s*3/, 75], [/\bi7\b/, 65], [/\bi5\b/, 55], [/\bi3\b/, 35],
     [/core\s*2\s*quad|quad\s*-?\s*core|4\s*cores?/, 0], [/core\s*2\s*duo|dual\s*-?\s*core|2\s*cores?|athlon\s*(64\s*)?x2/, 0],
-    [/pentium\s*4|athlon\s*64|single\s*-?\s*core/, 0],
+    [/pentium\s*(4|iv|iii|ii)|\bp4\b|\bpiii\b|athlon|celeron|duron|single\s*-?\s*core/, 0],
   ];
   for (const [re, score] of generic) {
     if (!re.test(t)) continue;
@@ -148,7 +156,7 @@ export function guessGpu(line: string): GpuInfo | null {
   const m = line.match(/(\d+(?:\.\d+)?)\s*(gb|mb)/i);
   if (!m) return null;
   const gb = m[2].toLowerCase() === 'mb' ? Number(m[1]) / 1024 : Number(m[1]);
-  if (gb < 0.06 || gb > 24) return null;
-  const score = gb <= 0.125 ? 1.5 : gb <= 0.25 ? 3 : gb <= 0.5 ? 6 : gb <= 1 ? 12 : gb <= 2 ? 20 : gb <= 4 ? 35 : gb <= 6 ? 48 : 60;
+  if (gb < 0.008 || gb > 24) return null;
+  const score = gb <= 0.016 ? 0.3 : gb <= 0.032 ? 0.5 : gb <= 0.064 ? 0.9 : gb <= 0.125 ? 1.5 : gb <= 0.25 ? 3 : gb <= 0.5 ? 6 : gb <= 1 ? 12 : gb <= 2 ? 20 : gb <= 4 ? 35 : gb <= 6 ? 48 : 60;
   return { score, vramGB: gb };
 }
