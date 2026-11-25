@@ -11,9 +11,10 @@ export interface SitePage {
   description: string;
 }
 
-/** Static content pages, in menu order. Keep in sync with the menus in about/tiers/accuracy/privacy.html. */
+/** Static content pages, in menu order. Keep in sync with the menus in about/games/tiers/accuracy/privacy.html. */
 export const SITE_PAGES: SitePage[] = [
   { label: 'About', href: './about.html', description: 'What Rigdle is and how it works' },
+  { label: 'Game library', href: './games.html', description: 'Every game that can come up' },
   { label: 'Part tiers', href: './tiers.html', description: 'How CPUs and GPUs are ranked' },
   { label: 'FPS accuracy', href: './accuracy.html', description: 'How the estimates compare with benchmarks' },
   { label: 'Privacy', href: './privacy.html', description: 'What data is stored and who handles it' },
