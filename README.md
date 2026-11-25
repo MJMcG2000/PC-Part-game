@@ -63,6 +63,10 @@ Replace these placeholders before applying to AdSense:
 - **The ad unit:** create a display ad unit in AdSense (Ads → By ad unit) and put its numeric ID in `VITE_ADSENSE_SLOT`. `src/components/AdSlot.tsx` renders it once, labeled "Advertisement", in a fixed 250px-high box (so the layout doesn't jump), below the game and above the footer. Keep ads out of the board, the part pickers and the modals, and away from buttons, per AdSense's accidental-click policy.
 - **Consent (EEA, UK, Switzerland):** don't build a custom cookie banner. In AdSense, go to **Privacy & messaging → European regulations**, create a message for your site, and publish it. Google then shows its own certified consent message to visitors from the European Economic Area, the UK and Switzerland before serving personalized ads.
 
+### Security headers
+
+`public/_headers` sets HTTP response headers on Cloudflare Pages (GitHub Pages ignores it). It blocks other sites from framing Rigdle (clickjacking), stops MIME type sniffing, trims the referrer sent to other sites, and turns off camera, microphone, location, USB and payment access. It also has a **report-only** Content Security Policy: violations show in the browser console but nothing is blocked. After ads go live, check the console on the game page, add any Google domain it reports, and only then rename the header to `Content-Security-Policy` to enforce it. If you add a new external image or API source, add its host there too. Turn on **Always Use HTTPS** and **HSTS** in the Cloudflare dashboard (SSL/TLS → Edge Certificates) once the custom domain is live.
+
 ## Project layout
 
 ```
@@ -72,7 +76,7 @@ games.html         game library: every game in the pool, searchable and filterab
 tiers.html         part tier lists and how tiles/arrows work (tables built from src/data by src/tiers-page.ts)
 accuracy.html      crawlable FPS-model accuracy study (published results)
 privacy.html       crawlable Privacy policy
-public/            favicon, ads.txt, robots.txt, sitemap.xml (copied as-is)
+public/            favicon, ads.txt, robots.txt, sitemap.xml, _headers (copied as-is)
 .env.example       AdSense configuration template
 src/
   data/            games.json (295 PC games), console-games.json (190 console games: top-15s and more per generation + all Switch/Wii Pokémon + handheld Pokémon); 485 games in all,
