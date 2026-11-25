@@ -72,6 +72,7 @@ Replace these placeholders before applying to AdSense:
 ```
 index.html         the game (React app)
 about.html         crawlable About page
+planner.html       build planner: game + FPS + resolution -> minimum CPU/GPU (per brand) and RAM (src/planner.tsx, same solver as the puzzles)
 games.html         game library: every game in the pool, searchable and filterable by platform (built from src/data by src/games-page.ts)
 tiers.html         part tier lists and how tiles/arrows work (tables built from src/data by src/tiers-page.ts)
 accuracy.html      crawlable FPS-model accuracy study (published results)
@@ -150,7 +151,7 @@ Each brand has its own minimum part: the weakest AMD **and** the weakest Intel C
 - **Light mode:** dark is the default. The theme toggle saves `rigdle:theme` in localStorage, and a tiny inline script in each page's `<head>` applies a saved light theme before first paint (no dark flash). Colors are CSS variables in `styles.css` (`:root` for dark, `:root[data-theme='light']` for light, plus colorblind overrides for each).
 
 ### Site menu and tips
-The ☰ button (top left, on the game and on every content page) lists everything the site offers: Daily, Endless, How to play, Statistics, About, Game library, Part tiers, FPS accuracy, Privacy, and **🍺 Buy me a beer**. The game's menu is `src/components/SiteMenu.tsx` (pages listed in `src/lib/site.ts`); the static pages use a JavaScript-free `<details>` menu whose links jump into the game with `./#daily`, `./#endless`, `./#help`, `./#stats` and `./#tip`. Keep the two lists in sync when adding a page.
+The ☰ button (top left, on the game and on every content page) lists everything the site offers: Daily, Endless, How to play, Statistics, About, Build planner, Game library, Part tiers, FPS accuracy, Privacy, and **🍺 Buy me a beer**. The game's menu is `src/components/SiteMenu.tsx` (pages listed in `src/lib/site.ts`); the static pages use a JavaScript-free `<details>` menu whose links jump into the game with `./#daily`, `./#endless`, `./#help`, `./#stats` and `./#tip`. Keep the two lists in sync when adding a page.
 
 **Tips are a placeholder:** "Buy me a beer" opens a "tips aren't set up yet" message and links to no payment service. To turn it on later, set `VITE_TIP_URL` to an `https://` tip page (see `.env.example`) and redeploy; the message then shows a "Leave a tip" button.
 

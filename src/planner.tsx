@@ -1,0 +1,157 @@
+/**
+ * Build planner: pick a game, a target FPS and a resolution, and get the
+ * minimum CPU (per brand), GPU (per brand) and RAM that reach it, using the
+ * same FPS model and data as the puzzles.
+ */
+import { StrictMode, useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { catalog } from './lib/data';
+import { RESOLUTIONS, type Resolution } from './lib/config';
+import { solveByBrand } from './lib/solver';
+import { buildFps, displayFps } from './lib/fps';
+import { platformInfo } from './lib/platforms';
+import { formatLaunch, formatMemory, type Cpu, type Gpu } from './lib/types';
+import { PartPicker, type PickerOption } from './components/PartPicker';
+import './styles.css';
+
+// Sorted Z→A because the picker lists the highest index first, so it shows A→Z.
+const games = [...catalog.games].sort((a, b) => b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: 'base' }));
+const gameOptions: PickerOption[] = games.map((g, i) => ({
+  index: i,
+  label: g.name,
+  detail: `${platformInfo(g.platform).short} · ${g.releaseYear}`,
+}));
+const FPS_PRESETS = [30, 60, 90, 120, 144, 165, 240];
+
+function Planner() {
+  const [gameIdx, setGameIdx] = useState<number | null>(null);
+  const [fps, setFps] = useState(60);
+  const [res, setRes] = useState<Resolution>('1080p');
+  const game = gameIdx === null ? null : games[gameIdx];
+  const target = Math.max(1, Math.min(500, Math.round(fps) || 0));
+
+  const result = useMemo(() => {
+    if (!game) return null;
+    const a = solveByBrand(game, target, catalog, res);
+    const cpus = Object.entries(a.cpu).map(([brand, i]) => ({ brand, part: i === null ? null : catalog.cpus[i] }));
+    const gpus = Object.entries(a.gpu).map(([brand, i]) => ({ brand, part: i === null ? null : catalog.gpus[i] }));
+    const ram = a.ram < 0 ? null : catalog.ram[a.ram].sizeGB;
+    return { cpus, gpus, ram };
+  }, [game, target, res]);
+
+  // Estimated FPS of the cheapest pairing (first available CPU + GPU of each list).
+  const estimate = useMemo(() => {
+    if (!game || !result) return null;
+    const cpu = result.cpus.find((c) => c.part)?.part;
+    const gpu = result.gpus.find((g) => g.part)?.part;
+    if (!cpu || !gpu || result.ram === null) return null;
+    return buildFps(cpu, gpu, result.ram, game, res);
+  }, [game, result, res]);
+
+  const cpuLine = (c: Cpu) => `${c.memory} · ${formatLaunch(c.year, c.month)}`;
+  const gpuLine = (g: Gpu) => `${formatMemory(g.vramGB)} VRAM · ${formatLaunch(g.year, g.month)}`;
+
+  return (
+    <div className="planner">
+      <div className="planner-form">
+        <PartPicker label="Game" icon="🎮" options={gameOptions} value={gameIdx} onChange={setGameIdx} sort="tier" />
+        <div className="planner-row">
+          <label className="planner-field">
+            <span className="picker-label">🎯 Target FPS</span>
+            <input
+              type="number"
+              min={1}
+              max={500}
+              value={fps}
+              onChange={(e) => setFps(Number(e.target.value))}
+              className="planner-input"
+            />
+          </label>
+          <div className="planner-field">
+            <span className="picker-label">🖥 Resolution</span>
+            <div className="brand-switch" role="radiogroup" aria-label="Resolution">
+              {RESOLUTIONS.map((r) => (
+                <button key={r} type="button" role="radio" aria-checked={res === r} className={`brand-opt${res === r ? ' is-on' : ''}`} onClick={() => setRes(r)}>
+                  {r}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="planner-presets" aria-label="FPS presets">
+          {FPS_PRESETS.map((f) => (
+            <button key={f} type="button" className={`filter-chip${target === f ? ' is-on' : ''}`} onClick={() => setFps(f)}>
+              {f}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {!game && <p className="planner-empty">Pick a game to see the minimum parts.</p>}
+      {game && result && (
+        <section className="planner-result" aria-live="polite">
+          <h2>
+            {game.name} <small>at {target} FPS, {res}, High settings</small>
+          </h2>
+          <div className="planner-grid">
+            <div className="planner-card">
+              <h3>🧠 CPU</h3>
+              {result.cpus.map(({ brand, part }) => (
+                <p key={brand}>
+                  <span className="planner-brand">{brand}</span>
+                  {part ? (
+                    <>
+                      <strong>{part.name}</strong>
+                      <small>{cpuLine(part)}</small>
+                    </>
+                  ) : (
+                    <em>None fast enough</em>
+                  )}
+                </p>
+              ))}
+            </div>
+            <div className="planner-card">
+              <h3>🎮 GPU</h3>
+              {result.gpus.map(({ brand, part }) => (
+                <p key={brand}>
+                  <span className="planner-brand">{brand}</span>
+                  {part ? (
+                    <>
+                      <strong>{part.name}</strong>
+                      <small>{gpuLine(part)}</small>
+                    </>
+                  ) : (
+                    <em>None fast enough</em>
+                  )}
+                </p>
+              ))}
+            </div>
+            <div className="planner-card">
+              <h3>💾 RAM</h3>
+              <p>
+                <strong>{result.ram === null ? 'More than 64 GB' : formatMemory(result.ram)}</strong>
+                <small>Recommended for {game.name}</small>
+              </p>
+            </div>
+          </div>
+          {estimate && (
+            <p className="planner-estimate">
+              Estimated with the cheapest pairing: <strong className="mono">{displayFps(estimate.fps)} FPS</strong> (CPU{' '}
+              {displayFps(estimate.cpuFps)} · GPU {displayFps(estimate.gpuFps)}).
+            </p>
+          )}
+          <p className="planner-note">
+            These are the weakest parts in Rigdle's list that reach the target, from its simplified FPS model. Real results
+            depend on drivers, patches and settings, so treat them as a starting point. See <a href="./accuracy.html">how accurate the model is</a>.
+          </p>
+        </section>
+      )}
+    </div>
+  );
+}
+
+createRoot(document.getElementById('planner-root')!).render(
+  <StrictMode>
+    <Planner />
+  </StrictMode>,
+);

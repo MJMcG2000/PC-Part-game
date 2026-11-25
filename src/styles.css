@@ -2099,3 +2099,95 @@ details.site-menu[open] > summary {
     display: none;
   }
 }
+
+/* ---------- Build planner ---------- */
+.planner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+.planner-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: flex-end;
+}
+.planner-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.planner-input {
+  width: 120px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text);
+  font: inherit;
+  font-family: var(--mono);
+}
+.planner-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.planner-empty {
+  color: var(--text-dim);
+  text-align: center;
+  margin: 28px 0;
+}
+.planner-result h2 small {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 0.85rem;
+  margin-left: 4px;
+}
+.planner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.planner-card {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.planner-card h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+.planner-card p {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 10px;
+}
+.planner-card p:last-child {
+  margin-bottom: 0;
+}
+.planner-card small,
+.planner-brand {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+.planner-brand {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.planner-estimate {
+  margin-top: 14px;
+}
+.planner-note {
+  font-size: 0.85rem;
+  color: var(--text-dim) !important;
+}
+@media (min-width: 960px) {
+  .app-page .planner-page > #planner-root {
+    max-width: 900px;
+  }
+}
