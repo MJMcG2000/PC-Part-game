@@ -6,7 +6,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
     <Modal open={open} title="How to play" onClose={onClose}>
       <div className="help">
         <p>
-          Each day you get one Steam game and a <strong>target FPS</strong>. Spec the <strong>cheapest rig</strong> that hits it at{' '}
+          Each day you get one game (PC or console) and a <strong>target FPS</strong>. Spec the <strong>cheapest rig</strong> that hits it at{' '}
           the shown resolution (1080p, 1440p or 4K) and {PRESET} settings: the weakest CPU, GPU and RAM that get there. You
           have {MAX_GUESSES} tries ({HARD_MAX_GUESSES} in Hard mode).
         </p>

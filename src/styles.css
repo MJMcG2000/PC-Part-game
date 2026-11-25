@@ -1473,3 +1473,160 @@ p.logo {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Site menu (☰) ---------- */
+.site-menu {
+  position: relative;
+}
+details.site-menu > summary {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+details.site-menu > summary::-webkit-details-marker {
+  display: none;
+}
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-btn.is-on,
+details.site-menu[open] > summary {
+  border-color: var(--accent);
+}
+.burger {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 18px;
+}
+.burger span {
+  display: block;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 30;
+  width: min(290px, calc(100vw - 32px));
+  max-height: calc(100dvh - 90px);
+  overflow-y: auto;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-2);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  text-align: left;
+}
+.menu-heading {
+  margin: 8px 10px 4px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu-item small {
+  font-size: 0.76rem;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+.menu-item:hover,
+.menu-item:focus-visible {
+  background: rgba(124, 92, 255, 0.18);
+}
+.menu-item.is-current {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.menu-divider {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--line);
+}
+.tip-item span {
+  color: #fbbf24;
+}
+/* Static pages: Play button + menu on the right of the top bar. */
+.topbar .topbar-right {
+  align-items: center;
+}
+.topbar-right .play-link {
+  justify-self: auto;
+}
+
+/* ---------- Tip modal ---------- */
+.tip {
+  display: grid;
+  gap: 12px;
+}
+.tip p {
+  margin: 0;
+  line-height: 1.5;
+}
+.tip-soon {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px dashed var(--line-strong);
+  color: var(--text-dim);
+}
+.tip-soon strong {
+  color: var(--text);
+}
+.tip-cta {
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Narrow phones: four top-bar buttons + logo need to share the row. */
+@media (max-width: 440px) {
+  .topbar .icon-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+  }
+  .topbar-right {
+    gap: 4px;
+  }
+  .logo {
+    font-size: 1.3rem;
+    letter-spacing: 0.16em;
+  }
+  .topbar-right .play-link {
+    height: 36px;
+    padding: 0 10px;
+  }
+}
+@media (max-width: 380px) {
+  .logo {
+    font-size: 1.12rem;
+    letter-spacing: 0.1em;
+  }
+  .topbar .icon-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 6px;
+  }
+}
