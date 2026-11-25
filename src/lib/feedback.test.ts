@@ -17,7 +17,7 @@ describe('feedback tiles', () => {
   it('evaluates a full guess in CPU, GPU, RAM order', () => {
     const tiles = evaluateGuess({ cpu: 3, gpu: 10, ram: 1 }, { cpu: 4, gpu: 6, ram: 1 });
     expect(tiles.map((t) => [t.part, t.color, t.direction])).toEqual([
-      ['cpu', 'yellow', null], // yellow never shows a direction
+      ['cpu', 'yellow', 'up'],
       ['gpu', 'gray', 'down'],
       ['ram', 'green', null],
     ]);

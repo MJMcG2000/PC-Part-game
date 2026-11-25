@@ -150,7 +150,7 @@ The ☰ button (top left, on the game and on every content page) lists everythin
 **Tips are a placeholder:** "Buy me a beer" opens a "tips aren't set up yet" message and links to no payment service. To turn it on later, set `VITE_TIP_URL` to an `https://` tip page (see `.env.example`) and redeploy; the message then shows a "Leave a tip" button.
 
 ### Accuracy study
-Yellow tiles carry no arrow (one tier away, direction hidden); only gray tiles show ⬆/⬇. The pickers have a Sort parts toggle (Newest / By tier), saved in settings.
+The pickers have a Sort parts toggle (Newest / By tier), saved in settings.
 
 `tiers.html` explains tiers (each brand's parts ranked by performance score, which is what yellow/gray tiles count) and lists every ladder. Its tables are generated from `src/data` at build time, so they stay in sync. GPU tiles are VRAM-aware: a card ranked above the answer that still misses the target because of too little VRAM shows gray ⬆ with a VRAM tag instead of a misleading ⬇.
 

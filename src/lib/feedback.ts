@@ -2,7 +2,7 @@ import type { BuildIdx, PartKey } from './types';
 import { PART_KEYS } from './types';
 
 export type TileColor = 'green' | 'yellow' | 'gray';
-/** 'up' = guess is too weak (go stronger); 'down' = overkill (go weaker). Yellow tiles shown to players carry no direction (see hideYellowDirection). */
+/** 'up' = guess is too weak (go stronger); 'down' = overkill (go weaker). */
 export type Direction = 'up' | 'down' | null;
 
 export interface Tile {
@@ -23,15 +23,8 @@ export function tileFor(part: PartKey, guess: number, answer: number): Tile {
   };
 }
 
-/**
- * Only gray tiles tell the player which way to go. A yellow tile says "one
- * tier away" without saying up or down, so the player has to work out which
- * neighbor it is. Applied last, after the VRAM fix-up (which needs the raw direction).
- */
-export const hideYellowDirection = (t: Tile): Tile => (t.color === 'yellow' && t.direction ? { ...t, direction: null } : t);
-
 export function evaluateGuess(guess: BuildIdx, answer: BuildIdx): Tile[] {
-  return PART_KEYS.map((k) => hideYellowDirection(tileFor(k, guess[k], answer[k])));
+  return PART_KEYS.map((k) => tileFor(k, guess[k], answer[k]));
 }
 
 export const isWin = (tiles: Tile[]) => tiles.every((t) => t.color === 'green');
@@ -100,5 +93,5 @@ export function evaluateBuild(
     brandTile('cpu', guess.cpu, parts.cpus, answers.cpu),
     applyVram(brandTile('gpu', guess.gpu, parts.gpus, answers.gpu), checkGpu?.(guess.gpu)),
     tileFor('ram', guess.ram, answers.ram),
-  ].map(hideYellowDirection);
+  ];
 }

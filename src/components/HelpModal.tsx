@@ -30,10 +30,10 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
             <span className="tile tile-green mini">✓</span> Exact part.
           </li>
           <li>
-            <span className="tile tile-yellow mini">~</span> One tier away, either stronger or weaker. Yellow doesn't say which.
+            <span className="tile tile-yellow mini">⬆</span> One tier away. ⬆ go stronger, ⬇ go weaker.
           </li>
           <li>
-            <span className="tile tile-gray mini">⬇</span> Two or more tiers away. Only gray tiles show an arrow: ⬆ too weak, ⬇ overkill.
+            <span className="tile tile-gray mini">⬇</span> Two or more tiers away. ⬆ too weak, ⬇ overkill.
           </li>
         </ul>
         <p className="muted">
