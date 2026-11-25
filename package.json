@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc -b",
     "validate-puzzles": "tsx scripts/validate-puzzles.ts",
-    "import-benchmarks": "tsx scripts/import-benchmarks.ts"
+    "import-benchmarks": "tsx scripts/import-benchmarks.ts",
+    "import-steam": "tsx scripts/import-steam.ts"
   },
   "dependencies": {
     "react": "^19.3.1",

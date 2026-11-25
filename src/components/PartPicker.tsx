@@ -32,10 +32,14 @@ interface Props {
   disabled?: boolean;
   /** 'tier': strongest first (the order tiles count in). Default: newest first. */
   sort?: 'newest' | 'tier';
+  /** Render at most this many matches (for very long lists); the rest appear as the player types. */
+  maxShown?: number;
+  /** Placeholder text for the search box. */
+  placeholder?: string;
 }
 
 /** Searchable select following the WAI-ARIA combobox pattern. Lists newest first, or strongest first with sort="tier" (largest first when there's no launch date). */
-export function PartPicker({ label, icon, brands, brand, onBrandChange, note, options, value, onChange, disabled, sort = 'newest' }: Props) {
+export function PartPicker({ label, icon, brands, brand, onBrandChange, note, options, value, onChange, disabled, sort = 'newest', maxShown, placeholder }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -62,6 +66,8 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
       return terms.every((t) => hay.includes(t));
     });
   }, [ordered, query]);
+  const shown = maxShown ? filtered.slice(0, maxShown) : filtered;
+  const hidden = filtered.length - shown.length;
 
   useEffect(() => {
     if (!open) return;
@@ -80,7 +86,7 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
     if (disabled) return;
     setOpen(true);
     setQuery('');
-    const i = filtered.findIndex((o) => o.index === value);
+    const i = shown.findIndex((o) => o.index === value);
     setActive(Math.max(0, i));
   };
 
@@ -99,17 +105,17 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
     if (!open) return;
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setActive((a) => Math.min(filtered.length - 1, a + 1));
+      setActive((a) => Math.min(shown.length - 1, a + 1));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setActive((a) => Math.max(0, a - 1));
     } else if (e.key === 'Home') {
       setActive(0);
     } else if (e.key === 'End') {
-      setActive(filtered.length - 1);
+      setActive(shown.length - 1);
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (filtered[active]) choose(filtered[active]);
+      if (shown[active]) choose(shown[active]);
     } else if (e.key === 'Escape') {
       e.preventDefault();
       setOpen(false);
@@ -151,11 +157,11 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
           aria-expanded={open}
           aria-controls={listId}
           aria-autocomplete="list"
-          aria-activedescendant={open && filtered[active] ? `${id}-opt-${filtered[active].index}` : undefined}
+          aria-activedescendant={open && shown[active] ? `${id}-opt-${shown[active].index}` : undefined}
           autoComplete="off"
           spellCheck={false}
           disabled={disabled}
-          placeholder={selected ? selected.label : `Search ${label}…`}
+          placeholder={selected ? selected.label : placeholder ?? `Search ${label}…`}
           value={open ? query : selected?.label ?? ''}
           onFocus={openList}
           onClick={() => !open && openList()}
@@ -172,8 +178,8 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
       </div>
       {open && (
         <ul className="picker-list" id={listId} role="listbox" ref={listRef} aria-label={`${label} options, ${sort === 'tier' ? 'strongest' : 'newest'} first`}>
-          {filtered.length === 0 && <li className="picker-empty">No matches</li>}
-          {filtered.map((o, i) => (
+          {shown.length === 0 && <li className="picker-empty">No matches</li>}
+          {shown.map((o, i) => (
             <li
               key={o.index}
               id={`${id}-opt-${o.index}`}
@@ -190,6 +196,7 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
               {o.crossed && <span className="sr-only"> (already guessed)</span>}
             </li>
           ))}
+          {hidden > 0 && <li className="picker-empty">{hidden.toLocaleString()} more. Keep typing to narrow it down.</li>}
         </ul>
       )}
       {note && <p className="picker-note">{note}</p>}

@@ -1,0 +1,42 @@
+name: Import Steam library
+
+# Builds public/data/steam-library.json (planner search data) from Steam's
+# published system requirements and commits it to the branch "steam-library".
+# Run it from the Actions tab: Import Steam library -> Run workflow.
+# 10,000 games takes about 4-5 hours (the Steam store rate-limits requests).
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'How many of the most-owned Steam games to check'
+        default: '10000'
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Restore the request cache from earlier runs
+        uses: actions/cache@v4
+        with:
+          path: .steam-cache
+          key: steam-cache-${{ github.run_id }}
+          restore-keys: steam-cache-
+      - run: npm run import-steam -- --limit ${{ inputs.limit }}
+      - name: Commit the library to the steam-library branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B steam-library
+          git add -f public/data/steam-library.json
+          git commit -m "Update Steam library for the Build planner" || echo "No changes"
+          git push -f origin steam-library

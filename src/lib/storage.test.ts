@@ -53,3 +53,22 @@ describe('guess limits', () => {
     expect(padDistribution(undefined)).toEqual([0, 0, 0, 0, 0, 0, 0, 0]);
   });
 });
+
+import { loadDayState, loadStats, saveDayState, voidDaily } from './storage';
+describe('voidDaily (Build planner)', () => {
+  it("ends today's Daily as a loss once, and does nothing if it's already finished", () => {
+    const store = new Map<string, string>();
+    (globalThis as { localStorage?: unknown }).localStorage = {
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => void store.set(k, v),
+      removeItem: (k: string) => void store.delete(k),
+    };
+    saveDayState({ dateKey: '2027-02-01', guesses: [], status: 'playing' });
+    expect(voidDaily('2027-02-01')).toBe(true);
+    expect(loadDayState('2027-02-01').status).toBe('lost');
+    expect(loadStats()).toMatchObject({ played: 1, wins: 0, currentStreak: 0, lastPlayedDate: '2027-02-01' });
+    expect(voidDaily('2027-02-01')).toBe(false);
+    expect(loadStats().played).toBe(1);
+    delete (globalThis as { localStorage?: unknown }).localStorage;
+  });
+});

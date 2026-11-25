@@ -395,6 +395,8 @@ export default function App() {
         <nav className="footer-links" aria-label="Site">
           <a href="./about.html">About</a>
           <span aria-hidden="true">·</span>
+          <a href="./planner.html">Planner</a>
+          <span aria-hidden="true">·</span>
           <a href="./games.html">Games</a>
           <span aria-hidden="true">·</span>
           <a href="./tiers.html">Tiers</a>

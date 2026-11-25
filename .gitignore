@@ -6,3 +6,6 @@ dist
 .env
 .env.local
 .env.*.local
+
+# Steam import cache (scripts/import-steam.ts)
+.steam-cache/
