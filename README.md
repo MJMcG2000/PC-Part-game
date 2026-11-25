@@ -68,6 +68,7 @@ Replace these placeholders before applying to AdSense:
 ```
 index.html         the game (React app)
 about.html         crawlable About page
+tiers.html         part tier lists and how tiles/arrows work (tables built from src/data by src/tiers-page.ts)
 accuracy.html      crawlable FPS-model accuracy study (published results)
 privacy.html       crawlable Privacy policy
 public/            favicon, ads.txt, robots.txt, sitemap.xml (copied as-is)
@@ -144,11 +145,15 @@ Each brand has its own minimum part: the weakest AMD **and** the weakest Intel C
 - **Light mode:** dark is the default. The theme toggle saves `rigdle:theme` in localStorage, and a tiny inline script in each page's `<head>` applies a saved light theme before first paint (no dark flash). Colors are CSS variables in `styles.css` (`:root` for dark, `:root[data-theme='light']` for light, plus colorblind overrides for each).
 
 ### Site menu and tips
-The ☰ button (top right, on the game and on every content page) lists everything the site offers: Daily, Endless, How to play, Statistics, About, FPS accuracy, Privacy, and **🍺 Buy me a beer**. The game's menu is `src/components/SiteMenu.tsx` (pages listed in `src/lib/site.ts`); the static pages use a JavaScript-free `<details>` menu whose links jump into the game with `./#daily`, `./#endless`, `./#help`, `./#stats` and `./#tip`. Keep the two lists in sync when adding a page.
+The ☰ button (top left, on the game and on every content page) lists everything the site offers: Daily, Endless, How to play, Statistics, About, Part tiers, FPS accuracy, Privacy, and **🍺 Buy me a beer**. The game's menu is `src/components/SiteMenu.tsx` (pages listed in `src/lib/site.ts`); the static pages use a JavaScript-free `<details>` menu whose links jump into the game with `./#daily`, `./#endless`, `./#help`, `./#stats` and `./#tip`. Keep the two lists in sync when adding a page.
 
 **Tips are a placeholder:** "Buy me a beer" opens a "tips aren't set up yet" message and links to no payment service. To turn it on later, set `VITE_TIP_URL` to an `https://` tip page (see `.env.example`) and redeploy; the message then shows a "Leave a tip" button.
 
 ### Accuracy study
+Yellow tiles carry no arrow (one tier away, direction hidden); only gray tiles show ⬆/⬇. The pickers have a Sort parts toggle (Newest / By tier), saved in settings.
+
+`tiers.html` explains tiers (each brand's parts ranked by performance score, which is what yellow/gray tiles count) and lists every ladder. Its tables are generated from `src/data` at build time, so they stay in sync. GPU tiles are VRAM-aware: a card ranked above the answer that still misses the target because of too little VRAM shows gray ⬆ with a VRAM tag instead of a misleading ⬇.
+
 `accuracy.html` publishes a study of the FPS model against published benchmarks (20 comparisons: hardware rankings, resolution scaling and game frame rates; median error 2.8%, 18 of 20 within ±10%). It led to these data changes: 4K GPU multiplier 0.42 → 0.38, RTX 3070 score 119 → 126, Cyberpunk 2077 gpuLoad 0.8 → 0.9, Black Myth: Wukong 0.55 → 0.5, Starfield 0.6 → 0.5. Update the page if you retune the model.
 
 ### Benchmark data

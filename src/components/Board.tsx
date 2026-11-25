@@ -3,9 +3,9 @@ import { catalog } from '../lib/data';
 import { WIN_TOLERANCE, maxGuesses } from '../lib/config';
 import { evaluateBuild, isWin } from '../lib/feedback';
 import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
-import { guessIndices } from '../lib/board';
+import { gpuChecker, guessIndices } from '../lib/board';
 import { acceptedAnswers, type Puzzle } from '../lib/puzzle';
-import type { GameStatus, StoredGuess } from '../lib/storage';
+import type { GameStatus, PartSort, StoredGuess } from '../lib/storage';
 import { PART_KEYS, formatLaunch, formatMemory, launchKey, type BuildIdx, type PartKey } from '../lib/types';
 import { GameCard } from './GameCard';
 import { PartPicker, type PickerOption } from './PartPicker';
@@ -64,10 +64,18 @@ interface Props {
   desktop?: boolean;
   /** Extra content for the game column on desktop (shown at the bottom on mobile), e.g. the countdown. */
   aside?: ReactNode;
+  /** Picker order (saved in settings). */
+  partSort?: PartSort;
+  onPartSort?: (s: PartSort) => void;
 }
 
+const SORTS: { id: PartSort; label: string }[] = [
+  { id: 'newest', label: 'Newest' },
+  { id: 'tier', label: 'By tier' },
+];
+
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp, desktop = false, aside }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp, desktop = false, aside, partSort = 'newest', onPartSort }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
   const [cpuBrand, setCpuBrand] = useState(CPU_BRANDS[0].id);
   const [gpuBrand, setGpuBrand] = useState(GPU_BRANDS[0].id);
@@ -91,7 +99,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   // Either brand's minimum CPU/GPU counts as correct.
   const accepted = acceptedAnswers(puzzle);
-  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog)), [guesses, accepted]);
+  const checkGpu = useMemo(() => gpuChecker(puzzle), [puzzle]);
+  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog, checkGpu)), [guesses, accepted, checkGpu]);
   const cpuAlts = Object.values(accepted.cpu).filter((i): i is number => i !== null).map((i) => catalog.cpus[i]);
   const gpuAlts = Object.values(accepted.gpu).filter((i): i is number => i !== null).map((i) => catalog.gpus[i]);
   const finished = status !== 'playing';
@@ -137,7 +146,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     const guess: BuildIdx = { cpu, gpu, ram };
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
-      isWin(evaluateBuild(guess, accepted, catalog)) ||
+      isWin(evaluateBuild(guess, accepted, catalog, checkGpu)) ||
         (!hard &&
           isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game, puzzle.resolution).fps, puzzle.targetFps)),
     );
@@ -205,6 +214,29 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           }}
           aria-label="Build your rig"
         >
+          <div className="sort-row">
+            <span className="sort-label" id="part-sort-label">
+              Sort parts
+            </span>
+            <div className="brand-switch" role="radiogroup" aria-labelledby="part-sort-label">
+              {SORTS.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={partSort === s.id}
+                  className={`brand-opt${partSort === s.id ? ' is-on' : ''}`}
+                  onClick={() => onPartSort?.(s.id)}
+                  title={s.id === 'tier' ? 'Strongest first: the order tiles count tiers in' : 'Newest launch first'}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <a className="sort-help" href="./tiers.html">
+              What's a tier?
+            </a>
+          </div>
           <PartPicker
             label="CPU"
             icon="🧠"
@@ -214,6 +246,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
             options={mark(cpuOptions.filter((o) => o.brand === cpuBrand), 'cpu')}
             value={selection.cpu}
             onChange={(v) => setSelection((s) => ({ ...s, cpu: v }))}
+            sort={partSort}
           />
           <PartPicker
             label="GPU"
@@ -224,6 +257,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
             options={mark(gpuOptions.filter((o) => o.brand === gpuBrand), 'gpu')}
             value={selection.gpu}
             onChange={(v) => setSelection((s) => ({ ...s, gpu: v }))}
+            sort={partSort}
           />
           <PartPicker
             label="RAM"

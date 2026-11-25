@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
         input: {
           main: page('index.html'),
           about: page('about.html'),
+          tiers: page('tiers.html'),
           accuracy: page('accuracy.html'),
           privacy: page('privacy.html'),
         },

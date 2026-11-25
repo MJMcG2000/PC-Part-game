@@ -1038,6 +1038,18 @@ input:focus-visible {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+.pc-slot-vram {
+  position: absolute;
+  left: 5px;
+  bottom: 3px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: #f59e0b;
+  color: #0b0d12;
+}
 .pc-slot-arrow {
   position: absolute;
   right: 5px;
@@ -1736,4 +1748,72 @@ details.site-menu[open] > summary {
   .topbar-left {
     gap: 4px;
   }
+}
+
+/* ---------- Part tiers page ---------- */
+.tiers-page h3 {
+  margin: 22px 0 6px;
+  font-size: 1rem;
+}
+.tiers-page h3 small {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 0.8rem;
+  margin-left: 6px;
+}
+.tier-table th,
+.tier-table td {
+  padding: 7px 8px;
+}
+.tier-table td:nth-child(2) {
+  white-space: normal;
+  min-width: 140px;
+}
+.tier-track {
+  display: inline-block;
+  width: 48px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 4px;
+  background: var(--panel-2);
+  vertical-align: middle;
+  overflow: hidden;
+}
+.tier-bar {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent);
+}
+.tier-vram-chip {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+.tier-vram-chip {
+  background: #f59e0b;
+  color: #0b0d12;
+}
+
+/* ---------- Picker sort toggle ---------- */
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+.sort-label {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.sort-help {
+  margin-left: auto;
+  color: var(--link);
+  font-size: 0.78rem;
 }
