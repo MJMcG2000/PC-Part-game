@@ -39,7 +39,8 @@ function field(text: string, labels: string[]): string {
 }
 
 function ramGB(text: string): number | null {
-  const m = field(text, ['Memory', 'RAM']).match(/(\d+(?:\.\d+)?)\s*(GB|MB)/i);
+  const m =
+    field(text, ['Memory', 'RAM']).match(/(\d+(?:\.\d+)?)\s*(GB|MB)/i) ?? text.match(/(\d+(?:\.\d+)?)\s*(GB|MB)\s*(?:of\s*)?(?:system\s*)?RAM/i);
   if (!m) return null;
   const n = parseFloat(m[1]);
   return m[2].toUpperCase() === 'MB' ? n / 1024 : n;

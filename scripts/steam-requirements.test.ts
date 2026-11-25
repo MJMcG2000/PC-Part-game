@@ -68,3 +68,9 @@ describe('very old requirement styles', () => {
     expect(r).not.toBeNull();
   });
 });
+
+describe('RAM without a label', () => {
+  it('reads "96mb ram" anywhere in the block', () => {
+    expect(parseRequirements({ minimum: '<ul><li>500 mhz processor, 96mb ram, 16mb video card</li></ul>' })).toMatchObject({ ramMinGB: 0.5, ramRecGB: 0.5 });
+  });
+});
