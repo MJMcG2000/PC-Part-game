@@ -150,7 +150,7 @@ The ☰ button (top left, on the game and on every content page) lists everythin
 **Tips are a placeholder:** "Buy me a beer" opens a "tips aren't set up yet" message and links to no payment service. To turn it on later, set `VITE_TIP_URL` to an `https://` tip page (see `.env.example`) and redeploy; the message then shows a "Leave a tip" button.
 
 ### Accuracy study
-The pickers have a Sort parts toggle (Newest / By tier), saved in settings.
+In normal mode a CPU or GPU whose own FPS is within the win tolerance of the target counts as green (shown ≈; `partChecks` in `src/lib/board.ts`); Hard mode still needs the exact part. The readout under the PC shows the CPU-only and GPU-only FPS of the last build, with the bottleneck highlighted. After `HINT_AFTER_GUESSES` (3) guesses without a win, a 💡 hint under the PC shows the launch year of the answer CPU/GPU for the selected brands and the game's recommended RAM, for parts not found yet (`src/lib/hint.ts`). The pickers have a Sort parts toggle (By tier, the default, or Newest), saved in settings.
 
 `tiers.html` explains tiers (each brand's parts ranked by performance score, which is what yellow/gray tiles count) and lists every ladder. Its tables are generated from `src/data` at build time, so they stay in sync. GPU tiles are VRAM-aware: a card ranked above the answer that still misses the target because of too little VRAM shows gray ⬆ with a VRAM tag instead of a misleading ⬇.
 

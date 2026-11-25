@@ -20,6 +20,9 @@ export const HARD_MAX_GUESSES = 8;
 /** Guess limit for a puzzle. */
 export const maxGuesses = (hard: boolean) => (hard ? HARD_MAX_GUESSES : MAX_GUESSES);
 
+/** A hint (answer launch years and recommended RAM) appears after this many guesses without a win. */
+export const HINT_AFTER_GUESSES = 3;
+
 /**
  * You also win if your build's estimated FPS is within this fraction of the
  * target (above or below), even if it isn't the exact minimum build.

@@ -1152,6 +1152,16 @@ input:focus-visible {
 .pc-readout .is-miss strong {
   color: var(--miss);
 }
+.readout-split {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 0.82rem;
+}
+.readout-split .is-limit,
+.readout-split .is-limit strong {
+  color: var(--warn);
+}
 .pc-readout .vram-flag {
   margin-left: 6px;
   vertical-align: middle;
@@ -1816,4 +1826,28 @@ details.site-menu[open] > summary {
   margin-left: auto;
   color: var(--link);
   font-size: 0.78rem;
+}
+
+/* ---------- Hint (after a few guesses) ---------- */
+.hint-card {
+  margin: 10px auto 0;
+  max-width: 420px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px dashed var(--warn);
+  background: var(--panel);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.hint-title {
+  font-weight: 700;
+  color: var(--warn);
+}
+.hint-card ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  color: var(--text-body);
+}
+.hint-card li {
+  margin: 1px 0;
 }

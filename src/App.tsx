@@ -139,7 +139,7 @@ export default function App() {
         gameName: daily.game.name,
         targetFps: daily.targetFps,
         resolution: daily.resolution,
-        rows: tileRowsFor(daily, day.guesses),
+        rows: tileRowsFor(daily, day.guesses, dailyHard),
         won: day.status === 'won',
         colorblind: settings.colorblind,
         hard: dailyHard,
@@ -153,7 +153,7 @@ export default function App() {
         gameName: endlessPuzzle.game.name,
         targetFps: endlessPuzzle.targetFps,
         resolution: endlessPuzzle.resolution,
-        rows: tileRowsFor(endlessPuzzle, endless.guesses),
+        rows: tileRowsFor(endlessPuzzle, endless.guesses, endlessHard),
         won: endless.status === 'won',
         colorblind: settings.colorblind,
         hard: endlessHard,
@@ -331,7 +331,7 @@ export default function App() {
               onGiveUp={giveUpDaily}
               toast={showToast}
               hard={dailyHard}
-              partSort={settings.partSort ?? 'newest'}
+              partSort={settings.partSort ?? 'tier'}
               onPartSort={(partSort) => setSettings((st) => ({ ...st, partSort }))}
               desktop={isDesktop}
               aside={<Countdown now={now} />}
@@ -373,7 +373,7 @@ export default function App() {
               onGiveUp={giveUpEndless}
               toast={showToast}
               hard={endlessHard}
-              partSort={settings.partSort ?? 'newest'}
+              partSort={settings.partSort ?? 'tier'}
               onPartSort={(partSort) => setSettings((st) => ({ ...st, partSort }))}
               desktop={isDesktop}
               resultActions={

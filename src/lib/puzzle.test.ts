@@ -272,18 +272,46 @@ describe('handheld weighting', () => {
   });
 });
 
-import { gpuChecker } from './board';
+import { partChecks } from './board';
+import { isCloseEnough } from './fps';
 describe('GPU arrows never say "go weaker" for a card that misses the target', () => {
-  it('holds for a year of daily puzzles', () => {
+  it('holds for a year of daily puzzles (normal and hard)', () => {
     for (let i = 0; i < 365; i++) {
       const p = getPuzzle(addDays('2026-12-01', i));
       const a = acceptedAnswers(p);
-      const check = gpuChecker(p);
-      catalog.gpus.forEach((_, gpu) => {
-        const t = evaluateBuild({ cpu: p.answer.cpu, gpu, ram: a.ram }, a, catalog, check)[1];
-        if (check(gpu).misses) expect(t.direction).not.toBe('down');
-        if (t.color !== 'green') expect(t.direction).not.toBeNull();
+      for (const hard of [false, true]) {
+        const checks = partChecks(p, hard);
+        catalog.gpus.forEach((_, gpu) => {
+          const t = evaluateBuild({ cpu: p.answer.cpu, gpu, ram: a.ram }, a, catalog, checks)[1];
+          if (checks.gpu(gpu).misses) expect(t.direction).not.toBe('down');
+          if (t.color !== 'green') expect(t.direction).not.toBeNull();
+        });
+      }
+    }
+  });
+});
+
+describe('close enough counts as green (normal mode only)', () => {
+  it('a CPU or GPU within the win tolerance on its own is green ≈; hard mode needs the exact part', () => {
+    let seen = 0;
+    for (let i = 0; i < 120; i++) {
+      const p = getPuzzle(addDays('2026-12-01', i));
+      const a = acceptedAnswers(p);
+      const normal = partChecks(p, false);
+      const hard = partChecks(p, true);
+      catalog.cpus.forEach((c, cpu) => {
+        const close = isCloseEnough(cpuFps(c, p.game), p.targetFps);
+        const exact = Object.values(a.cpu).includes(cpu);
+        const tn = evaluateBuild({ cpu, gpu: p.answer.gpu, ram: a.ram }, a, catalog, normal)[0];
+        const th = evaluateBuild({ cpu, gpu: p.answer.gpu, ram: a.ram }, a, catalog, hard)[0];
+        expect(tn.color === 'green').toBe(close || exact);
+        expect(th.color === 'green').toBe(exact);
+        if (close && !exact) {
+          expect(tn.close).toBe(true);
+          seen++;
+        }
       });
     }
+    expect(seen).toBeGreaterThan(0);
   });
 });
