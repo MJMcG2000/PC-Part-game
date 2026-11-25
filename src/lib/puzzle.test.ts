@@ -273,7 +273,7 @@ describe('handheld weighting', () => {
 });
 
 import { gpuChecker } from './board';
-describe('GPU arrows never say "go weaker" for a card that misses the target; only gray tiles have arrows', () => {
+describe('GPU arrows never say "go weaker" for a card that misses the target', () => {
   it('holds for a year of daily puzzles', () => {
     for (let i = 0; i < 365; i++) {
       const p = getPuzzle(addDays('2026-12-01', i));
@@ -282,8 +282,7 @@ describe('GPU arrows never say "go weaker" for a card that misses the target; on
       catalog.gpus.forEach((_, gpu) => {
         const t = evaluateBuild({ cpu: p.answer.cpu, gpu, ram: a.ram }, a, catalog, check)[1];
         if (check(gpu).misses) expect(t.direction).not.toBe('down');
-        if (t.color === 'gray') expect(t.direction).not.toBeNull();
-        if (t.color === 'yellow') expect(t.direction).toBeNull();
+        if (t.color !== 'green') expect(t.direction).not.toBeNull();
       });
     }
   });
