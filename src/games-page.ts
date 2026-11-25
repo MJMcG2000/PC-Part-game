@@ -104,7 +104,7 @@ function render() {
           const p = platformInfo(g.platform);
           const also = (g.alsoOn ?? []).map((a) => platformInfo(a).short).join(', ');
           return `<tr>
-            <td class="lib-art-cell"><span class="lib-art platform-${g.platform}"><img data-id="${esc(g.id)}" alt="${esc(g.name)} box art" referrerpolicy="no-referrer" /></span></td>
+            <td class="lib-art-cell"><span class="lib-art platform-${g.platform}"><img data-id="${esc(g.id)}" alt="" referrerpolicy="no-referrer" /></span></td>
             <td>${esc(g.name)}</td>
             <td><span class="platform-chip platform-${g.platform}">${esc(p.short)}</span>${also ? ` <small class="lib-also">also ${esc(also)}</small>` : ''}</td>
             <td class="mono">${g.releaseYear}</td>
