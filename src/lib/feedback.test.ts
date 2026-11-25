@@ -55,6 +55,11 @@ describe('share text', () => {
     expect(buildShareText({ number: 42, gameName: 'X', targetFps: 144, rows, won: true, hard: true })).toMatch(/^Rigdle #42 3\/8\*\n/);
     expect(buildShareText({ number: 42, gameName: 'X', targetFps: 144, rows, won: false, hard: true })).toMatch(/^Rigdle #42 X\/8\*\n/);
   });
+  it('includes the puzzle date as MM/DD/YYYY under the score', () => {
+    expect(buildShareText({ number: 42, gameName: 'Cyberpunk 2077', targetFps: 144, rows, won: true, date: '2026-11-25' })).toBe(
+      'Rigdle #42 3/6\n📅 11/25/2026\n🎮 Cyberpunk 2077\n🎯 144 FPS @ 1080p High\nCPU | GPU | RAM\n🟨 | ⬛ | 🟩\n🟩 | 🟨 | 🟩\n🟩 | 🟩 | 🟩',
+    );
+  });
   it('uses X/6 on a loss', () => {
     expect(buildShareText({ number: 7, gameName: 'X', targetFps: 60, rows: rows.slice(0, 1), won: false })).toMatch(/^Rigdle #7 X\/6/);
   });
