@@ -60,7 +60,7 @@ interface Props {
   hard: boolean;
   /** End the puzzle as a loss and reveal the answer. */
   onGiveUp: () => void;
-  /** Two-column desktop layout: game + target on the left, diagram + guessing on the right. */
+  /** Desktop layout: three columns (game + target | PC diagram | guessing) so nothing needs scrolling. */
   desktop?: boolean;
   /** Extra content for the game column on desktop (shown at the bottom on mobile), e.g. the countdown. */
   aside?: ReactNode;
@@ -149,7 +149,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
         <GameCard game={puzzle.game} targetFps={puzzle.targetFps} resolution={puzzle.resolution} label={label} />
         {desktop && aside}
       </div>
-      <div className="board-play">
+      <div className="board-pc">
       <PcDiagram slots={slots} />
       <p className="pc-readout" aria-live="polite">
         {hard && <span className="hard-badge">HARD</span>}
@@ -172,6 +172,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
           </span>
         )}
       </p>
+      </div>
+      <div className="board-guess">
       {finished ? (
         <ResultPanel
           resolution={puzzle.resolution}

@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0b0d12" />
+    <script>
+      try { if (localStorage.getItem('rigdle:theme') === 'light') { document.documentElement.dataset.theme = 'light'; document.querySelector('meta[name="theme-color"]').content = '#f3f5f9'; } } catch (e) {}
+    </script>
+    <script>
+      function rigdleToggleTheme(btn) {
+        var light = document.documentElement.dataset.theme !== 'light';
+        if (light) document.documentElement.dataset.theme = 'light'; else delete document.documentElement.dataset.theme;
+        document.querySelector('meta[name="theme-color"]').content = light ? '#f3f5f9' : '#0b0d12';
+        try { localStorage.setItem('rigdle:theme', light ? 'light' : 'dark'); } catch (e) {}
+        btn.setAttribute('aria-pressed', String(light));
+        btn.textContent = light ? '\u{1F319}' : '\u2600\uFE0F';
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        var light = document.documentElement.dataset.theme === 'light';
+        var btn = document.querySelector('[data-theme-toggle]');
+        if (btn) { btn.setAttribute('aria-pressed', String(light)); btn.textContent = light ? '\u{1F319}' : '\u2600\uFE0F'; }
+      });
+    </script>
     <title>Privacy Policy – Rigdle</title>
     <meta
       name="description"
@@ -15,10 +33,7 @@
   <body>
     <div class="app">
       <header class="topbar">
-        <span></span>
-        <p class="logo"><a href="./" aria-label="Rigdle home"><span class="logo-text">RIGDLE</span></a></p>
-        <div class="topbar-right">
-          <a class="play-link" href="./">Play ▸</a>
+        <div class="topbar-left">
           <details class="site-menu">
             <summary class="icon-btn menu-btn" aria-label="Menu"><span class="burger" aria-hidden="true"><span></span><span></span><span></span></span></summary>
             <nav class="menu-panel" aria-label="Site menu">
@@ -35,6 +50,11 @@
             <a class="menu-item tip-item" href="./#tip"><span>🍺 Buy me a beer</span></a>
             </nav>
           </details>
+          <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="Light mode" aria-pressed="false" onclick="rigdleToggleTheme(this)">☀️</button>
+        </div>
+        <p class="logo"><a href="./" aria-label="Rigdle home"><span class="logo-text">RIGDLE</span></a></p>
+        <div class="topbar-right">
+          <a class="play-link" href="./">Play ▸</a>
         </div>
       </header>
 

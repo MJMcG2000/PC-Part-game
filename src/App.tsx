@@ -33,6 +33,7 @@ import { AdSlot } from './components/AdSlot';
 import { useIsDesktop } from './lib/useIsDesktop';
 import { SiteMenu } from './components/SiteMenu';
 import { TipModal } from './components/TipModal';
+import { applyTheme, currentTheme, type Theme } from './lib/theme';
 
 const RECENT_KEEP = 60;
 const freshSeed = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
@@ -87,6 +88,13 @@ export default function App() {
   const [helpOpen, setHelpOpen] = useState(() => !loadSettings().seenHelp);
   const [statsOpen, setStatsOpen] = useState(false);
   const [tipOpen, setTipOpen] = useState(false);
+  // Dark by default; the inline script in index.html applies a saved light theme before paint.
+  const [theme, setTheme] = useState<Theme>(currentTheme);
+  const toggleTheme = () => {
+    const next: Theme = theme === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    setTheme(next);
+  };
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -242,9 +250,24 @@ export default function App() {
   return (
     <div className={`app${isDesktop ? ' is-desktop' : ''}`}>
       <header className="topbar">
-        <button className="icon-btn" onClick={() => setHelpOpen(true)} aria-label="How to play">
-          ?
-        </button>
+        <div className="topbar-left">
+          <SiteMenu
+            mode={mode}
+            onMode={setMode}
+            onHelp={() => setHelpOpen(true)}
+            onStats={() => setStatsOpen(true)}
+            onTip={() => setTipOpen(true)}
+          />
+          <button
+            className="icon-btn theme-btn"
+            onClick={toggleTheme}
+            aria-pressed={theme === 'light'}
+            aria-label="Light mode"
+            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          >
+            <span aria-hidden="true">{theme === 'light' ? '🌙' : '☀️'}</span>
+          </button>
+        </div>
         <h1 className="logo">
           <span className="logo-text">RIGDLE</span>
         </h1>
@@ -261,13 +284,9 @@ export default function App() {
           <button className="icon-btn" onClick={() => setStatsOpen(true)} aria-label="Statistics">
             <span aria-hidden="true">▮▮▯</span>
           </button>
-          <SiteMenu
-            mode={mode}
-            onMode={setMode}
-            onHelp={() => setHelpOpen(true)}
-            onStats={() => setStatsOpen(true)}
-            onTip={() => setTipOpen(true)}
-          />
+          <button className="icon-btn" onClick={() => setHelpOpen(true)} aria-label="How to play">
+            ?
+          </button>
         </div>
       </header>
 

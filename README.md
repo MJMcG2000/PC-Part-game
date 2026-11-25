@@ -138,6 +138,11 @@ You win by naming the exact minimum build, **or** with any build whose estimated
 ### Either brand counts
 Each brand has its own minimum part: the weakest AMD **and** the weakest Intel CPU that reach the target are both correct, and likewise the weakest NVIDIA and AMD GPU (`solveByBrand` / `acceptedAnswers`). Tiles compare a guess with the minimum of **its own brand**, by position in that brand's performance-sorted list. If no part of a brand can reach the target, guesses of that brand are gray ⬆. Hard mode accepts either brand's exact minimum; normal mode also accepts anything within ±10%. Puzzle selection and validity still use the overall minimum (`puzzle.answer`), so daily puzzles didn't change.
 
+### Layout and themes
+- **Top bar:** ☰ menu and ☀️/🌙 theme toggle on the left; 👁 colorblind, statistics and **?** (how to play) on the right. Content pages have ☰ + theme on the left and "Play ▸" on the right.
+- **Desktop (960px and wider, `useIsDesktop`):** three columns, with game card + target | PC diagram | part pickers or result. The PC diagram scales with the window height, so at 100% zoom the game, the diagram and the guess controls are all visible without scrolling on common screens (checked from 1280×720 to 1920×1080). Phones keep the single-column layout.
+- **Light mode:** dark is the default. The theme toggle saves `rigdle:theme` in localStorage, and a tiny inline script in each page's `<head>` applies a saved light theme before first paint (no dark flash). Colors are CSS variables in `styles.css` (`:root` for dark, `:root[data-theme='light']` for light, plus colorblind overrides for each).
+
 ### Site menu and tips
 The ☰ button (top right, on the game and on every content page) lists everything the site offers: Daily, Endless, How to play, Statistics, About, FPS accuracy, Privacy, and **🍺 Buy me a beer**. The game's menu is `src/components/SiteMenu.tsx` (pages listed in `src/lib/site.ts`); the static pages use a JavaScript-free `<details>` menu whose links jump into the game with `./#daily`, `./#endless`, `./#help`, `./#stats` and `./#tip`. Keep the two lists in sync when adding a page.
 
