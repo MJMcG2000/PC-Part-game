@@ -179,6 +179,7 @@ Columns (see `scripts/benchmarks-template.csv`): `game, kind (cpu|gpu), part, re
 **Share result** copies text like this to the clipboard (one row per guess, columns CPU | GPU | RAM):
 ```
 Rigdle #42 3/6
+📅 11/25/2026
 🎮 Cyberpunk 2077
 🎯 144 FPS @ 1080p High
 CPU | GPU | RAM
