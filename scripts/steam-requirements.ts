@@ -7,7 +7,7 @@
  * their scores are averaged. Rough by design: it's a planner estimate, not a
  * benchmark.
  */
-import { findCpus, findGpus } from './hardware-scores';
+import { findCpus, findGpus, guessCpu, guessGpu } from './hardware-scores';
 
 export const REC_FPS = 55;
 export const MIN_FPS = 25;
@@ -60,8 +60,18 @@ interface Tier {
 function tier(html: string | undefined): Tier | null {
   if (!html) return null;
   const text = stripHtml(html);
-  const cpus = findCpus(field(text, ['Processor', 'CPU']));
-  const gpus = findGpus(field(text, ['Graphics', 'Video Card', 'Video', 'GPU']));
+  const cpuLine = field(text, ['Processor', 'CPU']);
+  const gpuLine = field(text, ['Graphics', 'Video Card', 'Video', 'GPU']);
+  let cpus = findCpus(cpuLine);
+  let gpus = findGpus(gpuLine);
+  if (!cpus.length) {
+    const g = guessCpu(cpuLine);
+    if (g) cpus = [g];
+  }
+  if (!gpus.length) {
+    const g = guessGpu(gpuLine);
+    if (g) gpus = [g];
+  }
   const vramText = field(text, ['Graphics', 'Video Card', 'Video', 'GPU']).match(/(\d+)\s*GB\s*(?:of\s*)?(?:VRAM|video|dedicated)/i);
   return {
     cpu: cpus.length ? mean(cpus.slice(0, 2)) : null,

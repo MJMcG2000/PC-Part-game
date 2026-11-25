@@ -37,6 +37,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B steam-library
-          git add -f public/data/steam-library.json
+          git add -f public/data/steam-library.json steam-import-debug.json
           git commit -m "Update Steam library for the Build planner" || echo "No changes"
           git push -f origin steam-library

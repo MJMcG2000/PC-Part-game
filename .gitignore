@@ -9,3 +9,4 @@ dist
 
 # Steam import cache (scripts/import-steam.ts)
 .steam-cache/
+steam-import-debug.json

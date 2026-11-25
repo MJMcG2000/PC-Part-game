@@ -14,7 +14,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parseRequirements } from './steam-requirements';
+import { parseRequirements, stripHtml } from './steam-requirements';
 import gamesJson from '../src/data/games.json';
 import consoleJson from '../src/data/console-games.json';
 
@@ -103,18 +103,32 @@ async function main() {
   // [appid, name, year, genre, cpuLoad, gpuLoad, vramGB, ramMinGB, ramRecGB]
   const items: (string | number)[][] = [];
   let skipped = 0;
+  // Why apps were skipped, with their requirement lines, to improve the parser (written next to the library).
+  const debug: { id: number; name?: string; why: string; cpu?: string; gpu?: string }[] = [];
   for (const [n, id] of ids.entries()) {
     const d = await storeDetails(id).catch((e) => (console.warn(`  ${id}: ${e.message}`), null));
     const req = d && !Array.isArray(d.pc_requirements) ? d.pc_requirements : undefined;
     const r = d?.type === 'game' ? parseRequirements(req as { minimum?: string; recommended?: string }) : null;
     if (!d || !r) {
       skipped++;
+      if (debug.length < 400) {
+        const text = req ? stripHtml(`${req.recommended ?? ''}\n${req.minimum ?? ''}`) : '';
+        const line = (label: RegExp) => text.match(label)?.[1]?.trim().slice(0, 160);
+        debug.push({
+          id,
+          name: d?.name,
+          why: !d ? 'no store data' : d.type !== 'game' ? `type ${d.type}` : !req ? 'no pc requirements' : 'unreadable requirements',
+          cpu: line(/(?:Processor|CPU)\s*:?\s*([^\n]+)/i),
+          gpu: line(/(?:Graphics|Video Card|Video|GPU)\s*:?\s*([^\n]+)/i),
+        });
+      }
     } else {
       const year = Number(d.release_date?.date?.match(/\d{4}/)?.[0] ?? 0);
       items.push([id, d.name ?? `App ${id}`, year, d.genres?.[0]?.description ?? '', r.cpuLoad, r.gpuLoad, r.vramGB, r.ramMinGB, r.ramRecGB]);
     }
     if ((n + 1) % 250 === 0 || n === ids.length - 1) {
       writeFileSync(OUT, JSON.stringify({ v: 1, generated: new Date().toISOString().slice(0, 10), items }));
+      writeFileSync('steam-import-debug.json', JSON.stringify(debug, null, 1));
       console.log(`${n + 1}/${ids.length} checked · ${items.length} usable · ${skipped} skipped (not a game or unreadable requirements)`);
     }
   }
