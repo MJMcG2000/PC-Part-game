@@ -9,7 +9,10 @@ import { catalog } from './lib/data';
 import { RESOLUTIONS, type Resolution } from './lib/config';
 import { solveByBrand } from './lib/solver';
 import { buildFps, displayFps } from './lib/fps';
-import { platformInfo } from './lib/platforms';
+import { platformInfo, repeatKey } from './lib/platforms';
+import { getPuzzle } from './lib/puzzle';
+import { toDateKey } from './lib/date';
+import { loadDayState, voidDaily } from './lib/storage';
 import { formatLaunch, formatMemory, type Cpu, type Gpu } from './lib/types';
 import { PartPicker, type PickerOption } from './components/PartPicker';
 import './styles.css';
@@ -28,6 +31,17 @@ function Planner() {
   const [fps, setFps] = useState(60);
   const [res, setRes] = useState<Resolution>('1080p');
   const game = gameIdx === null ? null : games[gameIdx];
+
+  // Today's Daily game is blocked until that Daily is finished, so the planner can't spoil it.
+  const todayKey = toDateKey();
+  const dailyKey = useMemo(() => repeatKey(getPuzzle(todayKey).game), [todayKey]);
+  const [dailyOpen, setDailyOpen] = useState(() => loadDayState(todayKey).status === 'playing');
+  const blocked = !!game && dailyOpen && repeatKey(game) === dailyKey;
+  const voidToday = () => {
+    if (!window.confirm("Void today's Daily? It counts as a loss and resets your win streak, and you'll see this game's specs.")) return;
+    voidDaily(todayKey);
+    setDailyOpen(false);
+  };
   const target = Math.max(1, Math.min(500, Math.round(fps) || 0));
 
   const result = useMemo(() => {
@@ -88,7 +102,23 @@ function Planner() {
       </div>
 
       {!game && <p className="planner-empty">Pick a game to see the minimum parts.</p>}
-      {game && result && (
+      {blocked && (
+        <section className="planner-blocked" aria-live="polite">
+          <p className="planner-blocked-icon" aria-hidden="true">🔒</p>
+          <h2>{game!.name} is today's Daily game</h2>
+          <p>To avoid spoiling the puzzle, its specs are hidden until you finish today's Daily.</p>
+          <div className="planner-blocked-actions">
+            <a className="btn btn-primary" href="./#daily">
+              Play today's Daily
+            </a>
+            <button type="button" className="btn" onClick={voidToday}>
+              Void today's Daily and show specs
+            </button>
+          </div>
+          <p className="planner-note">Voiding counts as a loss and resets your win streak.</p>
+        </section>
+      )}
+      {game && result && !blocked && (
         <section className="planner-result" aria-live="polite">
           <h2>
             {game.name} <small>at {target} FPS, {res}, High settings</small>

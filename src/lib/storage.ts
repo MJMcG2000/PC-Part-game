@@ -118,6 +118,18 @@ export function loadDayState(dateKey: string): DayState {
 }
 export const saveDayState = (s: DayState) => write(KEYS.state, s);
 
+/**
+ * Void today's Daily (from the Build planner): ends it as a loss, like giving
+ * up, so the player can see its specs. Returns false if it was already finished.
+ */
+export function voidDaily(dateKey: string): boolean {
+  const day = loadDayState(dateKey);
+  if (day.status !== 'playing') return false;
+  saveDayState({ ...day, status: 'lost' });
+  saveStats(recordResult(loadStats(), dateKey, false, day.guesses.length));
+  return true;
+}
+
 export function loadStats(): Stats {
   const s = read<Partial<Stats>>(KEYS.stats);
   const base = emptyStats();
