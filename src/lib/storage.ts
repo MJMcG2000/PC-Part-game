@@ -39,7 +39,11 @@ export interface Settings {
   mode: Mode;
   /** Hard mode: only the exact minimum build wins (no ±10%). */
   hard: boolean;
+  /** Part picker order: by launch date (newest first) or by tier (strongest first). */
+  partSort?: PartSort;
 }
+
+export type PartSort = 'newest' | 'tier';
 
 /** The Endless puzzle in progress, stored by game id + target so reloads restore it. */
 export interface EndlessState {

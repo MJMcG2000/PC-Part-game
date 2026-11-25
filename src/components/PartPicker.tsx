@@ -30,10 +30,12 @@ interface Props {
   value: number | null;
   onChange: (index: number | null) => void;
   disabled?: boolean;
+  /** 'tier': strongest first (the order tiles count in). Default: newest first. */
+  sort?: 'newest' | 'tier';
 }
 
-/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first (or largest first when there's no launch date). */
-export function PartPicker({ label, icon, brands, brand, onBrandChange, note, options, value, onChange, disabled }: Props) {
+/** Searchable select following the WAI-ARIA combobox pattern. Lists newest first, or strongest first with sort="tier" (largest first when there's no launch date). */
+export function PartPicker({ label, icon, brands, brand, onBrandChange, note, options, value, onChange, disabled, sort = 'newest' }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -46,11 +48,11 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
   const ordered = useMemo(
     () =>
       [...options].sort((a, b) =>
-        a.released !== undefined && b.released !== undefined
+        sort === 'newest' && a.released !== undefined && b.released !== undefined
           ? b.released - a.released || a.label.localeCompare(b.label, undefined, { numeric: true })
           : b.index - a.index,
       ),
-    [options],
+    [options, sort],
   );
   const filtered = useMemo(() => {
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
@@ -169,7 +171,7 @@ export function PartPicker({ label, icon, brands, brand, onBrandChange, note, op
         </span>
       </div>
       {open && (
-        <ul className="picker-list" id={listId} role="listbox" ref={listRef} aria-label={`${label} options, newest first`}>
+        <ul className="picker-list" id={listId} role="listbox" ref={listRef} aria-label={`${label} options, ${sort === 'tier' ? 'strongest' : 'newest'} first`}>
           {filtered.length === 0 && <li className="picker-empty">No matches</li>}
           {filtered.map((o, i) => (
             <li
