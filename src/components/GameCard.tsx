@@ -22,17 +22,20 @@ interface Props {
 
 export function GameCard({ game, targetFps, resolution, label }: Props) {
   const [srcIdx, setSrcIdx] = useState(0);
-  const [cover, setCover] = useState<string | null>(null);
+  const [cover, setCover] = useState<string | null>(game.coverUrl ?? null);
+  // A hard-coded cover that fails to load falls back to the Wikipedia lookup.
+  const [fixedFailed, setFixedFailed] = useState(false);
   useEffect(() => {
     setSrcIdx(0);
-    setCover(null);
-  }, [game.id]);
+    setCover(game.coverUrl ?? null);
+    setFixedFailed(false);
+  }, [game.id, game.coverUrl]);
   const sources = imageSources(game.steamAppId);
   const steamFailed = srcIdx >= sources.length;
 
   // No Steam art (or it failed): look up cover art on Wikipedia.
   useEffect(() => {
-    if (!steamFailed) return;
+    if (!steamFailed || (game.coverUrl && !fixedFailed)) return;
     let live = true;
     findCover(game.wikiTitle ?? game.name, game.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()).then((src) => {
       if (live) setCover(src);
@@ -40,7 +43,7 @@ export function GameCard({ game, targetFps, resolution, label }: Props) {
     return () => {
       live = false;
     };
-  }, [steamFailed, game.id, game.wikiTitle, game.name]);
+  }, [steamFailed, fixedFailed, game.id, game.coverUrl, game.wikiTitle, game.name]);
   const platform = platformInfo(game.platform);
   const link = game.steamAppId
     ? { href: `https://store.steampowered.com/app/${game.steamAppId}/`, text: 'Steam page ↗' }
@@ -56,7 +59,11 @@ export function GameCard({ game, targetFps, resolution, label }: Props) {
           {steamFailed && cover ? (
             <div className="game-art-cover">
               <img className="cover-bg" src={cover} alt="" aria-hidden="true" />
-              <img className="cover-fg" src={cover} alt={`${game.name} cover art`} onError={() => setCover(null)} />
+              <img className="cover-fg" src={cover} alt={`${game.name} cover art`} onError={() => {
+                  if (game.coverUrl && cover === game.coverUrl) setFixedFailed(true);
+                  setCover(null);
+                }}
+              />
             </div>
           ) : steamFailed ? (
             <div className="game-art-fallback" role="img" aria-label={`${game.name} (no image)`}>

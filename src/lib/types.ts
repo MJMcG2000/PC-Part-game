@@ -13,6 +13,8 @@ export interface Game {
   steamAppId?: number;
   /** English Wikipedia article for cover art when there is no Steam version. */
   wikiTitle?: string;
+  /** Fixed cover image URL, used instead of the Wikipedia lookup (for games whose lookup picks a bad image). */
+  coverUrl?: string;
   /** Measured results attached from benchmarks.json (see lib/benchmarks.ts). */
   benchmarks?: import('./benchmarks').GameBenchmarks;
   name: string;
