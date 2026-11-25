@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d12" />
+    <script>
+      try { if (localStorage.getItem('rigdle:theme') === 'light') { document.documentElement.dataset.theme = 'light'; document.querySelector('meta[name="theme-color"]').content = '#f3f5f9'; } } catch (e) {}
+    </script>
+    <script>
+      function rigdleToggleTheme(btn) {
+        var light = document.documentElement.dataset.theme !== 'light';
+        if (light) document.documentElement.dataset.theme = 'light'; else delete document.documentElement.dataset.theme;
+        document.querySelector('meta[name="theme-color"]').content = light ? '#f3f5f9' : '#0b0d12';
+        try { localStorage.setItem('rigdle:theme', light ? 'light' : 'dark'); } catch (e) {}
+        btn.setAttribute('aria-pressed', String(light));
+        btn.textContent = light ? '\u{1F319}' : '\u2600\uFE0F';
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        var light = document.documentElement.dataset.theme === 'light';
+        var btn = document.querySelector('[data-theme-toggle]');
+        if (btn) { btn.setAttribute('aria-pressed', String(light)); btn.textContent = light ? '\u{1F319}' : '\u2600\uFE0F'; }
+      });
+    </script>
+    <title>Part tiers – Rigdle</title>
+    <meta
+      name="description"
+      content="How Rigdle ranks CPUs, graphics cards and RAM into tiers, what yellow and gray tiles mean, and the full tier list for every brand."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="topbar-left">
+          <details class="site-menu">
+            <summary class="icon-btn menu-btn" aria-label="Menu"><span class="burger" aria-hidden="true"><span></span><span></span><span></span></span></summary>
+            <nav class="menu-panel" aria-label="Site menu">
+            <p class="menu-heading">Play</p>
+            <a class="menu-item" href="./#daily"><span>Daily puzzle</span><small>One rig a day, same for everyone</small></a>
+            <a class="menu-item" href="./#endless"><span>Endless mode</span><small>Keep building rigs, filter by platform</small></a>
+            <a class="menu-item" href="./#help"><span>How to play</span></a>
+            <a class="menu-item" href="./#stats"><span>Statistics</span></a>
+            <p class="menu-heading">Pages</p>
+            <a class="menu-item" href="./about.html"><span>About</span><small>What Rigdle is and how it works</small></a>
+            <a class="menu-item is-current" href="./tiers.html" aria-current="page"><span>Part tiers</span><small>How CPUs and GPUs are ranked</small></a>
+            <a class="menu-item" href="./accuracy.html"><span>FPS accuracy</span><small>How the estimates compare with benchmarks</small></a>
+            <a class="menu-item" href="./privacy.html"><span>Privacy</span><small>What data is stored and who handles it</small></a>
+            <div class="menu-divider" role="separator"></div>
+            <a class="menu-item tip-item" href="./#tip"><span>🍺 Buy me a beer</span></a>
+            </nav>
+          </details>
+          <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="Light mode" aria-pressed="false" onclick="rigdleToggleTheme(this)">☀️</button>
+        </div>
+        <p class="logo"><a href="./" aria-label="Rigdle home"><span class="logo-text">RIGDLE</span></a></p>
+        <div class="topbar-right">
+          <a class="play-link" href="./">Play ▸</a>
+        </div>
+      </header>
+
+      <main class="page tiers-page">
+        <h1>Part tiers</h1>
+        <p class="lede">How Rigdle ranks parts, and what the tile colors and arrows are measuring.</p>
+
+        <h2>The short version</h2>
+        <ul>
+          <li>Each brand has its own <strong>ladder</strong>: every CPU or graphics card of that brand, ranked from weakest to strongest by gaming performance. A part's <strong>tier</strong> is its rung on that ladder.</li>
+          <li>Tiles compare your part with the right answer <strong>on the same brand's ladder</strong>. Green is the answer. Yellow is one rung away. Gray is two or more rungs away.</li>
+          <li>⬆ means your part isn't fast enough, so go up the ladder. ⬇ means it's faster than needed, so go down.</li>
+          <li>The ladder follows <strong>performance, not release date</strong>. The pickers list parts by launch date, so the next rung up is often not the next part in the list.</li>
+        </ul>
+
+        <h2>Why release date is misleading</h2>
+        <p>
+          A newer part isn't always a faster one. Budget cards and chips launched years after a flagship are often slower
+          than it. These pairs are next to, or near, each other on their ladders but out of order by date:
+        </p>
+        <ul id="tier-surprises"></ul>
+
+        <h2>Rungs aren't evenly spaced</h2>
+        <p>
+          One rung can be a tiny step or a huge jump. Going up one tier from the <span data-gap="small"></span>, but from the
+          <span data-gap="big"></span>. A yellow tile tells you you're one rung away, not how much faster that rung is. The
+          bars in the tables below show the actual gaps.
+        </p>
+
+        <h2>Graphics cards and video memory (VRAM)</h2>
+        <p>
+          Games need a certain amount of video memory, and more at higher resolutions (×1.2 at 1440p, ×1.5 at 4K). A card
+          with less than that loses 40% of its frame rate. So a card high on the ladder can still fall short. For example,
+          an 8 GB card in a game that needs 9.6 GB can lose to an older 12 GB card. When that happens, the GPU slot
+          shows an orange <span class="tier-vram-chip">VRAM</span> tag. If the card is above the answer on the ladder but
+          still misses the target, its tile is gray with ⬆: you need a card with more memory, not a weaker one. Each card's
+          memory is listed next to its name in the picker.
+        </p>
+
+        <h2>RAM</h2>
+        <p>
+          RAM has a single ladder: <span id="ram-ladder"></span>. The answer is the smallest amount that meets the
+          game's recommended RAM. Its type (SDR through DDR5) just follows the CPU and doesn't affect tiers.
+        </p>
+
+        <h2>Either brand can win</h2>
+        <p>
+          AMD and Intel CPUs are on separate ladders, and so are NVIDIA and AMD graphics cards. Each brand has its own
+          minimum part, and either one counts as correct. If no part of the brand you picked is fast enough, the tile is
+          gray with ⬆: switch brands.
+        </p>
+
+        <h2>The tier lists</h2>
+        <p>
+          Scores are relative gaming performance: a Ryzen 5 1600 is 100 for CPUs and an RTX 4060 is 100 for GPUs. Tier 1 is
+          the weakest. Step is how much faster a part is than the tier below it.
+        </p>
+        <div id="tier-tables"><noscript><p>Turn on JavaScript to see the tier tables.</p></noscript></div>
+
+        <p class="page-cta"><a href="./">Back to the game</a></p>
+      </main>
+
+      <footer class="footer">
+        <nav class="footer-links" aria-label="Site">
+          <a href="./">Play</a>
+          <span aria-hidden="true">·</span>
+          <a href="./about.html">About</a>
+          <span aria-hidden="true">·</span>
+          <a href="./tiers.html">Tiers</a>
+          <span aria-hidden="true">·</span>
+          <a href="./accuracy.html">Accuracy</a>
+          <span aria-hidden="true">·</span>
+          <a href="./privacy.html">Privacy</a>
+        </nav>
+      </footer>
+    </div>
+    <script type="module" src="/src/tiers-page.ts"></script>
+  </body>
+</html>

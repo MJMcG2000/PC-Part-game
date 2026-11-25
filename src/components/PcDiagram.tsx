@@ -15,13 +15,20 @@ function Slot({ part, state }: { part: PartKey; state: SlotState }) {
     ? 'not guessed yet'
     : state.tile.color === 'green'
       ? 'correct'
-      : `${state.tile.color === 'yellow' ? 'one tier away' : 'two or more tiers away'}, ${
-          state.tile.direction === 'up' ? 'go stronger' : 'go weaker'
-        }`;
+      : state.tile.vramShort && state.tile.color === 'gray' && state.tile.direction === 'up'
+        ? 'not enough video memory for this game, pick a card with more VRAM'
+        : `${state.tile.color === 'yellow' ? 'one tier away' : 'two or more tiers away'}, ${
+            state.tile.direction === 'up' ? 'go stronger' : 'go weaker'
+          }${state.tile.vramShort ? ', and short on video memory' : ''}`;
   return (
     <div className={`pc-slot pc-${part} slot-${color}`} role="img" aria-label={`${LABEL[part]}: ${state.name ?? ''} ${status}`}>
       <span className="pc-slot-label">{LABEL[part]}</span>
       <span className="pc-slot-name">{state.name ?? '?'}</span>
+      {state.tile?.vramShort && (
+        <span className="pc-slot-vram" title="Not enough video memory (VRAM) for this game at this resolution">
+          VRAM
+        </span>
+      )}
       {state.tile && (
         <span className="pc-slot-arrow" aria-hidden="true">
           {state.tile.color === 'green' ? '✓' : arrowFor(state.tile.direction)}

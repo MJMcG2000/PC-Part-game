@@ -86,3 +86,21 @@ describe('adsense config', () => {
     expect(adsenseScriptTag('ca-pub-1234567890123456')).toContain('adsbygoogle.js?client=ca-pub-1234567890123456');
   });
 });
+
+import { applyVram } from './feedback';
+describe('VRAM-aware GPU tiles', () => {
+  it('a stronger card that misses because of VRAM points up, gray, flagged', () => {
+    const t = applyVram({ part: 'gpu', color: 'yellow', direction: 'down' }, { misses: true, vramShort: true });
+    expect(t).toEqual({ part: 'gpu', color: 'gray', direction: 'up', vramShort: true });
+  });
+  it('a weaker card short on VRAM keeps its tile and gets the flag', () => {
+    const t = applyVram({ part: 'gpu', color: 'yellow', direction: 'up' }, { misses: true, vramShort: true });
+    expect(t).toEqual({ part: 'gpu', color: 'yellow', direction: 'up', vramShort: true });
+  });
+  it('green and VRAM-fine tiles are unchanged', () => {
+    const g = { part: 'gpu' as const, color: 'green' as const, direction: null };
+    expect(applyVram(g, { misses: false, vramShort: true })).toBe(g);
+    const d = { part: 'gpu' as const, color: 'gray' as const, direction: 'down' as const };
+    expect(applyVram(d, { misses: false, vramShort: false })).toBe(d);
+  });
+});

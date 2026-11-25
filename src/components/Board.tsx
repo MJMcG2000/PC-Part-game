@@ -3,7 +3,7 @@ import { catalog } from '../lib/data';
 import { WIN_TOLERANCE, maxGuesses } from '../lib/config';
 import { evaluateBuild, isWin } from '../lib/feedback';
 import { buildFps, displayFps, isCloseEnough } from '../lib/fps';
-import { guessIndices } from '../lib/board';
+import { gpuChecker, guessIndices } from '../lib/board';
 import { acceptedAnswers, type Puzzle } from '../lib/puzzle';
 import type { GameStatus, StoredGuess } from '../lib/storage';
 import { PART_KEYS, formatLaunch, formatMemory, launchKey, type BuildIdx, type PartKey } from '../lib/types';
@@ -91,7 +91,8 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
   const guesses = useMemo(() => guessIndices(stored), [stored]);
   // Either brand's minimum CPU/GPU counts as correct.
   const accepted = acceptedAnswers(puzzle);
-  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog)), [guesses, accepted]);
+  const checkGpu = useMemo(() => gpuChecker(puzzle), [puzzle]);
+  const tileRows = useMemo(() => guesses.map((g) => evaluateBuild(g, accepted, catalog, checkGpu)), [guesses, accepted, checkGpu]);
   const cpuAlts = Object.values(accepted.cpu).filter((i): i is number => i !== null).map((i) => catalog.cpus[i]);
   const gpuAlts = Object.values(accepted.gpu).filter((i): i is number => i !== null).map((i) => catalog.gpus[i]);
   const finished = status !== 'playing';
@@ -137,7 +138,7 @@ export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare
     const guess: BuildIdx = { cpu, gpu, ram };
     onGuess(
       { cpu: catalog.cpus[cpu].name, gpu: catalog.gpus[gpu].name, ramGB: catalog.ram[ram].sizeGB },
-      isWin(evaluateBuild(guess, accepted, catalog)) ||
+      isWin(evaluateBuild(guess, accepted, catalog, checkGpu)) ||
         (!hard &&
           isCloseEnough(buildFps(catalog.cpus[cpu], catalog.gpus[gpu], catalog.ram[ram].sizeGB, puzzle.game, puzzle.resolution).fps, puzzle.targetFps)),
     );
