@@ -21,6 +21,27 @@
   --hit: #4ade80;
   --miss: #f87171;
 
+  --link: #8fb4ff;
+  --text-body: #d3d9e4;
+  --beer: #fbbf24;
+  --warn: #f59e0b;
+
+  /* PC diagram (dark case) */
+  --case-a: #161b26;
+  --case-b: #0d1017;
+  --case-rim: #0b0e14;
+  --board: #1a1f2c;
+  --board-grid: rgba(255, 255, 255, 0.035);
+  --board-edge: #2c3446;
+  --board-part: #2a3142;
+  --fan-edge: #2f3748;
+  --fan-a: #1d2330;
+  --fan-b: #141923;
+  --psu-a: #121620;
+  --psu-b: #0c0f15;
+  --slot-empty: rgba(11, 13, 18, 0.75);
+  --ram-stripe: rgba(255, 255, 255, 0.08);
+
   --radius: 12px;
   --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, Consolas, monospace;
   --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif;
@@ -33,6 +54,52 @@
   --tile-yellow: #85c0f9;
   --hit: #f5793a;
   --miss: #85c0f9;
+}
+
+/* Light mode (opt-in; dark is the default). Set by data-theme="light" on <html>. */
+:root[data-theme='light'] {
+  --bg: #f3f5f9;
+  --bg-grid: rgba(20, 30, 60, 0.05);
+  --panel: #ffffff;
+  --panel-2: #eef1f6;
+  --line: #dde2ea;
+  --line-strong: #c3cad6;
+  --text: #151a23;
+  --text-dim: #566073;
+  --accent: #6a4cf0;
+  --tile-green: #3fcf6f;
+  --tile-yellow: #facc15;
+  --tile-gray: #6b7484;
+  --tile-on-bright: #0b0d12;
+  --tile-on-gray: #ffffff;
+  --hit: #15803d;
+  --miss: #dc2626;
+  --link: #2952cc;
+  --text-body: #2a3140;
+  --beer: #b45309;
+  --warn: #b45309;
+  /* PC diagram (white case) */
+  --case-a: #fbfcfe;
+  --case-b: #e6eaf0;
+  --case-rim: #ffffff;
+  --board: #dfe4ec;
+  --board-grid: rgba(0, 0, 0, 0.05);
+  --board-edge: #c6cdd8;
+  --board-part: #b9c1cd;
+  --fan-edge: #aeb6c3;
+  --fan-a: #d4d9e1;
+  --fan-b: #c3c9d3;
+  --psu-a: #eceff4;
+  --psu-b: #dfe3ea;
+  --slot-empty: rgba(255, 255, 255, 0.85);
+  --ram-stripe: rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}
+:root.colorblind[data-theme='light'] {
+  --tile-green: #f5793a;
+  --tile-yellow: #85c0f9;
+  --hit: #c2410c;
+  --miss: #1d4ed8;
 }
 
 * {
@@ -54,12 +121,12 @@ body {
   background-size: 24px 24px;
 }
 a {
-  color: #8fb4ff;
+  color: var(--link);
 }
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid #8fb4ff;
+  outline: 2px solid var(--link);
   outline-offset: 2px;
 }
 .mono {
@@ -869,9 +936,9 @@ input:focus-visible {
   width: min(100%, 340px);
   aspect-ratio: 5 / 6;
   border-radius: 14px;
-  background: linear-gradient(160deg, #161b26, #0d1017);
+  background: linear-gradient(160deg, var(--case-a), var(--case-b));
   border: 2px solid var(--line-strong);
-  box-shadow: inset 0 0 0 6px #0b0e14, 0 0 30px -12px rgba(124, 92, 255, 0.6);
+  box-shadow: inset 0 0 0 6px var(--case-rim), 0 0 30px -12px rgba(124, 92, 255, 0.6);
   overflow: hidden;
 }
 /* Motherboard: rear (I/O) on the left, front fans on the right. */
@@ -883,10 +950,10 @@ input:focus-visible {
   height: 70%;
   border-radius: 6px;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 12px 12px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 12px 12px,
-    #1a1f2c;
-  border: 1px solid #2c3446;
+    linear-gradient(var(--board-grid) 1px, transparent 1px) 0 0 / 12px 12px,
+    linear-gradient(90deg, var(--board-grid) 1px, transparent 1px) 0 0 / 12px 12px,
+    var(--board);
+  border: 1px solid var(--board-edge);
 }
 .pc-io {
   position: absolute;
@@ -895,7 +962,7 @@ input:focus-visible {
   width: 9%;
   height: 26%;
   border-radius: 3px;
-  background: #2a3142;
+  background: var(--board-part);
 }
 .pc-pcie {
   position: absolute;
@@ -903,7 +970,7 @@ input:focus-visible {
   width: 78%;
   height: 3%;
   border-radius: 2px;
-  background: #2a3142;
+  background: var(--board-part);
 }
 .pc-pcie-2 { top: 80%; }
 .pc-pcie-3 { top: 90%; }
@@ -911,15 +978,15 @@ input:focus-visible {
   position: absolute;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 2px solid #2f3748;
-  background: repeating-conic-gradient(from 10deg, #1d2330 0 20deg, #141923 20deg 60deg);
+  border: 2px solid var(--fan-edge);
+  background: repeating-conic-gradient(from 10deg, var(--fan-a) 0 20deg, var(--fan-b) 20deg 60deg);
 }
 .pc-fan::after {
   content: '';
   position: absolute;
   inset: 38%;
   border-radius: 50%;
-  background: #2f3748;
+  background: var(--fan-edge);
 }
 .pc-fan-front {
   right: 4%;
@@ -937,7 +1004,7 @@ input:focus-visible {
   height: 18%;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, #121620, #0c0f15);
+  background: linear-gradient(180deg, var(--psu-a), var(--psu-b));
   border-top: 2px solid var(--line-strong);
   color: var(--text-dim);
 }
@@ -951,7 +1018,7 @@ input:focus-visible {
   padding: 4px 6px;
   border-radius: 6px;
   border: 2px dashed var(--line-strong);
-  background: rgba(11, 13, 18, 0.75);
+  background: var(--slot-empty);
   color: var(--text);
   overflow: hidden;
   transition: background-color 0.3s, border-color 0.3s;
@@ -990,7 +1057,7 @@ input:focus-visible {
   top: 9%;
   width: 17%;
   height: 34%;
-  background-image: repeating-linear-gradient(90deg, transparent 0 22%, rgba(255, 255, 255, 0.08) 22% 26%);
+  background-image: repeating-linear-gradient(90deg, transparent 0 22%, var(--ram-stripe) 22% 26%);
 }
 /* GPU: horizontal card in the top PCIe slot, below the CPU. */
 .pc-gpu {
@@ -1215,7 +1282,7 @@ p.logo {
 }
 .page p,
 .page li {
-  color: #d3d9e4;
+  color: var(--text-body);
 }
 .page ul {
   padding-left: 20px;
@@ -1251,17 +1318,20 @@ p.logo {
 
 /* ---------- Board columns ----------
    Mobile: one column (game card, banner, diagram, pickers).
-   Desktop (useIsDesktop): game + target on the left, diagram + guessing on the right. */
+   Desktop (useIsDesktop): three columns so the game, the PC diagram and the
+   guess controls are all visible at 100% zoom without scrolling:
+   game + target | PC diagram + readout | pickers or result. */
 .board,
 .board-game,
-.board-play {
+.board-pc,
+.board-guess {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 .app.is-desktop {
-  max-width: 1120px;
-  padding: 0 32px 40px;
+  max-width: 1320px;
+  padding: 0 28px 40px;
 }
 .app.is-desktop .controls {
   display: grid;
@@ -1271,44 +1341,61 @@ p.logo {
 }
 .app.is-desktop .controls .mode-tabs,
 .app.is-desktop .controls .hard-row {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 .app.is-desktop .main {
-  padding-top: 20px;
-  gap: 20px;
+  padding-top: 14px;
+  gap: 14px;
 }
 .board-desktop {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
   align-items: start;
 }
-/* The game column stays in view while you work through guesses on the right. */
-.board-desktop .board-game {
-  position: sticky;
-  top: 84px;
+.board-desktop .board-game,
+.board-desktop .board-pc {
+  gap: 12px;
+}
+.board-desktop .game-meta {
+  padding: 10px 12px 12px;
 }
 .board-desktop .game-title {
-  font-size: 1.6rem;
+  font-size: 1.35rem;
 }
 .board-desktop .target-banner {
-  padding: 18px 20px;
+  padding: 14px 16px;
 }
 .board-desktop .tb-value {
-  font-size: 3.4rem;
+  font-size: 3rem;
 }
 .board-desktop .tb-res-main {
-  font-size: 1.9rem;
+  font-size: 1.6rem;
 }
 .board-desktop .countdown {
   justify-content: flex-start;
-  padding: 4px 4px 0;
+  padding: 0 4px;
 }
+/* The PC diagram scales with the window height so the whole board fits. */
 .board-desktop .pc-case {
-  width: min(100%, 420px);
+  width: min(100%, 400px, calc((100dvh - 250px) * 5 / 6));
+  min-width: 240px;
+}
+.board-desktop .pc-readout {
+  margin-top: -4px;
 }
 .board-desktop .pc-slot-name {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
+}
+.board-desktop .builder {
+  gap: 8px;
+  padding: 12px;
+}
+.board-desktop .submit-btn {
+  height: 46px;
+}
+.board-desktop .giveup-btn {
+  height: 38px;
 }
 .app.is-desktop .endless-bar,
 .app.is-desktop .platform-filter {
@@ -1388,7 +1475,7 @@ p.logo {
   opacity: 0.8;
 }
 .src-tag.is-bench {
-  color: #8fb4ff;
+  color: var(--link);
 }
 .readout-src {
   color: var(--text-dim);
@@ -1465,7 +1552,7 @@ p.logo {
   font-weight: 700;
 }
 .study-table .off {
-  color: #f59e0b;
+  color: var(--warn);
   font-weight: 700;
 }
 @media (max-width: 420px) {
@@ -1566,7 +1653,7 @@ details.site-menu[open] > summary {
   background: var(--line);
 }
 .tip-item span {
-  color: #fbbf24;
+  color: var(--beer);
 }
 /* Static pages: Play button + menu on the right of the top bar. */
 .topbar .topbar-right {
@@ -1628,5 +1715,25 @@ details.site-menu[open] > summary {
     min-width: 34px;
     height: 34px;
     padding: 0 6px;
+  }
+}
+
+/* ---------- Top bar: ☰ + theme on the left, ? on the far right ---------- */
+.topbar-left {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-self: start;
+}
+.topbar-left .menu-panel {
+  left: 0;
+  right: auto;
+}
+.theme-btn {
+  font-size: 1rem;
+}
+@media (max-width: 440px) {
+  .topbar-left {
+    gap: 4px;
   }
 }
