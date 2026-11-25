@@ -61,7 +61,7 @@ function table(l: Ladder): string {
     .join('');
   return `<h3>${esc(l.title)} <small>${l.rungs.length} tiers, strongest first</small></h3>
     <div class="table-wrap"><table class="study-table tier-table">
-      <thead><tr><th>Tier</th><th>Part</th><th>Launched</th><th>${l.extraLabel}</th><th>Score</th><th title="Faster than the tier below">Step</th></tr></thead>
+      <thead><tr><th>Tier</th><th>Part</th><th>Launched</th><th>${esc(l.extraLabel)}</th><th>Score</th><th title="Faster than the tier below">Step</th></tr></thead>
       <tbody>${rows}</tbody>
     </table></div>`;
 }

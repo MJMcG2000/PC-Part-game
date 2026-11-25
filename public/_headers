@@ -1,0 +1,17 @@
+# Security headers for Cloudflare Pages (this file is copied to dist/ as-is).
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Enforced now: the headers below can't break the game or the ads.
+# Content-Security-Policy-Report-Only lists where scripts, images and frames may
+# come from, but only REPORTS violations (in the browser console) instead of
+# blocking them. AdSense loads from many Google domains, so watch the console
+# for a while after ads go live, add any domain it reports, and only then
+# consider renaming it to Content-Security-Policy to enforce it.
+
+/*
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), payment=()
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.gstatic.com https://*.doubleclick.net https://*.adtrafficquality.google; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://en.wikipedia.org https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.adtrafficquality.google; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; font-src 'self'; form-action 'self'
