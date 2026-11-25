@@ -70,12 +70,12 @@ interface Props {
 }
 
 const SORTS: { id: PartSort; label: string }[] = [
-  { id: 'newest', label: 'Newest' },
   { id: 'tier', label: 'By tier' },
+  { id: 'newest', label: 'Newest' },
 ];
 
 /** One puzzle: game card, PC diagram, guess grid, and the part pickers or result. */
-export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp, desktop = false, aside, partSort = 'newest', onPartSort }: Props) {
+export function Board({ puzzle, label, guesses: stored, status, onGuess, onShare, toast, resultActions, hard, onGiveUp, desktop = false, aside, partSort = 'tier', onPartSort }: Props) {
   const [selection, setSelection] = useState<Selection>({ cpu: null, gpu: null, ram: null });
   const [cpuBrand, setCpuBrand] = useState(CPU_BRANDS[0].id);
   const [gpuBrand, setGpuBrand] = useState(GPU_BRANDS[0].id);

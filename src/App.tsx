@@ -331,7 +331,7 @@ export default function App() {
               onGiveUp={giveUpDaily}
               toast={showToast}
               hard={dailyHard}
-              partSort={settings.partSort ?? 'newest'}
+              partSort={settings.partSort ?? 'tier'}
               onPartSort={(partSort) => setSettings((st) => ({ ...st, partSort }))}
               desktop={isDesktop}
               aside={<Countdown now={now} />}
@@ -373,7 +373,7 @@ export default function App() {
               onGiveUp={giveUpEndless}
               toast={showToast}
               hard={endlessHard}
-              partSort={settings.partSort ?? 'newest'}
+              partSort={settings.partSort ?? 'tier'}
               onPartSort={(partSort) => setSettings((st) => ({ ...st, partSort }))}
               desktop={isDesktop}
               resultActions={

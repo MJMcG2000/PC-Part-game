@@ -44,7 +44,7 @@ export function HelpModal({ open, onClose }: { open: boolean; onClose: () => voi
         <h3>Hints</h3>
         <ul>
           <li>Under the PC you'll see your latest build's estimated FPS. A VRAM tag means the GPU is short on video memory (big penalty).</li>
-          <li>Pick a brand first: AMD or Intel for the CPU, NVIDIA or AMD for the GPU. Parts go back to the year 2000. Either brand can be right: each brand has its own minimum part, and tiles compare your part with the minimum of the same brand. Lists are sorted by launch date, newest first, which is not the same as tier order. Switch Sort parts to By tier to list them strongest first. RAM type (SDR through DDR5) follows the CPU. Parts you've already tried are crossed out.</li>
+          <li>Pick a brand first: AMD or Intel for the CPU, NVIDIA or AMD for the GPU. Parts go back to the year 2000. Either brand can be right: each brand has its own minimum part, and tiles compare your part with the minimum of the same brand. Lists are sorted by tier, strongest first. Switch Sort parts to Newest to list them by launch date instead, which is not the same as tier order. RAM type (SDR through DDR5) follows the CPU. Parts you've already tried are crossed out.</li>
           <li>The PC diagram shows your latest guess for each part with its tile color, and locks a part in green once you find it.</li>
           <li>FPS = the lower of the CPU and GPU limits, cut if RAM is below what the game recommends. Real benchmark results are used where available; everything else is an estimate (labeled in the results).</li>
         </ul>

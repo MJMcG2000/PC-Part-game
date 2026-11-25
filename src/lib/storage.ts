@@ -39,7 +39,7 @@ export interface Settings {
   mode: Mode;
   /** Hard mode: only the exact minimum build wins (no ±10%). */
   hard: boolean;
-  /** Part picker order: by launch date (newest first) or by tier (strongest first). */
+  /** Part picker order: by tier (strongest first, the default) or by launch date (newest first). */
   partSort?: PartSort;
 }
 
