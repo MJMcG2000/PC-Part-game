@@ -74,7 +74,7 @@ privacy.html       crawlable Privacy policy
 public/            favicon, ads.txt, robots.txt, sitemap.xml (copied as-is)
 .env.example       AdSense configuration template
 src/
-  data/            games.json (101 PC games, incl. Minecraft), console-games.json (console top-15s + all Switch/Wii Pokémon),
+  data/            games.json (295 PC games), console-games.json (190 console games: top-15s and more per generation + all Switch/Wii Pokémon + handheld Pokémon); 485 games in all,
                    cpus.json, gpus.json, ram.json  (all editable)
   lib/
     config.ts      all tunables: launch date, FPS targets, resolution/preset, penalties
@@ -199,7 +199,7 @@ All data files are `{ "_comment": ..., "items": [...] }`. Parts are sorted by sc
 ```
 - `steamAppId` is the number in the store URL (`store.steampowered.com/app/<id>/`). The header image is loaded from Steam's CDN (content delivery network) by that ID, with a placeholder if it fails.
 - `ramRecGB` can be anything up to 64 GB (the largest RAM option). The answer is the smallest RAM option at or above it, so 8 means an 8 GB answer and anything above 32 means 64 GB. The validate script flags "dead" games that can never produce a valid puzzle.
-- `games.json` started at 100 Steam games; Minecraft: Java Edition (not on Steam, so it has no `steamAppId` and uses Wikipedia art) makes 101. `validate-puzzles` also checks every platform has at least 10 playable games for Endless.
+- `games.json` started at 100 Steam games plus Minecraft: Java Edition. The pool was later doubled to 485 games (295 PC, 190 console), including Cuphead, Undertale, Deltarune and every Fallout, Elder Scrolls and Call of Duty game. Games not on Steam (e.g. Battle.net-only Call of Duty titles, Arena, Daggerfall, Valorant) have no `steamAppId` and use Wikipedia art. `validate-puzzles` also checks every platform has at least 10 playable games for Endless.
 
 **Add a CPU/GPU** to `cpus.json` / `gpus.json`. Keep scores unique so the tier order is unambiguous.
 
