@@ -72,7 +72,7 @@ Replace these placeholders before applying to AdSense:
 ```
 index.html         the game (React app)
 about.html         crawlable About page
-planner.html       build planner: game + FPS + resolution -> minimum CPU/GPU (per brand) and RAM (src/planner.tsx, same solver as the puzzles)
+planner.html       build planner (searches the curated games plus public/data/steam-library.json if present): game + FPS + resolution -> minimum CPU/GPU (per brand) and RAM (src/planner.tsx, same solver as the puzzles)
 games.html         game library: every game in the pool, searchable and filterable by platform (built from src/data by src/games-page.ts)
 tiers.html         part tier lists and how tiles/arrows work (tables built from src/data by src/tiers-page.ts)
 accuracy.html      crawlable FPS-model accuracy study (published results)
@@ -221,3 +221,23 @@ Scores are approximate and meant to be tuned:
 - **`vramGB`**: VRAM (video RAM) needed at 1080p High. Raise it to make 8 GB cards stumble.
 
 Use `validate-puzzles` to see the effect: if one FPS target dominates or a part never appears as an answer, nudge loads or scores and re-run.
+
+## Build planner Steam library
+
+The Build planner also searches thousands of Steam games that aren't in the puzzle pool. Their numbers come from each
+game's **published Steam system requirements**: the recommended CPU/GPU are assumed to run the game at about 55 FPS at
+1080p High (minimum specs at about 25 FPS when there are no recommended ones), converted with the part scores in
+`scripts/hardware-scores.ts`. They're rougher than the hand-tuned puzzle games, and the planner says so.
+
+The data lives in `public/data/steam-library.json` (about 300 KB gzipped for 10,000 games). It's fetched only by the
+planner page, so the game itself stays small. Rebuild it with:
+
+```
+npm run import-steam                    # top 10,000 most-owned games (about 4-5 hours)
+npm run import-steam -- --limit 2000    # fewer
+```
+
+It needs internet access to steamspy.com and store.steampowered.com, so run it on your own computer or with the
+**Import Steam library** workflow in GitHub Actions (it commits the file to a `steam-library` branch). Responses are
+cached in `.steam-cache/`, so an interrupted run picks up where it stopped. Games already in `src/data` keep their
+hand-tuned numbers.

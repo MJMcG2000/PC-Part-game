@@ -3,7 +3,7 @@
  * minimum CPU (per brand), GPU (per brand) and RAM that reach it, using the
  * same FPS model and data as the puzzles.
  */
-import { StrictMode, useMemo, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { catalog } from './lib/data';
 import { RESOLUTIONS, type Resolution } from './lib/config';
@@ -13,24 +13,63 @@ import { platformInfo, repeatKey } from './lib/platforms';
 import { getPuzzle } from './lib/puzzle';
 import { toDateKey } from './lib/date';
 import { loadDayState, voidDaily } from './lib/storage';
-import { formatLaunch, formatMemory, type Cpu, type Gpu } from './lib/types';
+import { formatLaunch, formatMemory, type Cpu, type Game, type Gpu } from './lib/types';
 import { PartPicker, type PickerOption } from './components/PartPicker';
 import './styles.css';
 
+// The curated puzzle games, plus (when public/data/steam-library.json exists) thousands of
+// Steam games whose numbers are estimated from their published system requirements.
 // Sorted Z→A because the picker lists the highest index first, so it shows A→Z.
-const games = [...catalog.games].sort((a, b) => b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: 'base' }));
-const gameOptions: PickerOption[] = games.map((g, i) => ({
-  index: i,
-  label: g.name,
-  detail: `${platformInfo(g.platform).short} · ${g.releaseYear}`,
-}));
+type LibraryRow = [number, string, number, string, number, number, number, number, number];
+const byName = (a: Game, b: Game) => b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: 'base' });
+const fromSteam = new Set<string>();
+
+function toGame([appid, name, year, genre, cpuLoad, gpuLoad, vramGB, ramMinGB, ramRecGB]: LibraryRow): Game {
+  const id = `steamlib-${appid}`;
+  fromSteam.add(id);
+  return { id, platform: 'pc', steamAppId: appid, name, releaseYear: year, genre, cpuLoad, gpuLoad, vramGB, ramMinGB, ramRecGB };
+}
+
+function useGames(): { games: Game[]; libraryCount: number } {
+  const [library, setLibrary] = useState<Game[]>([]);
+  useEffect(() => {
+    let live = true;
+    fetch('./data/steam-library.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: { items?: LibraryRow[] } | null) => {
+        if (!live || !data?.items) return;
+        const curated = new Set(catalog.games.map((g) => g.steamAppId).filter(Boolean));
+        setLibrary(data.items.filter((row) => !curated.has(row[0])).map(toGame));
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, []);
+  const games = useMemo(() => [...catalog.games, ...library].sort(byName), [library]);
+  return { games, libraryCount: library.length };
+}
+
 const FPS_PRESETS = [30, 60, 90, 120, 144, 165, 240];
 
 function Planner() {
-  const [gameIdx, setGameIdx] = useState<number | null>(null);
+  const { games, libraryCount } = useGames();
+  const gameOptions: PickerOption[] = useMemo(
+    () =>
+      games.map((g, i) => ({
+        index: i,
+        label: g.name,
+        detail: `${fromSteam.has(g.id) ? 'Steam requirements' : platformInfo(g.platform).short} · ${g.releaseYear || '—'}`,
+      })),
+    [games],
+  );
+  // Selection is kept by id so it survives the library loading in.
+  const [gameId, setGameId] = useState<string | null>(null);
+  const gameIdx = gameId === null ? null : games.findIndex((g) => g.id === gameId);
+  const setGameIdx = (i: number | null) => setGameId(i === null ? null : games[i].id);
   const [fps, setFps] = useState(60);
   const [res, setRes] = useState<Resolution>('1080p');
-  const game = gameIdx === null ? null : games[gameIdx];
+  const game = gameIdx === null || gameIdx < 0 ? null : games[gameIdx];
 
   // Today's Daily game is blocked until that Daily is finished, so the planner can't spoil it.
   const todayKey = toDateKey();
@@ -68,7 +107,22 @@ function Planner() {
   return (
     <div className="planner">
       <div className="planner-form">
-        <PartPicker label="Game" icon="🎮" options={gameOptions} value={gameIdx} onChange={setGameIdx} sort="tier" />
+        <PartPicker
+          label="Game"
+          icon="🎮"
+          options={gameOptions}
+          value={gameIdx}
+          onChange={setGameIdx}
+          sort="tier"
+          maxShown={80}
+          placeholder={`Search ${games.length.toLocaleString()} games…`}
+        />
+        {libraryCount > 0 && (
+          <p className="planner-note">
+            {catalog.games.length} hand-tuned games plus {libraryCount.toLocaleString()} Steam games estimated from their system
+            requirements.
+          </p>
+        )}
         <div className="planner-row">
           <label className="planner-field">
             <span className="picker-label">🎯 Target FPS</span>
@@ -168,6 +222,12 @@ function Planner() {
             <p className="planner-estimate">
               Estimated with the cheapest pairing: <strong className="mono">{displayFps(estimate.fps)} FPS</strong> (CPU{' '}
               {displayFps(estimate.cpuFps)} · GPU {displayFps(estimate.gpuFps)}).
+            </p>
+          )}
+          {fromSteam.has(game.id) && (
+            <p className="planner-note">
+              Estimated from this game's Steam system requirements, assuming its recommended parts run it at about 55 FPS at
+              1080p High. Less precise than Rigdle's hand-tuned games.
             </p>
           )}
           <p className="planner-note">
