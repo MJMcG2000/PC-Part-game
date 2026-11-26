@@ -33,3 +33,44 @@ describe('Steam requirement parsing', () => {
     expect(parseRequirements({ minimum: '<li>Processor: 2 GHz</li><li>Graphics: DirectX 11</li>' })).toBeNull();
   });
 });
+
+import { guessCpu, guessGpu } from './hardware-scores';
+describe('fallbacks for generic requirements', () => {
+  it('estimates CPUs from core count and clock', () => {
+    expect(guessCpu('Dual core 2.4 GHz')).toBe(23);
+    expect(guessCpu('Quad-Core 3.0 GHz')).toBe(42);
+    expect(guessCpu('Intel Core i5')).toBe(55);
+    expect(guessCpu('2.0 GHz')).toBe(6);
+    expect(guessCpu('Any')).toBeNull();
+  });
+  it('estimates GPUs from video memory', () => {
+    expect(guessGpu('DirectX 9 card with 512 MB')).toEqual({ score: 6, vramGB: 0.5 });
+    expect(guessGpu('2 GB VRAM')).toEqual({ score: 20, vramGB: 2 });
+    expect(guessGpu('DirectX 11')).toBeNull();
+  });
+  it('recognizes older and integrated GPUs', () => {
+    expect(findGpus('NVIDIA GeForce 8800 GT or ATI Radeon HD 4850').map((g) => g.score)).toEqual([10, 9]);
+    expect(findGpus('GTX 560 Ti / Intel HD 4000').map((g) => g.score)).toEqual([20, 2]);
+  });
+});
+
+describe('very old requirement styles', () => {
+  it('reads MHz CPUs, Athlon ratings and tiny video cards', () => {
+    expect(guessCpu('Pentium II or Athlon 450 MHz')).toBe(1);
+    expect(guessCpu('Intel Pentium IV 2.4 GHz or AMD 3500+')).toBe(7);
+    expect(guessCpu('AMD 2000+ processor')).toBe(7.1);
+    expect(guessGpu('16MB Direct3D Compatible Graphics Card')).toEqual({ score: 0.3, vramGB: 16 / 1024 });
+    expect(findGpus('NVIDIA 7800GTX+ or ATI 1950+').map((g) => g.score)).toEqual([6, 8]); // 7800 GTX is in gpus.json at 6
+    expect(findGpus('NVIDIA GeForce 8800 or ATI Radeon X1900').map((g) => g.score)).toEqual([9, 7]);
+  });
+  it('handles requirements without labels', () => {
+    const r = parseRequirements({ minimum: '<ul><li>500 mhz processor, 96mb ram, 16mb video card, Windows XP</li></ul>' });
+    expect(r).not.toBeNull();
+  });
+});
+
+describe('RAM without a label', () => {
+  it('reads "96mb ram" anywhere in the block', () => {
+    expect(parseRequirements({ minimum: '<ul><li>500 mhz processor, 96mb ram, 16mb video card</li></ul>' })).toMatchObject({ ramMinGB: 0.5, ramRecGB: 0.5 });
+  });
+});

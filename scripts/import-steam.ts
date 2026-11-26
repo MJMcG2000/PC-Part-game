@@ -1,12 +1,12 @@
 /**
  * Builds public/data/steam-library.json: requirement-based FPS-model numbers
- * for the most-owned Steam games, used by the Build planner's search.
+ * for Steam's top-selling games, used by the Build planner's search.
  *
  *   npm run import-steam                      # top 10,000 games
  *   npm run import-steam -- --limit 2000      # fewer
  *   npm run import-steam -- --delay 1600      # ms between store requests
  *
- * Needs internet access to steamspy.com and store.steampowered.com, so run it
+ * Needs internet access to store.steampowered.com, so run it
  * on your own computer or in GitHub Actions (workflow "Import Steam library").
  * Store responses are cached in .steam-cache/, so an interrupted run resumes
  * where it stopped. The Steam store allows roughly 200 requests per 5 minutes;
@@ -14,7 +14,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parseRequirements } from './steam-requirements';
+import { parseRequirements, stripHtml } from './steam-requirements';
 import gamesJson from '../src/data/games.json';
 import consoleJson from '../src/data/console-games.json';
 
@@ -43,29 +43,40 @@ async function getJson(url: string): Promise<unknown> {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (e) {
+      // Network errors and non-JSON error pages ("Connection failed…", rate-limit notices): back off and retry.
       if (attempt === 5) throw e;
-      await sleep(5000 * (attempt + 1));
+      const wait = 65_000 * (attempt + 1);
+      console.warn(`  ${(e as Error).message.slice(0, 80)} from ${new URL(url).host}, waiting ${wait / 1000}s`);
+      await sleep(wait);
     }
   }
   throw new Error('unreachable');
 }
 
-/** Most-owned Steam app ids from SteamSpy (1,000 per page, sorted by owners). */
+/**
+ * Top-selling Steam games, from the store's own search (100 per request). Used
+ * instead of SteamSpy, which refuses connections from GitHub's servers.
+ * Pages are cached in .steam-cache/ like the store details.
+ */
 async function topAppIds(limit: number): Promise<number[]> {
   const ids: number[] = [];
-  for (let page = 0; ids.length < limit && page < 60; page++) {
-    const cacheFile = join(CACHE, `steamspy-${page}.json`);
-    const data = existsSync(cacheFile)
-      ? JSON.parse(readFileSync(cacheFile, 'utf8'))
-      : await getJson(`https://steamspy.com/api.php?request=all&page=${page}`);
-    if (!existsSync(cacheFile)) writeFileSync(cacheFile, JSON.stringify(data));
-    const rows = Object.values(data as Record<string, { appid: number }>);
-    if (!rows.length) break;
-    ids.push(...rows.map((r) => r.appid));
-    console.log(`SteamSpy page ${page}: ${ids.length} apps`);
-    if (!existsSync(cacheFile)) await sleep(1000);
+  for (let start = 0; ids.length < limit && start < 20000; start += 100) {
+    const cacheFile = join(CACHE, `search-${start}.json`);
+    let found: number[];
+    if (existsSync(cacheFile)) found = JSON.parse(readFileSync(cacheFile, 'utf8'));
+    else {
+      const data = (await getJson(
+        `https://store.steampowered.com/search/results/?query&start=${start}&count=100&filter=topsellers&category1=998&infinite=1&cc=us&l=english`,
+      )) as { results_html?: string };
+      found = [...(data.results_html ?? '').matchAll(/data-ds-appid="(\d+)"/g)].map((m) => Number(m[1]));
+      if (found.length) writeFileSync(cacheFile, JSON.stringify(found));
+      await sleep(DELAY);
+    }
+    if (!found.length) break;
+    ids.push(...found);
+    if (start % 1000 === 0) console.log(`Steam top sellers: ${ids.length} apps`);
   }
-  return ids.slice(0, limit);
+  return [...new Set(ids)].slice(0, limit);
 }
 
 interface StoreData {
@@ -103,18 +114,32 @@ async function main() {
   // [appid, name, year, genre, cpuLoad, gpuLoad, vramGB, ramMinGB, ramRecGB]
   const items: (string | number)[][] = [];
   let skipped = 0;
+  // Why apps were skipped, with their requirement lines, to improve the parser (written next to the library).
+  const debug: { id: number; name?: string; why: string; cpu?: string; gpu?: string }[] = [];
   for (const [n, id] of ids.entries()) {
     const d = await storeDetails(id).catch((e) => (console.warn(`  ${id}: ${e.message}`), null));
     const req = d && !Array.isArray(d.pc_requirements) ? d.pc_requirements : undefined;
     const r = d?.type === 'game' ? parseRequirements(req as { minimum?: string; recommended?: string }) : null;
     if (!d || !r) {
       skipped++;
+      if (debug.length < 400) {
+        const text = req ? stripHtml(`${req.recommended ?? ''}\n${req.minimum ?? ''}`) : '';
+        const line = (label: RegExp) => text.match(label)?.[1]?.trim().slice(0, 160);
+        debug.push({
+          id,
+          name: d?.name,
+          why: !d ? 'no store data' : d.type !== 'game' ? `type ${d.type}` : !req ? 'no pc requirements' : 'unreadable requirements',
+          cpu: line(/(?:Processor|CPU)\s*:?\s*([^\n]+)/i),
+          gpu: line(/(?:Graphics|Video Card|Video|GPU)\s*:?\s*([^\n]+)/i),
+        });
+      }
     } else {
       const year = Number(d.release_date?.date?.match(/\d{4}/)?.[0] ?? 0);
       items.push([id, d.name ?? `App ${id}`, year, d.genres?.[0]?.description ?? '', r.cpuLoad, r.gpuLoad, r.vramGB, r.ramMinGB, r.ramRecGB]);
     }
     if ((n + 1) % 250 === 0 || n === ids.length - 1) {
       writeFileSync(OUT, JSON.stringify({ v: 1, generated: new Date().toISOString().slice(0, 10), items }));
+      writeFileSync('steam-import-debug.json', JSON.stringify(debug, null, 1));
       console.log(`${n + 1}/${ids.length} checked · ${items.length} usable · ${skipped} skipped (not a game or unreadable requirements)`);
     }
   }

@@ -233,11 +233,11 @@ The data lives in `public/data/steam-library.json` (about 300 KB gzipped for 10,
 planner page, so the game itself stays small. Rebuild it with:
 
 ```
-npm run import-steam                    # top 10,000 most-owned games (about 4-5 hours)
+npm run import-steam                    # top 10,000 top-selling games (about 4-5 hours)
 npm run import-steam -- --limit 2000    # fewer
 ```
 
-It needs internet access to steamspy.com and store.steampowered.com, so run it on your own computer or with the
+It needs internet access to store.steampowered.com, so run it on your own computer or with the
 **Import Steam library** workflow in GitHub Actions (it commits the file to a `steam-library` branch). Responses are
 cached in `.steam-cache/`, so an interrupted run picks up where it stopped. Games already in `src/data` keep their
 hand-tuned numbers.
