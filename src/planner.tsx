@@ -15,6 +15,7 @@ import { toDateKey } from './lib/date';
 import { loadDayState, voidDaily } from './lib/storage';
 import { formatLaunch, formatMemory, type Cpu, type Game, type Gpu } from './lib/types';
 import { PartPicker, type PickerOption } from './components/PartPicker';
+import { GameCard } from './components/GameCard';
 import './styles.css';
 
 // The curated puzzle games, plus (when public/data/steam-library.json exists) thousands of
@@ -174,9 +175,17 @@ function Planner() {
       )}
       {game && result && !blocked && (
         <section className="planner-result" aria-live="polite">
-          <h2>
-            {game.name} <small>at {target} FPS, {res}, High settings</small>
+          <h2 className="sr-only">
+            {game.name} at {target} FPS, {res}, High settings
           </h2>
+          <div className="planner-game">
+            <GameCard
+              game={game}
+              targetFps={target}
+              resolution={res}
+              label={fromSteam.has(game.id) ? 'Steam requirements' : 'Rigdle game'}
+            />
+          </div>
           <div className="planner-grid">
             <div className="planner-card">
               <h3>🧠 CPU</h3>
