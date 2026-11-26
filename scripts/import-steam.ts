@@ -43,29 +43,39 @@ async function getJson(url: string): Promise<unknown> {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (e) {
+      // Network errors and non-JSON error pages ("Connection failed…", rate-limit notices): back off and retry.
       if (attempt === 5) throw e;
-      await sleep(5000 * (attempt + 1));
+      const wait = 65_000 * (attempt + 1);
+      console.warn(`  ${(e as Error).message.slice(0, 80)} from ${new URL(url).host}, waiting ${wait / 1000}s`);
+      await sleep(wait);
     }
   }
   throw new Error('unreachable');
 }
 
-/** Most-owned Steam app ids from SteamSpy (1,000 per page, sorted by owners). */
+/**
+ * Most-owned Steam app ids from SteamSpy (1,000 per page, sorted by owners).
+ * SteamSpy allows one "all" request per 60 seconds, so uncached pages are spaced
+ * 61 s apart. Only full pages are cached, so a short (rate-limited) page is refetched next time.
+ */
 async function topAppIds(limit: number): Promise<number[]> {
   const ids: number[] = [];
+  let fetched = false;
   for (let page = 0; ids.length < limit && page < 60; page++) {
     const cacheFile = join(CACHE, `steamspy-${page}.json`);
-    const data = existsSync(cacheFile)
-      ? JSON.parse(readFileSync(cacheFile, 'utf8'))
-      : await getJson(`https://steamspy.com/api.php?request=all&page=${page}`);
-    if (!existsSync(cacheFile)) writeFileSync(cacheFile, JSON.stringify(data));
-    const rows = Object.values(data as Record<string, { appid: number }>);
+    const cached = existsSync(cacheFile);
+    if (!cached && fetched) await sleep(61_000);
+    const data = cached ? JSON.parse(readFileSync(cacheFile, 'utf8')) : await getJson(`https://steamspy.com/api.php?request=all&page=${page}`);
+    const rows = Object.values((data ?? {}) as Record<string, { appid: number }>);
+    if (!cached) {
+      fetched = true;
+      if (rows.length >= 1000) writeFileSync(cacheFile, JSON.stringify(data));
+    }
     if (!rows.length) break;
     ids.push(...rows.map((r) => r.appid));
-    console.log(`SteamSpy page ${page}: ${ids.length} apps`);
-    if (!existsSync(cacheFile)) await sleep(1000);
+    console.log(`SteamSpy page ${page}: ${rows.length} apps (${ids.length} total)`);
   }
-  return ids.slice(0, limit);
+  return [...new Set(ids)].slice(0, limit);
 }
 
 interface StoreData {
