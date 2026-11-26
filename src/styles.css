@@ -2223,3 +2223,29 @@ details.site-menu[open] > summary {
 .planner-blocked-actions .btn {
   text-decoration: none;
 }
+
+/* Planner: game art card above the parts */
+.planner-game {
+  margin: 20px 0 14px;
+  max-width: 520px;
+}
+@media (min-width: 960px) {
+  .planner-result {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: 0 24px;
+    align-items: start;
+  }
+  .planner-result > * {
+    grid-column: 1 / -1;
+  }
+  .planner-result > .planner-game {
+    grid-column: 1;
+    margin-top: 20px;
+  }
+  .planner-result > .planner-grid {
+    grid-column: 2;
+    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+}
