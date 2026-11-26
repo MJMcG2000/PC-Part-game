@@ -1,0 +1,2734 @@
+[
+ {
+  "id": 9900,
+  "name": "Star Trek Online",
+  "why": "unreadable requirements",
+  "cpu": "Core i5-6xxx Quad Core or better",
+  "gpu": "NVidia GeForce GTX 9xx or AMD Radeon RX 4xx or better"
+ },
+ {
+  "id": 3218350,
+  "name": "Melvor Idle 2: A RuneScape Adventure",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 5057800,
+  "name": "When Chests Rain Tons of Loot",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core 2 Duo or equivalent",
+  "gpu": "Integrated Graphics (Intel HD Graphics or AMD APU)"
+ },
+ {
+  "id": 5200620,
+  "name": "Dungeonbound",
+  "why": "unreadable requirements",
+  "cpu": "Dual-core 2.0 GHz or higher",
+  "gpu": "Integrated graphics (e.g., Intel HD Graphics) or equivalent; dedicated GPU not necessary"
+ },
+ {
+  "id": 4199960,
+  "name": "The Jackbox Party Pack 12",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 960090,
+  "name": "Bloons TD 6",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 2.0 compatible, ATI, Nvidia or Intel HD"
+ },
+ {
+  "id": 3028330,
+  "name": "Battlefield™ REDSEC",
+  "why": "no pc requirements"
+ },
+ {
+  "id": 4618570,
+  "name": "Booster Pack Heroes",
+  "why": "unreadable requirements",
+  "cpu": "Dual-core @ 2.0 Ghz",
+  "gpu": "Any graphics card"
+ },
+ {
+  "id": 3856460,
+  "name": "Cursed Words: The Word Game That Isn't",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 286160,
+  "name": "Tabletop Simulator",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+ },
+ {
+  "id": 4933500,
+  "name": "Me and You",
+  "why": "unreadable requirements",
+  "cpu": "Any",
+  "gpu": "Any"
+ },
+ {
+  "id": 3949040,
+  "name": "RV There Yet?",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVidia 3060 or equivalent"
+ },
+ {
+  "id": 4704690,
+  "name": "MECCHA CHAMELEON",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5",
+  "gpu": "DirectX 11 or 12 compatible graphics card"
+ },
+ {
+  "id": 1211630,
+  "name": "The Jackbox Party Pack 7",
+  "why": "unreadable requirements",
+  "cpu": "2.33 GHz Quad Core or Greater",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 4171850,
+  "name": "Trees Hate You",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 3285880,
+  "name": "MONOMOON",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz",
+  "gpu": "Relatively modern dedicated graphics card"
+ },
+ {
+  "id": 4354570,
+  "name": "FINAL FANTASY VII REVELATION",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 3364070,
+  "name": "The Jackbox Party Pack 11",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 3727090,
+  "name": "Horses of Hoofprint Bay",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture with SSE2 instruction set support, Arm64"
+ },
+ {
+  "id": 262060,
+  "name": "Darkest Dungeon®",
+  "why": "unreadable requirements",
+  "gpu": "Open GL 3.2+ Compliant"
+ },
+ {
+  "id": 2373990,
+  "name": "Solo Leveling: ARISE OVERDRIVE",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA® GeForce GTX™ 2060 Over"
+ },
+ {
+  "id": 2739990,
+  "name": "Mahjong Soul",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce GT 430 / ATI Radeon HD 2600XT"
+ },
+ {
+  "id": 1343400,
+  "name": "RuneScape ®",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce GTX 600 series, Intel UHD Graphics 610, AMD Radeon R7 260"
+ },
+ {
+  "id": 965580,
+  "name": "Root",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX11 or OpenGL 3.x capabilities"
+ },
+ {
+  "id": 2638080,
+  "name": "Annihilated",
+  "why": "unreadable requirements",
+  "cpu": "AMD Ryzen 5 5625U or equivalent",
+  "gpu": "AMD Radeon Graphics (integrated) or equivalent"
+ },
+ {
+  "id": 1552350,
+  "name": "The Jackbox Party Pack 8",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 1005300,
+  "name": "The Jackbox Party Pack 6",
+  "why": "unreadable requirements",
+  "cpu": "2.33 GHz Quad Core or Greater",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 2400160,
+  "name": "Glyphica: Typing Survival",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Any (OpenGL 2.0 Compatible)"
+ },
+ {
+  "id": 373420,
+  "name": "Divinity: Original Sin - Enhanced Edition",
+  "why": "unreadable requirements",
+  "cpu": "Intel i5 2400 or higher",
+  "gpu": "NVIDIA® GeForce® GTX 550 or ATI™ Radeon™ HD 6XXX or higher"
+ },
+ {
+  "id": 3314790,
+  "name": "CloverPit",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Most dedicated GPUs should work."
+ },
+ {
+  "id": 2963950,
+  "name": "Persona 4 Revival ",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 1476970,
+  "name": "IdleOn - The Incremental MMO",
+  "why": "unreadable requirements",
+  "cpu": "An Intel Pentium 4 processor or later that's SSE3 capable",
+  "gpu": "Hardware Accelerated Graphics with dedicated memory"
+ },
+ {
+  "id": 1850960,
+  "name": "The Jackbox Party Pack 9",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 2590240,
+  "name": "METRO 2039",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 2216830,
+  "name": "The Jackbox Party Pack 10",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 4715160,
+  "name": "Finals Week ✍🏻",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia 3060 or equivalent"
+ },
+ {
+  "id": 4607420,
+  "name": "楽園追放 -The Stellar Angel-",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 GPU"
+ },
+ {
+  "id": 1388880,
+  "name": "Doki Doki Literature Club Plus!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 3972980,
+  "name": "Mirklurk: Every Step Matters",
+  "why": "unreadable requirements",
+  "cpu": "Intel i3 CPU m370 2.40GHz",
+  "gpu": "Ati mobility radeon HD 5000"
+ },
+ {
+  "id": 2411200,
+  "name": "Underkeep",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.2 compatible"
+ },
+ {
+  "id": 1769420,
+  "name": "Noble Fates",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "1070"
+ },
+ {
+  "id": 1637320,
+  "name": "Dome Keeper",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Support for OpenGL 3.3"
+ },
+ {
+  "id": 109600,
+  "name": "Neverwinter",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVidia GeForce GTX 9xx or AMD Radeon RX 4xx or better"
+ },
+ {
+  "id": 3552140,
+  "name": "Retro Rewind - Video Store Simulator",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia GeForce 1070 GTX"
+ },
+ {
+  "id": 4259360,
+  "name": "Milki Delivery",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture",
+  "gpu": "Integrated graphics should be enough"
+ },
+ {
+  "id": 1419170,
+  "name": "My Singing Monsters",
+  "why": "unreadable requirements",
+  "cpu": "Dual Core Processor",
+  "gpu": "OpenGL 2.0 Compatible"
+ },
+ {
+  "id": 312520,
+  "name": "Rain World",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 7 Series / Radeon RX400 Series (or better)"
+ },
+ {
+  "id": 774461,
+  "name": "The Jackbox Party Pack 5",
+  "why": "unreadable requirements",
+  "cpu": "2.33 GHz Quad Core or Greater",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 1135690,
+  "name": "Unpacking",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+ },
+ {
+  "id": 2069310,
+  "name": "RealFlight Evolution",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Discrete graphics - Full DirectX 11 compliant"
+ },
+ {
+  "id": 2763740,
+  "name": "Revolution Idle",
+  "why": "unreadable requirements",
+  "cpu": "Intel Dual-Core 1.6GHz or faster processor",
+  "gpu": "Graphic card with DX10 (Shader-Model 4.0) abilities"
+ },
+ {
+  "id": 459820,
+  "name": "Crush Crush",
+  "why": "unreadable requirements",
+  "cpu": "Modern Intel/AMD CPU 2GHz+",
+  "gpu": "Graphics card with DX10 capabilities. Anything made since 2009 should work."
+ },
+ {
+  "id": 1150690,
+  "name": "OMORI",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL ES 2.0 hardware driver support required for WebGL acceleration"
+ },
+ {
+  "id": 761890,
+  "name": "Albion Online",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DirectX 10 support or better"
+ },
+ {
+  "id": 1875580,
+  "name": "Mina the Hollower",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD 5000 (2013) / Radeon HD 7000 (2012) / Nvidia 900 Series (Maxwell, 2014)"
+ },
+ {
+  "id": 4594150,
+  "name": "Sir, We Have an Orc Problem",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Dedicated graphics card with Vulkan 1.3 support"
+ },
+ {
+  "id": 701160,
+  "name": "Kingdom Two Crowns",
+  "why": "unreadable requirements",
+  "cpu": "Intel 7th Gen",
+  "gpu": "Nvidia GTX Series 10"
+ },
+ {
+  "id": 3948120,
+  "name": "Scritchy Scratchy",
+  "why": "unreadable requirements",
+  "cpu": "TBD",
+  "gpu": "TBD"
+ },
+ {
+  "id": 4609470,
+  "name": "Your party died again",
+  "why": "unreadable requirements",
+  "cpu": "Any 2012+",
+  "gpu": "Integrated GPU"
+ },
+ {
+  "id": 4200960,
+  "name": "Thief: The Dark Project Remastered",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GPU with DirectX 11 or Vulkan 1.1 support"
+ },
+ {
+  "id": 3031880,
+  "name": "Car Park Capital",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 4.2+"
+ },
+ {
+  "id": 837470,
+  "name": "Untitled Goose Game",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 47410,
+  "name": "Stronghold Kingdoms",
+  "why": "unreadable requirements",
+  "cpu": "1GHz or Faster",
+  "gpu": "DirectX 9 Compatible Graphics Card"
+ },
+ {
+  "id": 5255070,
+  "name": "Sentinels of the Multiverse 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10, DX11, DX12 or Vulkan"
+ },
+ {
+  "id": 311730,
+  "name": "DEAD OR ALIVE 5 Last Round: Core Fighters",
+  "why": "unreadable requirements",
+  "cpu": "Core i7 2600 over",
+  "gpu": "1920×1080 pixel over True Color ※4K Compatible"
+ },
+ {
+  "id": 1343370,
+  "name": "Old School RuneScape",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce GTX 600 series, Intel UHD Graphics 610, AMD Radeon R7 260"
+ },
+ {
+  "id": 5054700,
+  "name": "Fakin It XL",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 4260840,
+  "name": "STRANGER THAN HEAVEN",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 1629520,
+  "name": "A Little to the Left",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Direct X 11.0 compatible video card"
+ },
+ {
+  "id": 1455630,
+  "name": "THE GAME OF LIFE 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 10 class GPU [1280 x 720]"
+ },
+ {
+  "id": 1119730,
+  "name": "Ranch Simulator: Build, Hunt, Farm",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GeForce RTX series / Radeon 500 series or above"
+ },
+ {
+  "id": 1689500,
+  "name": "Dune: Imperium",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX11 or OpenGL 3.x capabilities"
+ },
+ {
+  "id": 4984870,
+  "name": "Selkie's Salvage&Co.",
+  "why": "unreadable requirements",
+  "cpu": "Intel i5 or Higher",
+  "gpu": "Most dedicated GPUs should work."
+ },
+ {
+  "id": 4981570,
+  "name": "Wand & Order: Tidy up the magic shop!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia 1060/AMD equivalent"
+ },
+ {
+  "id": 4259190,
+  "name": "Kingdom Rush 6: Genesis TD",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel UHD 600"
+ },
+ {
+  "id": 528740,
+  "name": "Operation: New Earth",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX9 (shader model 2.0) capabilities"
+ },
+ {
+  "id": 2477010,
+  "name": "Ticket to Ride®",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz single core processor",
+  "gpu": "DirectX 11 class GPU [1280 x 720]"
+ },
+ {
+  "id": 3370870,
+  "name": "Berry Bury Berry",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX9 (shader model 3.0) or DX11 with feature level 9.3 capabilities"
+ },
+ {
+  "id": 2060160,
+  "name": "The Farmer Was Replaced",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia Geforce GTX 550/equivalent or higher*"
+ },
+ {
+  "id": 2835570,
+  "name": "Buckshot Roulette",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Relatively modern dedicated graphics card (Vulkan support required)"
+ },
+ {
+  "id": 2669450,
+  "name": "My Child New Beginnings",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10,DX11,DX12"
+ },
+ {
+  "id": 627690,
+  "name": "Idle Champions of the Forgotten Realms",
+  "why": "unreadable requirements",
+  "cpu": "2.33GHz or faster x86-compatible processor, or Intel Atom™ 1.6GHz or faster processor for netbook class devices",
+  "gpu": "DirectX 10 compatible graphics card"
+ },
+ {
+  "id": 4778330,
+  "name": "Sardoinky",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Dedicated GPU with OpenGL 3.0+"
+ },
+ {
+  "id": 3739580,
+  "name": "KORRIDOR",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture with SSE2 instruction set support, Arm64",
+  "gpu": "DX10, DX11, DX12 or Vulkan capable GPUs"
+ },
+ {
+  "id": 3526710,
+  "name": "Everything is Crab: The Animal Evolution Roguelite",
+  "why": "unreadable requirements",
+  "cpu": "3.5 ghz with SSE2",
+  "gpu": "DX11, DX12 capable"
+ },
+ {
+  "id": 1989270,
+  "name": "Slay the Princess — The Pristine Cut",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 1573360,
+  "name": "Infinity Kingdom",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 1876590,
+  "name": "I Am Your Beast",
+  "why": "unreadable requirements",
+  "cpu": "@ 2 GHz",
+  "gpu": "Intel HD Graphics 2000"
+ },
+ {
+  "id": 4770830,
+  "name": "三國鼎立Online Remastered",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 – 2.4 GHz",
+  "gpu": "GeForce GT 430 / ATI Radeon HD 2600XT"
+ },
+ {
+  "id": 2212330,
+  "name": "Your Only Move Is HUSTLE",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA Geforce MX150"
+ },
+ {
+  "id": 3265700,
+  "name": "Vampire Crawlers: The Turbo Wildcard from Vampire Survivors",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX11, DX12 capable"
+ },
+ {
+  "id": 3478870,
+  "name": "GeoGuessr Steam Edition",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Any"
+ },
+ {
+  "id": 2333480,
+  "name": "RAID: Shadow Legends",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 or newer / Vulkan-capable GPUs"
+ },
+ {
+  "id": 4659620,
+  "name": "Touhou Koumakyou: New Classic - the Embodiment of Scarlet Devil",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "UHD-Graphics-620"
+ },
+ {
+  "id": 613830,
+  "name": "CHRONO TRIGGER®",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3 2.3GHz",
+  "gpu": "INTEL HD Graphics 530"
+ },
+ {
+  "id": 3214610,
+  "name": "Cinderia",
+  "why": "unreadable requirements",
+  "cpu": "Intel I5-14600KF",
+  "gpu": "NVIDIA GTX 3050 Ti"
+ },
+ {
+  "id": 758870,
+  "name": "Kynseed",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3",
+  "gpu": "DirectX 11 Compatible Video Card"
+ },
+ {
+  "id": 2163330,
+  "name": "Yet Another Zombie Survivors",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 2060 or better"
+ },
+ {
+  "id": 1858720,
+  "name": "Message From Aliens",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 619820,
+  "name": "Heroes of Hammerwatch II",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.2+ / DirectX 11+"
+ },
+ {
+  "id": 3884520,
+  "name": "Blood: Refreshed Supply™",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GPU with DirectX 11 or Vulkan 1.1 support"
+ },
+ {
+  "id": 1963680,
+  "name": "GUNDAM ROGUE ORBIT",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 2999030,
+  "name": "Exploding Kittens® 2",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz single core processor",
+  "gpu": "DirectX 11 class GPU [1280 x 720]"
+ },
+ {
+  "id": 329110,
+  "name": "Gems of War - Puzzle RPG",
+  "why": "unreadable requirements",
+  "cpu": "2.33 GHz or faster x86 CPU, or Intel Atom 1.6Hz or faster CPU (SSE2 instruction set support)",
+  "gpu": "Radeon HD5000 series or better, GeForce GTX400 series or better, Intel 3000 or better (Pixel Shader 4 support required)"
+ },
+ {
+  "id": 4992660,
+  "name": "Scawy Game",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVidia 3060 or equivalent"
+ },
+ {
+  "id": 4080030,
+  "name": "The Message from Deep Space",
+  "why": "unreadable requirements",
+  "cpu": "2Ghz or better (x86-64)",
+  "gpu": "OpenGL 2.0 compatible, ATI, Nvidia or Intel HD"
+ },
+ {
+  "id": 3602570,
+  "name": "Horsey Game",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "pretty minimal"
+ },
+ {
+  "id": 2754380,
+  "name": "The Roottrees are Dead",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics 510"
+ },
+ {
+  "id": 3641000,
+  "name": "The Incident at Galley House",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics 510"
+ },
+ {
+  "id": 1054490,
+  "name": "Wingspan",
+  "why": "unreadable requirements",
+  "cpu": "i5-2430M",
+  "gpu": "Nvidia GT540"
+ },
+ {
+  "id": 1239080,
+  "name": "Door Kickers 2: Task Force North",
+  "why": "unreadable requirements",
+  "cpu": "i9",
+  "gpu": "Any dedicated video card newer than 2017"
+ },
+ {
+  "id": 306020,
+  "name": "Bloons TD 5",
+  "why": "unreadable requirements",
+  "cpu": "2Ghz or better",
+  "gpu": "OpenGL 2.0 compatible, ATI, Nvidia or Intel HD"
+ },
+ {
+  "id": 977400,
+  "name": "Cell to Singularity - Evolution Never Ends",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Low budget 3D graphics card"
+ },
+ {
+  "id": 3405340,
+  "name": "Megabonk",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "yes"
+ },
+ {
+  "id": 1258080,
+  "name": "Shop Titans",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 2506480,
+  "name": "Clue/Cluedo",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 10 class GPU [1280 x 720]"
+ },
+ {
+  "id": 3797340,
+  "name": "Anomalous Coffee Machine 2",
+  "why": "unreadable requirements",
+  "cpu": "Support for OpenGL 3.3"
+ },
+ {
+  "id": 702320,
+  "name": "March of Empires",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 or AMD Equivalent",
+  "gpu": "NVIDIA Geforce GTX 730"
+ },
+ {
+  "id": 4130120,
+  "name": "Genome Guardian 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 4946440,
+  "name": "Granule",
+  "why": "unreadable requirements",
+  "cpu": "Quad-core 3.0 GHz or better",
+  "gpu": "Dedicated NVIDIA or AMD GPU"
+ },
+ {
+  "id": 3384600,
+  "name": "Professor Layton and the New World of Steam",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 4389400,
+  "name": "Bouncy Weapons",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core 2 Duo or equivalent",
+  "gpu": "Integrated Graphics (Intel HD Graphics or AMD APU)"
+ },
+ {
+  "id": 3758950,
+  "name": "Death at Fleming Manor",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 3.0 GHz or equivalent",
+  "gpu": "Intel HD Graphics 530 or equivalent"
+ },
+ {
+  "id": 4833450,
+  "name": "Money for Girls: Amortized",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "HyperRomance GPU Made With Worker Blood $66666667348478234783472938$"
+ },
+ {
+  "id": 3560670,
+  "name": "OpenFront",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics: DirectX 11 compatible"
+ },
+ {
+  "id": 1755580,
+  "name": "The Jackbox Party Starter",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 777130,
+  "name": "Blush Blush",
+  "why": "unreadable requirements",
+  "cpu": "Modern Intel/AMD CPU 2GHz+",
+  "gpu": "Graphics card with DX10 capabilities. Anything made since 2009 should work."
+ },
+ {
+  "id": 1874170,
+  "name": "Shredders",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA 2070, AMD 5700XT"
+ },
+ {
+  "id": 5053820,
+  "name": "Mimic Party",
+  "why": "unreadable requirements",
+  "cpu": "Memory: 4000 MB Graphics: Network: Broadband internet connection DirectX Version: N/A Disk Space: MB Sound Card: VR Devices and Support: (?) See documentation A",
+  "gpu": "Network: Broadband internet connection DirectX Version: N/A Disk Space: MB Sound Card: VR Devices and Support: (?) See documentation Additional Notes: (?) OS Ve"
+ },
+ {
+  "id": 3198890,
+  "name": "Scale the Depths",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Any Modern Graphics Card"
+ },
+ {
+  "id": 1432320,
+  "name": "Liftoff®: Micro Drones",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "cards not recommended."
+ },
+ {
+  "id": 5196330,
+  "name": "IT THINKS! - Build Your Own GPU",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 12 or Vulkan capable (e.g. AMD Radeon Vega 8)"
+ },
+ {
+  "id": 4731620,
+  "name": "Fortune Mill",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated graphics with full OpenGL 3.3 support or Direct3D 11 support"
+ },
+ {
+  "id": 5348620,
+  "name": "Tidy Up the Wonderlands of Mirad",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 2086430,
+  "name": "NIMRODS",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 compatible"
+ },
+ {
+  "id": 3510740,
+  "name": "Normal Golf Game",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 3867170,
+  "name": "Sengoku Rance",
+  "why": "unreadable requirements",
+  "cpu": "2+ GHz Processor",
+  "gpu": "OpenGL ES 2.0 hardware driver support required for WebGL acceleration. (AMD Catalyst 10.9, nVidia 358.50)"
+ },
+ {
+  "id": 3830590,
+  "name": "Stealing Them Softly",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 2442460,
+  "name": "Citizen Sleeper 2: Starward Vector",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 compatible GPU"
+ },
+ {
+  "id": 3100970,
+  "name": "Isle of Reveries",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5-2300 / AMD Ryzen 3 1200",
+  "gpu": "Dedicated GPU or integrated graphics with WebGL 2 support"
+ },
+ {
+  "id": 4572120,
+  "name": "Dirt Clicker",
+  "why": "unreadable requirements",
+  "cpu": "Intel i7 2.6 GHz",
+  "gpu": "Geforce 1650 Ti"
+ },
+ {
+  "id": 1451940,
+  "name": "NEEDY STREAMER OVERLOAD",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 4.5 or better"
+ },
+ {
+  "id": 3547270,
+  "name": "Worming from Home",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 2527160,
+  "name": "Desktop Explorer",
+  "why": "unreadable requirements",
+  "cpu": "Intel or AMD Dual Core at 2 GHz or better",
+  "gpu": "Intel Graphics 4400 or better"
+ },
+ {
+  "id": 3459340,
+  "name": "Lacey's Flash Games",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 4984400,
+  "name": "Towers of Babble",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3 or equivalent",
+  "gpu": "DirectX 11 compatible GPU, integrated graphics supported"
+ },
+ {
+  "id": 1206070,
+  "name": "Phonopolis",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 compatible GPU"
+ },
+ {
+  "id": 4268590,
+  "name": "Func Key",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated graphics"
+ },
+ {
+  "id": 1696770,
+  "name": "The Mermaid Mask",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3 or equivalent",
+  "gpu": "Intel HD Graphics"
+ },
+ {
+  "id": 239030,
+  "name": "Papers, Please",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 1.4 or better"
+ },
+ {
+  "id": 4463480,
+  "name": "ArcaneBound",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.2+ / DirectX 11+"
+ },
+ {
+  "id": 3631290,
+  "name": "Slots & Daggers",
+  "why": "unreadable requirements",
+  "cpu": "Intel i3 4th generation or equivalent",
+  "gpu": "Most dedicated GPUs should work."
+ },
+ {
+  "id": 3195580,
+  "name": "lily's world XD",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Direct X 9.0c compatible video card"
+ },
+ {
+  "id": 475190,
+  "name": "Scanner Sombre",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Radeon HD 2000/GeForce 8"
+ },
+ {
+  "id": 541570,
+  "name": "Sally Face - Episode One",
+  "why": "unreadable requirements",
+  "cpu": "X64 architecture with SSE2 instruction set support",
+  "gpu": "DX11 or higher capable GPUs"
+ },
+ {
+  "id": 4834780,
+  "name": "Warlords IV: Heroes of Etheria",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz",
+  "gpu": "DirectX 9.0c Compatible Graphics Card"
+ },
+ {
+  "id": 1722870,
+  "name": "Clank!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX11 or OpenGL 3.x capabilities"
+ },
+ {
+  "id": 1118200,
+  "name": "People Playground",
+  "why": "unreadable requirements",
+  "cpu": "3 GHz",
+  "gpu": "Graphics card with DX10 (shader model 4.0) capabilities"
+ },
+ {
+  "id": 1580240,
+  "name": "Rune Factory 4 Special",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GTX 1650Q"
+ },
+ {
+  "id": 4014040,
+  "name": "Maze Creep!!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "1.5Ghz or better (x86-64)"
+ },
+ {
+  "id": 3237970,
+  "name": "Bubsy 4D",
+  "why": "unreadable requirements",
+  "cpu": "4 GHz",
+  "gpu": "GeForce RTX 30 or equivalent"
+ },
+ {
+  "id": 2364580,
+  "name": "Titanium Court",
+  "why": "unreadable requirements",
+  "cpu": "x64 architecture",
+  "gpu": "OpenGL or DirectX 9 compatible graphics card."
+ },
+ {
+  "id": 1443200,
+  "name": "Class of '09",
+  "why": "unreadable requirements",
+  "cpu": "2.0 GHz Core 2 Duo",
+  "gpu": "Open GL 2.0 or DirectX 9.0c"
+ },
+ {
+  "id": 5101960,
+  "name": "Dungeons & Dynasties",
+  "why": "unreadable requirements",
+  "cpu": "Windows 11 (64-bit)",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 774171,
+  "name": "Muse Dash",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core™ Duo or faster",
+  "gpu": "DirectX® 9 Compatible Graphics Card"
+ },
+ {
+  "id": 1012880,
+  "name": "60 Seconds! Reatomized",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia GT540"
+ },
+ {
+  "id": 589590,
+  "name": "Kindergarten",
+  "why": "unreadable requirements",
+  "cpu": "1.6ghz",
+  "gpu": "ATI Mobility Radeon 4200"
+ },
+ {
+  "id": 34330,
+  "name": "Total War: SHOGUN 2",
+  "why": "no pc requirements"
+ },
+ {
+  "id": 4834760,
+  "name": "Pool of Radiance: Ruins of Myth Drannor",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 9.0c Compatible Graphics Card"
+ },
+ {
+  "id": 2318310,
+  "name": "Class of '09: The Re-Up",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Open GL 2.0 or DirectX 9.0c"
+ },
+ {
+  "id": 1267910,
+  "name": "Melvor Idle",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel Integrated Graphics"
+ },
+ {
+  "id": 1374970,
+  "name": "Moonscars",
+  "why": "unreadable requirements",
+  "cpu": "AMD Athlon II X2 270 (2 * 3400) or equivalent Intel, Core i3-530 (2 * 2930) or equivalent",
+  "gpu": "GeForce GT 530 (2048 VRAM) or equivalent, Radeon HD 6570 (1024 VRAM) or equivalent"
+ },
+ {
+  "id": 3453910,
+  "name": "Happy's Humble Burger Cult",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVidia 3060 or equivalent"
+ },
+ {
+  "id": 2743460,
+  "name": "Granvir",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GeForce 970"
+ },
+ {
+  "id": 2437670,
+  "name": "Dagger Directive",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Amd RX Vega 7"
+ },
+ {
+  "id": 1578650,
+  "name": "Citizen Sleeper",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 compatible GPU"
+ },
+ {
+  "id": 1609230,
+  "name": "Scarlet Hollow",
+  "why": "unreadable requirements",
+  "cpu": "1.8 ghz dual core",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 2738490,
+  "name": "Sol Cesto",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz dual-core processor",
+  "gpu": "WebGL compatible graphic card"
+ },
+ {
+  "id": 2198800,
+  "name": "CRUMB Circuit Simulator",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated"
+ },
+ {
+  "id": 3483740,
+  "name": "Cast n Chill",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX9"
+ },
+ {
+  "id": 2796640,
+  "name": "The Magus Circle",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5",
+  "gpu": "DX10, DX11, DX12 capable"
+ },
+ {
+  "id": 4538080,
+  "name": "Kingdom Inc.",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX11, DX12 capable graphics card"
+ },
+ {
+  "id": 4297050,
+  "name": "VacBot Simulator",
+  "why": "unreadable requirements",
+  "cpu": "Quad Core Intel i5",
+  "gpu": "NVIDIA GeForce 960 GTX"
+ },
+ {
+  "id": 2948640,
+  "name": "The Jackbox Survey Scramble",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 1606340,
+  "name": "Conquest of Elysium 5",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL"
+ },
+ {
+  "id": 3950130,
+  "name": "Database Detective: Minor Crimes Division",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Yes"
+ },
+ {
+  "id": 5031150,
+  "name": "HelloLove2:Binary",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "独立显卡"
+ },
+ {
+  "id": 3642010,
+  "name": "Truck-kun is Supporting Me from Another World?!",
+  "why": "unreadable requirements",
+  "cpu": "@ 2GHz",
+  "gpu": "Intel HD Graphics 2000"
+ },
+ {
+  "id": 2378900,
+  "name": "The Coffin of Andy and Leyley",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core 2 Duo or better",
+  "gpu": "DirectX 9/OpenGL 4.1 capable GPU"
+ },
+ {
+  "id": 683900,
+  "name": "RollerCoaster Tycoon® Classic",
+  "why": "unreadable requirements",
+  "cpu": "Intel 2.4Ghz+ or AMD equivalent",
+  "gpu": "OpenGL 2+"
+ },
+ {
+  "id": 1295920,
+  "name": "The Mortuary Assistant",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz or higher",
+  "gpu": "geforce 960 or higher"
+ },
+ {
+  "id": 346900,
+  "name": "AdVenture Capitalist",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 2453660,
+  "name": "Hoop Land",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10, DX11, and DX12-capable GPUs."
+ },
+ {
+  "id": 4762560,
+  "name": "Etranger In the City of Doom",
+  "why": "unreadable requirements",
+  "cpu": "3+ GHz Processor",
+  "gpu": "DirectX 11/OpenGL 4.5 capable GPU"
+ },
+ {
+  "id": 2900640,
+  "name": "TOEM 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 3499520,
+  "name": "Piano Glow",
+  "why": "unreadable requirements",
+  "cpu": "1.7 GHz Dual Core CPU",
+  "gpu": "Recommend at least a dedicated GPU"
+ },
+ {
+  "id": 1550920,
+  "name": "Slime Alchemy",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 compatible graphics card"
+ },
+ {
+  "id": 2768430,
+  "name": "ATLYSS",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 1722860,
+  "name": "Munchkin Digital",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX11 or OpenGL 3.x capabilities"
+ },
+ {
+  "id": 3009300,
+  "name": "Teamfight Manager 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "3D Accelerated Card (Not Integrated)"
+ },
+ {
+  "id": 2880730,
+  "name": "AI2U: With You 'Til The End",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia 3060 Ti"
+ },
+ {
+  "id": 2652000,
+  "name": "The Jackbox Naughty Pack",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 600+ / Radeon 6000+"
+ },
+ {
+  "id": 2749950,
+  "name": "Esports Manager 2026",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 43600,
+  "name": "Nancy Drew®: Warnings at Waverly Academy",
+  "why": "unreadable requirements",
+  "cpu": "1GHz CPU",
+  "gpu": "32-bit DirectX 9.0 compatible video card"
+ },
+ {
+  "id": 5051090,
+  "name": "The Cozy Funemployment",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5",
+  "gpu": "Relatively modern dedicated graphics card"
+ },
+ {
+  "id": 770810,
+  "name": "Good Pizza, Great Pizza - Cozy Cooking Simulator",
+  "why": "unreadable requirements",
+  "cpu": "1.4 GHz",
+  "gpu": "Intel HD graphics"
+ },
+ {
+  "id": 2471100,
+  "name": "Unnamed Space Idle",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10 graphics card"
+ },
+ {
+  "id": 4148240,
+  "name": "Road to Empress Ⅱ",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Dedicated Graphics Card"
+ },
+ {
+  "id": 784950,
+  "name": "SUPREMACY: WORLD WAR 3",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia GeForce 700 Series or equivalent"
+ },
+ {
+  "id": 333640,
+  "name": "Caves of Qud",
+  "why": "unreadable requirements",
+  "cpu": "1GHz or faster. SSE2 instruction set support.",
+  "gpu": "Graphics card: DX10, DX11, DX12 capable"
+ },
+ {
+  "id": 653530,
+  "name": "Return of the Obra Dinn",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz Intel i5 or better",
+  "gpu": "Discrete GPU"
+ },
+ {
+  "id": 794800,
+  "name": "Clue/Cluedo: Classic Edition",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz single core processor",
+  "gpu": "DirectX 10 class GPU [1280 x 720]"
+ },
+ {
+  "id": 673750,
+  "name": "Super Bunny Man",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Dedicated"
+ },
+ {
+  "id": 2511500,
+  "name": "Dominions 6 - Rise of the Pantokrator",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated graphics or better"
+ },
+ {
+  "id": 2083160,
+  "name": "Disfigure",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture with SSE2 instruction set support.",
+  "gpu": "DX10, DX11, DX12 capable."
+ },
+ {
+  "id": 2415010,
+  "name": "A Date with Death",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX or OpenGL compatible card"
+ },
+ {
+  "id": 3400930,
+  "name": "Guilty as Sock!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 1652580,
+  "name": "Imperial Grace",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture with SSE2",
+  "gpu": "DirectX or OpenGL compatible card"
+ },
+ {
+  "id": 620620,
+  "name": "Pirate101",
+  "why": "unreadable requirements",
+  "cpu": "1GHz",
+  "gpu": "Intel Integrated"
+ },
+ {
+  "id": 3572090,
+  "name": "Dominus Gladiatus",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX 11 Compatible GPU"
+ },
+ {
+  "id": 4260270,
+  "name": "Stranded with You",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 9/OpenGL 4.1 capable GPU"
+ },
+ {
+  "id": 2608610,
+  "name": "Gently Packed",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GeForce 840M"
+ },
+ {
+  "id": 3609750,
+  "name": "Organized Inside",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+ },
+ {
+  "id": 3755860,
+  "name": "BLACK SOULS",
+  "why": "unreadable requirements",
+  "cpu": "3+ GHz Processor",
+  "gpu": "OpenGL ES 2.0 hardware driver support required for WebGL acceleration. (AMD Catalyst 10.9, nVidia 358.50)"
+ },
+ {
+  "id": 3731020,
+  "name": "Five Hearts Under One Roof season2",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 or AMD equivalent or above",
+  "gpu": "Discrete graphics card"
+ },
+ {
+  "id": 1182020,
+  "name": "WGT Golf",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Works with most integrated graphics; Dedicated GPU advised"
+ },
+ {
+  "id": 4042800,
+  "name": "Poker Fate - Anime NEEDY GIRL OVERDOSE Collab Coming!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce GT 430 / ATI Radeon HD 2600XT"
+ },
+ {
+  "id": 1232420,
+  "name": "Atlantica Global",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core 2 Duo E6320, AMD Phenom 8450 or better",
+  "gpu": "GeForce GT 240, Radeon HD 5450 or higher (vertex pixel shader 2.0 capable graphics card)"
+ },
+ {
+  "id": 1812420,
+  "name": "An Elder Scrolls Legend: Battlespire",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz",
+  "gpu": "3D graphics card compatible with DirectX 9.0c"
+ },
+ {
+  "id": 3174070,
+  "name": "Texas Hold'em Poker: Pokerist",
+  "why": "unreadable requirements",
+  "cpu": "2.0 Ghz",
+  "gpu": "Reasonable"
+ },
+ {
+  "id": 4150860,
+  "name": "The Loopler",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3",
+  "gpu": "no"
+ },
+ {
+  "id": 615780,
+  "name": "Nancy Drew®: Treasure in the Royal Tower",
+  "why": "unreadable requirements",
+  "cpu": "166 MHz or greater Pentium or equivalent class CPU",
+  "gpu": "16-Bit DirectX 7.0 compatible graphics video card"
+ },
+ {
+  "id": 2624080,
+  "name": "MycoRelic",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 or DirectX 12 compatible graphics card"
+ },
+ {
+  "id": 2548880,
+  "name": "Divine Frequency",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 4.0 or Vulkan Compatible"
+ },
+ {
+  "id": 429530,
+  "name": "Falcon 4.0",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz Processor",
+  "gpu": "3D graphics card compatible with DirectX 9"
+ },
+ {
+  "id": 3799100,
+  "name": "SIDE EFFECTS",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5",
+  "gpu": "Relatively modern dedicted graphics card (Vulkan support required)"
+ },
+ {
+  "id": 326460,
+  "name": "ShellShock Live",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX9 (shader model 2.0) capabilities; generally everything made since 2004 should work"
+ },
+ {
+  "id": 4450660,
+  "name": "Flick",
+  "why": "unreadable requirements",
+  "cpu": "Ryzen 9 3900XT or equivalent",
+  "gpu": "NVidia 3060 or equivalent"
+ },
+ {
+  "id": 31810,
+  "name": "Nancy Drew®: Last Train to Blue Moon Canyon",
+  "why": "unreadable requirements",
+  "cpu": "1GHz CPU",
+  "gpu": "32-bit DirectX 8.0 compatible video card"
+ },
+ {
+  "id": 913740,
+  "name": "WORLD OF HORROR",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3",
+  "gpu": "Intel HD Graphics 4400"
+ },
+ {
+  "id": 558990,
+  "name": "Opus Magnum",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "1920 x 1080"
+ },
+ {
+  "id": 1275890,
+  "name": "Baldi's Basics Plus",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "AMD Radeon HD 8330 or equivalent"
+ },
+ {
+  "id": 287450,
+  "name": "Rise of Nations: Extended Edition",
+  "why": "unreadable requirements",
+  "cpu": "2.6 Ghz",
+  "gpu": "Direct X 11+"
+ },
+ {
+  "id": 1769170,
+  "name": "Shattered Pixel Dungeon",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 2.0+ compatible"
+ },
+ {
+  "id": 2498890,
+  "name": "BOOM! Buster",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics"
+ },
+ {
+  "id": 797430,
+  "name": "HD Poker: Texas Hold'em",
+  "why": "unreadable requirements",
+  "cpu": "Dual core 3Ghz+",
+  "gpu": "1024x768 monitor resolution"
+ },
+ {
+  "id": 2275440,
+  "name": "Solar Nations 2",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 3419430,
+  "name": "Bongo Cat",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Any"
+ },
+ {
+  "id": 1539140,
+  "name": "STONKS-9800: Stock Market Simulator",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 4-compliant onboard graphics"
+ },
+ {
+  "id": 4905780,
+  "name": "The Apothecary Diaries: The False Imperial Brother",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 4704520,
+  "name": "ShredDead",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core 2 Duo 2.40 GHz / AMD Athlon 2.40 GHz",
+  "gpu": "DirectX 11 compatible video card"
+ },
+ {
+  "id": 1180320,
+  "name": " War of the Three Kingdoms",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz Processor",
+  "gpu": "3D graphics card compatible with DirectX7"
+ },
+ {
+  "id": 466170,
+  "name": "Idling to Rule the Gods",
+  "why": "unreadable requirements",
+  "cpu": "Intel Dual-Core 1.6GHz or faster processor",
+  "gpu": "Graphic card with DX10 (Shader-Model 4.0) abilities"
+ },
+ {
+  "id": 615770,
+  "name": "Nancy Drew®: Message in a Haunted Mansion",
+  "why": "unreadable requirements",
+  "cpu": "166 MHz or greater Pentium or equivalent class CPU",
+  "gpu": "16-Bit DirectX 7.0 compatible graphics video card"
+ },
+ {
+  "id": 312530,
+  "name": "Duck Game",
+  "why": "unreadable requirements",
+  "cpu": "2.0GHZ",
+  "gpu": "Pixel Shader 2.0"
+ },
+ {
+  "id": 302670,
+  "name": "Call to Arms",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 12 compatible"
+ },
+ {
+  "id": 359510,
+  "name": "Tangle Tower",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3 or equivalent",
+  "gpu": "Intel HD Graphics"
+ },
+ {
+  "id": 3045200,
+  "name": "Beatblock",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.3+"
+ },
+ {
+  "id": 3536530,
+  "name": "Örnöga: Idle & Loot",
+  "why": "unreadable requirements",
+  "cpu": "2.5Ghz or better",
+  "gpu": "Support for OpenGL 3.3"
+ },
+ {
+  "id": 2368300,
+  "name": "Warside",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.3 compatible video card"
+ },
+ {
+  "id": 755800,
+  "name": "Hades' Star",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 10 compatible"
+ },
+ {
+  "id": 2445690,
+  "name": "Lost Castle 2",
+  "why": "unreadable requirements",
+  "cpu": "Intel I5",
+  "gpu": "NVIDIA 1050"
+ },
+ {
+  "id": 31850,
+  "name": "Nancy Drew®: Ghost Dogs of Moon Lake",
+  "why": "unreadable requirements",
+  "cpu": "200MHz CPU",
+  "gpu": "16-bit DirectX 7.0 compatible"
+ },
+ {
+  "id": 2051060,
+  "name": "SpaceInvasion",
+  "why": "unreadable requirements",
+  "cpu": "4"
+ },
+ {
+  "id": 1162860,
+  "name": "Keepsake County",
+  "why": "unreadable requirements",
+  "cpu": "1.4 ghz",
+  "gpu": "Integrated"
+ },
+ {
+  "id": 3723710,
+  "name": "Escape the Baby Alarm",
+  "why": "unreadable requirements",
+  "cpu": "TBA",
+  "gpu": "TBA"
+ },
+ {
+  "id": 285330,
+  "name": "RollerCoaster Tycoon® 2: Triple Thrill Pack",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz Processor",
+  "gpu": "3D graphics card compatible with DirectX 7"
+ },
+ {
+  "id": 2066550,
+  "name": "ERROR143",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 / OpenGL 3.0 compatible"
+ },
+ {
+  "id": 4468030,
+  "name": "OFFBEAT",
+  "why": "unreadable requirements",
+  "cpu": "Core i5 2.2 GHz or equivalent",
+  "gpu": "Graphics card with DX10 (shader model 4.0) capabilities"
+ },
+ {
+  "id": 3237920,
+  "name": "Mech Havoc",
+  "why": "unreadable requirements",
+  "cpu": "i5-8400",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 1222800,
+  "name": "VALKYRIE CONNECT",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3 3210",
+  "gpu": "Intel HD Graphics 5500"
+ },
+ {
+  "id": 420530,
+  "name": "OneShot",
+  "why": "unreadable requirements",
+  "gpu": "Minimum:"
+ },
+ {
+  "id": 2678990,
+  "name": "Minami Lane",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture",
+  "gpu": "Integrated graphics should be enough"
+ },
+ {
+  "id": 42210,
+  "name": "Nancy Drew®: Secrets Can Kill REMASTERED",
+  "why": "unreadable requirements",
+  "cpu": "1GHz CPU",
+  "gpu": "32-bit DirectX 9.0 compatible video card"
+ },
+ {
+  "id": 25000,
+  "name": "Overgrowth",
+  "why": "unreadable requirements",
+  "cpu": "Passmark CPU 1000 or better",
+  "gpu": "Passmark GPU 500 or better with OpenGL 3.2 support"
+ },
+ {
+  "id": 3855540,
+  "name": "BLACK SOULS II",
+  "why": "unreadable requirements",
+  "cpu": "3+ GHz Processor",
+  "gpu": "OpenGL ES 2.0 hardware driver support required for WebGL acceleration. (AMD Catalyst 10.9, nVidia 358.50)"
+ },
+ {
+  "id": 4532500,
+  "name": "Atelier Karia: The Night Kingdom & the Guide of Memories",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 252610,
+  "name": "Death Road to Canada",
+  "why": "unreadable requirements",
+  "cpu": "1.3 ghz",
+  "gpu": "Minimum Supported Texture Size 2048x2048"
+ },
+ {
+  "id": 3307120,
+  "name": "Kitty Powers' Matchmaker Makeover",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10, DX11 or DX12 capable GPU"
+ },
+ {
+  "id": 3642000,
+  "name": "Space Warlord Baby Trading Simulator",
+  "why": "unreadable requirements",
+  "cpu": "@ 2GHz",
+  "gpu": "Intel HD Graphics 2000"
+ },
+ {
+  "id": 605230,
+  "name": "Grey Hack",
+  "why": "unreadable requirements",
+  "cpu": "SSE2 instruction set support",
+  "gpu": "DX10, DX11, DX12 capable GPU"
+ },
+ {
+  "id": 763890,
+  "name": "Wildermyth",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Open GL 3.2"
+ },
+ {
+  "id": 2869860,
+  "name": "Monster Prom 4: Monster Con",
+  "why": "unreadable requirements",
+  "cpu": "Anything from the last 5 years"
+ },
+ {
+  "id": 3103620,
+  "name": "Witch the Showdown",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 1147860,
+  "name": "UFO 50",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics"
+ },
+ {
+  "id": 1147690,
+  "name": "NGU IDLE",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Probably everything works, even integrated ( but you might have slideshow FPS)"
+ },
+ {
+  "id": 4443690,
+  "name": "Cornerwitch",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.3 compatible"
+ },
+ {
+  "id": 1668530,
+  "name": "The Legend of Nayuta: Boundless Trails",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "AMD Radeon R7 200 Series"
+ },
+ {
+  "id": 3035120,
+  "name": "Is This Seat Taken?",
+  "why": "unreadable requirements",
+  "cpu": "2.8 GHz or faster processor",
+  "gpu": "Direct X 11.0 compatible video card"
+ },
+ {
+  "id": 3361510,
+  "name": "Coal LLC",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated"
+ },
+ {
+  "id": 1289810,
+  "name": "Siralim Ultimate",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Any"
+ },
+ {
+  "id": 2200,
+  "name": "Quake III Arena",
+  "why": "unreadable requirements",
+  "cpu": "with 8 MB Video Card or Pentium II 266 Mhz processor with 4 MB Video Card, or AMD® 350 Mhz K6®-2 processor with 4 MB Video Card, 64 MB RAM, a 100% Windows® XP/V",
+  "gpu": "or Pentium II 266 Mhz processor with 4 MB Video Card, or AMD® 350 Mhz K6®-2 processor with 4 MB Video Card, 64 MB RAM, a 100% Windows® XP/Vista compatible compu"
+ },
+ {
+  "id": 2190220,
+  "name": "Touhou Danmaku Kagura Phantasia Lost",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics 530"
+ },
+ {
+  "id": 1129190,
+  "name": "Our Life: Beginnings & Always",
+  "why": "unreadable requirements",
+  "cpu": "2Ghz",
+  "gpu": "DirectX or OpenGL compatible card"
+ },
+ {
+  "id": 397950,
+  "name": "Clustertruck",
+  "why": "unreadable requirements",
+  "cpu": "2Ghz",
+  "gpu": "Dedicated recommended, integrated will run at 720p"
+ },
+ {
+  "id": 4656700,
+  "name": "Papa's Mocharia Deluxe",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz Processor",
+  "gpu": "DirectX 9.0c Compatible Video Card"
+ },
+ {
+  "id": 4073860,
+  "name": "Sludgineers",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX11, DX12 or Vulkan capable GPUs"
+ },
+ {
+  "id": 3201730,
+  "name": "Flamecraft",
+  "why": "unreadable requirements",
+  "cpu": "Intel® Core™ i5-2430M",
+  "gpu": "NVIDIA GeForce GTX 940M"
+ },
+ {
+  "id": 294860,
+  "name": "Valkyria Chronicles™",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core2 Duo @ 2.8GHz (or equivalent)",
+  "gpu": "NVIDIA GeForce GTX 280 (or equivalent)"
+ },
+ {
+  "id": 5103870,
+  "name": "Anywhere RPG",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 1314820,
+  "name": "RealFlight Trainer Edition",
+  "why": "unreadable requirements",
+  "cpu": "Intel or AMD processor",
+  "gpu": "Discrete graphics - Full DirectX 11 compliant"
+ },
+ {
+  "id": 2840190,
+  "name": "Great God Grove",
+  "why": "unreadable requirements",
+  "cpu": "x64 architecture"
+ },
+ {
+  "id": 3431040,
+  "name": "That's not my Neighbor",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL-compatible graphics card"
+ },
+ {
+  "id": 3825780,
+  "name": "WonderKing",
+  "why": "unreadable requirements",
+  "cpu": "Dual-Core Processor",
+  "gpu": "Hardware Accelerated Graphics with dedicated memory"
+ },
+ {
+  "id": 1954420,
+  "name": "[Riichi City] × [Kaiji: Against All Rules] Collab Confirmed!",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce GT 430 / ATI Radeon HD 2600XT"
+ },
+ {
+  "id": 367270,
+  "name": "Angels Fall First",
+  "why": "unreadable requirements",
+  "cpu": "Quad Core 2.8ghz",
+  "gpu": "Nvidia 600 series or later"
+ },
+ {
+  "id": 1069160,
+  "name": "SKALD: Against the Black Priory",
+  "why": "unreadable requirements",
+  "cpu": "Intel 7th Gen or AMD equivalent",
+  "gpu": "Nvida GTX Series 10 or equivalent onboard graphics"
+ },
+ {
+  "id": 2103530,
+  "name": "Idle Clans",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 2400510,
+  "name": "Dungeons & Degenerate Gamblers",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 3322630,
+  "name": "Culdcept BEGINS",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5-8100U",
+  "gpu": "Intel(R) HD Graphics 630"
+ },
+ {
+  "id": 2291760,
+  "name": "Papa's Freezeria Deluxe",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz Processor",
+  "gpu": "DirectX 9.0c Compatible Video Card"
+ },
+ {
+  "id": 868160,
+  "name": "Code: Terraform",
+  "why": "unreadable requirements",
+  "gpu": "Any GPU with WebGL support"
+ },
+ {
+  "id": 207140,
+  "name": "SpeedRunners",
+  "why": "unreadable requirements",
+  "cpu": "1Ghz and up",
+  "gpu": "Dedicated video card recommended"
+ },
+ {
+  "id": 1218210,
+  "name": "Coromon",
+  "why": "unreadable requirements",
+  "cpu": "1.0 GHz",
+  "gpu": "OpenGL 2.1 or higher"
+ },
+ {
+  "id": 2980270,
+  "name": "HackHub - Ultimate Hacker Simulator",
+  "why": "unreadable requirements",
+  "cpu": "i3",
+  "gpu": "-- NO GPU REQUIRED --"
+ },
+ {
+  "id": 285190,
+  "name": "Warhammer 40,000: Dawn of War III",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GeForce 770 or AMD Radeon 7970 or equivalent DirectX 11 card"
+ },
+ {
+  "id": 3021100,
+  "name": "Five Hearts Under One Roof",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 or AMD equivalent or above",
+  "gpu": "Discrete graphics card"
+ },
+ {
+  "id": 1714040,
+  "name": "Super Auto Pets",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX9 (shader model 2.0) capabilities"
+ },
+ {
+  "id": 2747660,
+  "name": "Zombie Assault: Resurgence",
+  "why": "unreadable requirements",
+  "cpu": "4.6 GHz 6-Core 64bit Processor Or Higher",
+  "gpu": "DirectX 12 Compatible"
+ },
+ {
+  "id": 2359120,
+  "name": "Consume Me",
+  "why": "unreadable requirements",
+  "cpu": "x64 architecture",
+  "gpu": "OpenGL or DirectX 9 compatible graphics card."
+ },
+ {
+  "id": 31820,
+  "name": "Nancy Drew®: The Haunted Carousel",
+  "why": "unreadable requirements",
+  "cpu": "200MHz CPU",
+  "gpu": "16-bit graphics video card"
+ },
+ {
+  "id": 3238580,
+  "name": "A World of Keflings",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture",
+  "gpu": "DX11 capable"
+ },
+ {
+  "id": 2430730,
+  "name": "My Child Lebensborn Remastered",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10,DX11,DX12"
+ },
+ {
+  "id": 3861710,
+  "name": "Otterly Lost",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 3492120,
+  "name": "Legion Was Here",
+  "why": "unreadable requirements",
+  "cpu": "1 Ghz processor",
+  "gpu": "WebGL compatible graphic card"
+ },
+ {
+  "id": 1461910,
+  "name": "Rogue Command",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 3284290,
+  "name": "Moonsigil Atlas",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce GTX 1630"
+ },
+ {
+  "id": 2135150,
+  "name": "Elin",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics 615"
+ },
+ {
+  "id": 1128810,
+  "name": "RISK: Global Domination",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11"
+ },
+ {
+  "id": 846770,
+  "name": "DYSMANTLE",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "SM 4.0+"
+ },
+ {
+  "id": 31830,
+  "name": "Nancy Drew®: Curse of Blackmoor Manor",
+  "why": "unreadable requirements",
+  "cpu": "400 MHz CPU",
+  "gpu": "16-bit DirectX compatible video card"
+ },
+ {
+  "id": 4039140,
+  "name": "Subway Builder",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 2757330,
+  "name": "Class of '09: The Flip Side",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Open GL 2.0 or DirectX 9.0c"
+ },
+ {
+  "id": 3891400,
+  "name": "Mixed Spirits: Bartender",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GeForce 840M"
+ },
+ {
+  "id": 1127500,
+  "name": "Mini Motorways",
+  "why": "unreadable requirements",
+  "cpu": "2 GHz or faster processor",
+  "gpu": "Shader Model 4.0"
+ },
+ {
+  "id": 3191030,
+  "name": "Nubby's Number Factory",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 1521580,
+  "name": "Perfect Heist 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 500 Series"
+ },
+ {
+  "id": 2357910,
+  "name": "Home Safety Hotline",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 31840,
+  "name": "Nancy Drew®: Danger on Deception Island",
+  "why": "unreadable requirements",
+  "cpu": "200MHz CPU",
+  "gpu": "16-bit graphics video card"
+ },
+ {
+  "id": 3108510,
+  "name": "FlyKnight Enhanced Edition",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce 470 GTX or Radeon 6870"
+ },
+ {
+  "id": 1254130,
+  "name": "Phobies",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11 Compatible Graphics Chipset"
+ },
+ {
+  "id": 1097430,
+  "name": "Book of Yog Idle RPG",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core-i5 or faster processor",
+  "gpu": "any type"
+ },
+ {
+  "id": 3816120,
+  "name": "Re2 I Rise Alone",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5-12400 or higher processors",
+  "gpu": "discrete graphics card"
+ },
+ {
+  "id": 24810,
+  "name": "Command & Conquer™ 3: Kane’s Wrath",
+  "why": "unreadable requirements",
+  "cpu": "2GHz (2.2GHz Vista)",
+  "gpu": "nVIDIA GeForce 4, ATI Radeon 8500 or greater (ATI Radeon 9200 and 9250 PCI, nVIDIA Geforce 4 MX cards not supported.); for Vista NVIDIA GeForce 6100 or ATI Rade"
+ },
+ {
+  "id": 3199360,
+  "name": "Skull Horde",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX® 11 Compatible Graphics Card or newer"
+ },
+ {
+  "id": 3132860,
+  "name": "天月麻雀 (Amatsuki Mahjong)",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 – 2.4 GHz",
+  "gpu": "GeForce GT 430 / ATI Radeon HD 2600XT"
+ },
+ {
+  "id": 3534790,
+  "name": "Mesmalie",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5-6200U",
+  "gpu": "Intel HD Graphics"
+ },
+ {
+  "id": 4366330,
+  "name": "Rift Wizard 3",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 4488990,
+  "name": "Carmilla : Crimson Moon",
+  "why": "unreadable requirements",
+  "cpu": "2.4 GHz+ multi-core Intel/AMD",
+  "gpu": "Dedicated GPU with OpenGL 3.3+ or DirectX 11+"
+ },
+ {
+  "id": 587110,
+  "name": "Ys: Memories of Celceta",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 (4-core 3.30Ghz)",
+  "gpu": "AMD Radeon R7 200 Series"
+ },
+ {
+  "id": 3523750,
+  "name": "Down with the Ship",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 335670,
+  "name": "LISA: The Painful",
+  "why": "unreadable requirements",
+  "cpu": "Intel® Pentium® 4 2.0 GHz equivalent or faster processor",
+  "gpu": "1024 x 768 pixels or higher desktop resolution"
+ },
+ {
+  "id": 1179080,
+  "name": "FAITH: The Unholy Trinity",
+  "why": "unreadable requirements",
+  "cpu": "64-bit Intel compatible Quad Core CPU",
+  "gpu": "DX 11 based graphics card"
+ },
+ {
+  "id": 925930,
+  "name": "Myst III: Exile",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "8 MB 3D graphics card compatible with DirectX 9"
+ },
+ {
+  "id": 24790,
+  "name": "Command & Conquer 3 Tiberium Wars™",
+  "why": "unreadable requirements",
+  "cpu": "2GHz AMD Athlon™ processor or equivalent",
+  "gpu": "ATI Radeon 8500 or Nvidia GeForce 4 or higher video card"
+ },
+ {
+  "id": 1850160,
+  "name": "Poly Bridge 3",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DX10, DX11, or DX12 capable GPU"
+ },
+ {
+  "id": 3599690,
+  "name": "Funi Raccoon Game",
+  "why": "unreadable requirements",
+  "gpu": "Vulkan support required"
+ },
+ {
+  "id": 1349230,
+  "name": "5D Chess With Multiverse Time Travel",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL 3.3 compatibility (everything since about 2010)."
+ },
+ {
+  "id": 557600,
+  "name": "Gorogoa",
+  "why": "unreadable requirements",
+  "cpu": "1 GHz",
+  "gpu": "GeForce 6 or Radeon X1000"
+ },
+ {
+  "id": 31880,
+  "name": "Nancy Drew®: Secret of the Old Clock",
+  "why": "unreadable requirements",
+  "cpu": "400 MHz CPU",
+  "gpu": "16-bit DirectX compatible video card"
+ },
+ {
+  "id": 3447280,
+  "name": "Fantasy World Manager",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Intel HD Graphics 530 or equivalent, with a Vulkan 1.0-compatible driver"
+ },
+ {
+  "id": 10100,
+  "name": "King's Quest™ Collection",
+  "why": "unreadable requirements",
+  "cpu": "1.4 GHz",
+  "gpu": "DirectX 9 Compatible 3D Card"
+ },
+ {
+  "id": 615730,
+  "name": "Nancy Drew®: The Final Scene",
+  "why": "unreadable requirements",
+  "cpu": "166 MHz or greater Pentium or equivalent class CPU",
+  "gpu": "16-Bit DirectX 7.0 compatible graphics video card"
+ },
+ {
+  "id": 350310,
+  "name": "BLADESTORM: Nightmare",
+  "why": "unreadable requirements",
+  "cpu": "Core i7 2600 3.4GHz or better",
+  "gpu": "1980*1080 pixel over, True Color, 16:9 display"
+ },
+ {
+  "id": 1553260,
+  "name": "Scarlet Deer Inn",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 11-compatible GPU"
+ },
+ {
+  "id": 1812410,
+  "name": "The Elder Scrolls Adventures: Redguard",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz",
+  "gpu": "3D graphics card compatible with DirectX 9.0c"
+ },
+ {
+  "id": 3021540,
+  "name": "Starborne Frontiers",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i5 / AMD Ryzen 5",
+  "gpu": "Intel / AMD Radeon / Nvidia GeForce"
+ },
+ {
+  "id": 3057670,
+  "name": "Pluto",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3 Processor",
+  "gpu": "Integrated graphics with OpenGL 3.3 support"
+ },
+ {
+  "id": 2026820,
+  "name": "Die in the Dungeon",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GTX 1030"
+ },
+ {
+  "id": 3115240,
+  "name": "Alchemist: Journey of the Soul",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Nvidia 1060/AMD equivalent"
+ },
+ {
+  "id": 4671380,
+  "name": "Scapewatch: Idle MMO",
+  "why": "unreadable requirements",
+  "cpu": "Any dual-core 2.4 GHz from 2015 or later",
+  "gpu": "Any GPU with hardware acceleration"
+ },
+ {
+  "id": 4071460,
+  "name": "Tentacle Locker 2",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "DirectX 9/OpenGL 4.1 capable GPU"
+ },
+ {
+  "id": 1829980,
+  "name": "Café Stella and the Reaper's Butterflies",
+  "why": "unreadable requirements",
+  "cpu": "Core2Duo 2.4Ghz",
+  "gpu": "256M"
+ },
+ {
+  "id": 2270,
+  "name": "Wolfenstein 3D",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 3323850,
+  "name": "Blippo+",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Dedicated graphics"
+ },
+ {
+  "id": 228280,
+  "name": "Baldur's Gate: Enhanced Edition",
+  "why": "unreadable requirements",
+  "cpu": "Dual Core Processor",
+  "gpu": "OpenGL 2.0 compatible"
+ },
+ {
+  "id": 1690710,
+  "name": "Incremental Epic Hero 2",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core-i5 or faster processor",
+  "gpu": "DX10"
+ },
+ {
+  "id": 720620,
+  "name": "TaleSpire",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Graphics card with DX11.1 (feature level 11_1, shader model 5.0) capabilities."
+ },
+ {
+  "id": 3618390,
+  "name": "Gamblers Table",
+  "why": "unreadable requirements",
+  "cpu": "x86_64 CPU with SSE4.2 instructions, with 4 physical cores or more, ARMv8 CPU"
+ },
+ {
+  "id": 345610,
+  "name": "The Fruit of Grisaia",
+  "why": "unreadable requirements",
+  "cpu": "1Ghz+",
+  "gpu": "1024x576"
+ },
+ {
+  "id": 2008750,
+  "name": "Wing Commander™ IV: The Price of Freedom: 30th Anniversary Edition",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz",
+  "gpu": "3D graphics card compatible with DirectX 9.0c"
+ },
+ {
+  "id": 4834810,
+  "name": "Soldiers at War",
+  "why": "unreadable requirements",
+  "cpu": "1.8 GHz",
+  "gpu": "DirectX 9.0c Compatible Graphics Card"
+ },
+ {
+  "id": 1615100,
+  "name": "The Last Stand Legacy Collection",
+  "why": "unreadable requirements",
+  "cpu": "and operating system"
+ },
+ {
+  "id": 3476730,
+  "name": "Killer Chat! - Original Edition",
+  "why": "unreadable requirements",
+  "cpu": "64-bit Intel-compatible",
+  "gpu": "OpenGL 3.0"
+ },
+ {
+  "id": 3376990,
+  "name": "Kabuto Park",
+  "why": "unreadable requirements",
+  "cpu": "x86, x64 architecture",
+  "gpu": "Integrated graphics should be enough"
+ },
+ {
+  "id": 4312850,
+  "name": "FISH",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "2015-Current GPUs"
+ },
+ {
+  "id": 39120,
+  "name": "RIFT",
+  "why": "unreadable requirements",
+  "cpu": "Dual Core 2.0 GHz or better",
+  "gpu": "Nvidia GeForce FX 5900, ATI/AMD Radeon X300, Intel GMA X4500 or better."
+ },
+ {
+  "id": 283940,
+  "name": "Freddi Fish and the Case of the Missing Kelp Seeds",
+  "why": "unreadable requirements",
+  "cpu": "1.5 GHz Processor",
+  "gpu": "100% DirectX compatible graphics"
+ },
+ {
+  "id": 551170,
+  "name": "Onmyoji",
+  "why": "unreadable requirements",
+  "cpu": "Intel Core i3-2310M/AMD A6-6400K",
+  "gpu": "NVIDIA Geforce9600GT"
+ },
+ {
+  "id": 1296610,
+  "name": "Peglin",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Integrated Graphics"
+ },
+ {
+  "id": 1969060,
+  "name": "Path of the Midnight Sun",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "OpenGL ES 2.0 hardware driver support required for WebGL acceleration"
+ },
+ {
+  "id": 1286710,
+  "name": "Hylics 2",
+  "why": "unreadable requirements",
+  "cpu": "2.5 Ghz or better",
+  "gpu": "Monitor Resolution 2560x1280 or higher. 16:9 aspect ratio for fullscreen"
+ },
+ {
+  "id": 1889930,
+  "name": "Baldur's Gate: Dark Alliance II",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "GeForce FX5700 or better / ATI Radeon 9600 or better"
+ },
+ {
+  "id": 1929290,
+  "name": "Bits & Bops",
+  "why": "unreadable requirements",
+  "cpu": "x86 or x64 architecture with SSE2 instruction set support"
+ },
+ {
+  "id": 230330,
+  "name": "FINAL FANTASY® XI: Ultimate Collection Seekers Edition",
+  "why": "unreadable requirements",
+  "cpu": "Intel® Core™ i3 2.4GHz (or higher)",
+  "gpu": "NVIDIA® GeForce™ GT 740 (or higher) *Driver must be compatible with DirectX® 8.1."
+ },
+ {
+  "id": 1260520,
+  "name": "Patrick's Parabox",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 2917030,
+  "name": "Echocalypse: The Scarlet Covenant",
+  "why": "unreadable requirements"
+ },
+ {
+  "id": 1784570,
+  "name": "Trainz Railroad Simulator 2022",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "NVIDIA GT 430 or better/ AMD ATI 5550 or better"
+ },
+ {
+  "id": 4943970,
+  "name": "Franchise Hockey Manager 13",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "1280x768 display (1280×768 display requires fullscreen mode)"
+ },
+ {
+  "id": 2226430,
+  "name": "CraftCraft: Fantasy Merchant Simulator",
+  "why": "unreadable requirements",
+  "cpu": "and operating system",
+  "gpu": "Support for OpenGL 3.3"
+ }
+]
