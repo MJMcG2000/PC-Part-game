@@ -1,12 +1,12 @@
 /**
  * Builds public/data/steam-library.json: requirement-based FPS-model numbers
- * for the most-owned Steam games, used by the Build planner's search.
+ * for Steam's top-selling games, used by the Build planner's search.
  *
  *   npm run import-steam                      # top 10,000 games
  *   npm run import-steam -- --limit 2000      # fewer
  *   npm run import-steam -- --delay 1600      # ms between store requests
  *
- * Needs internet access to steamspy.com and store.steampowered.com, so run it
+ * Needs internet access to store.steampowered.com, so run it
  * on your own computer or in GitHub Actions (workflow "Import Steam library").
  * Store responses are cached in .steam-cache/, so an interrupted run resumes
  * where it stopped. The Steam store allows roughly 200 requests per 5 minutes;
@@ -54,26 +54,27 @@ async function getJson(url: string): Promise<unknown> {
 }
 
 /**
- * Most-owned Steam app ids from SteamSpy (1,000 per page, sorted by owners).
- * SteamSpy allows one "all" request per 60 seconds, so uncached pages are spaced
- * 61 s apart. Only full pages are cached, so a short (rate-limited) page is refetched next time.
+ * Top-selling Steam games, from the store's own search (100 per request). Used
+ * instead of SteamSpy, which refuses connections from GitHub's servers.
+ * Pages are cached in .steam-cache/ like the store details.
  */
 async function topAppIds(limit: number): Promise<number[]> {
   const ids: number[] = [];
-  let fetched = false;
-  for (let page = 0; ids.length < limit && page < 60; page++) {
-    const cacheFile = join(CACHE, `steamspy-${page}.json`);
-    const cached = existsSync(cacheFile);
-    if (!cached && fetched) await sleep(61_000);
-    const data = cached ? JSON.parse(readFileSync(cacheFile, 'utf8')) : await getJson(`https://steamspy.com/api.php?request=all&page=${page}`);
-    const rows = Object.values((data ?? {}) as Record<string, { appid: number }>);
-    if (!cached) {
-      fetched = true;
-      if (rows.length >= 1000) writeFileSync(cacheFile, JSON.stringify(data));
+  for (let start = 0; ids.length < limit && start < 20000; start += 100) {
+    const cacheFile = join(CACHE, `search-${start}.json`);
+    let found: number[];
+    if (existsSync(cacheFile)) found = JSON.parse(readFileSync(cacheFile, 'utf8'));
+    else {
+      const data = (await getJson(
+        `https://store.steampowered.com/search/results/?query&start=${start}&count=100&filter=topsellers&category1=998&infinite=1&cc=us&l=english`,
+      )) as { results_html?: string };
+      found = [...(data.results_html ?? '').matchAll(/data-ds-appid="(\d+)"/g)].map((m) => Number(m[1]));
+      if (found.length) writeFileSync(cacheFile, JSON.stringify(found));
+      await sleep(DELAY);
     }
-    if (!rows.length) break;
-    ids.push(...rows.map((r) => r.appid));
-    console.log(`SteamSpy page ${page}: ${rows.length} apps (${ids.length} total)`);
+    if (!found.length) break;
+    ids.push(...found);
+    if (start % 1000 === 0) console.log(`Steam top sellers: ${ids.length} apps`);
   }
   return [...new Set(ids)].slice(0, limit);
 }
